@@ -1,0 +1,55 @@
+{
+  // "Print to console": {
+  //   "scope": "javascript,typescript",
+  //   "prefix": "log",
+  //   "body": ["console.log('$1')"],
+  //   "description": "Log output to console"
+  // },
+  // "Import constants": {
+  //   "scope": "javascript,typescript",
+  //   "prefix": "getConstants",
+  //   "body": ["import {Font, Colors, Dim} from \"../Constants\""],
+  //   "description": "Import constants."
+  // },
+  // "Get font styles": {
+  //   "scope": "javascript,typescript",
+  //   "prefix": "getFontStyles",
+  //   "body": ["fontFamily: $1,", "fontSize: $2,", "fontWeight: $3,"],
+  //   "description": "Get font styles."
+  // },
+  "Initialize component": {
+    "scope": "javascript,typescript",
+    "prefix": "initializeComponent",
+    "body": [
+      "import React from \"react\"",
+      "import {View, StyleSheet} from \"react-native\"",
+      "",
+      "",
+      "/*",
+      "  -- DOCUMENTATION --",
+      "*/",
+      "const $1 = (props) => {",
+      "return <View></View>",
+      "}",
+      "",
+      "const styles = StyleSheet.create({})",
+      "",
+      "export default $1"
+    ]
+  },
+  // "Fetch from backend": {
+  //   "scope": "javascript,typescript",
+  //   "prefix": "fetchFromBackend",
+  //   "body": [
+  //     ".then((response) => response.json())",
+  //     ".then((response) => {",
+  //     " if (response.success) {",
+  //     " } else {",
+  //     " }",
+  //     "})",
+  //     " .catch((error) => {",
+  //     " console.log(error.message);",
+  //     "});"
+  //   ]
+  // }
+}
