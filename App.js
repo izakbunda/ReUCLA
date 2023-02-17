@@ -3,11 +3,13 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import * as Font from "expo-font";
 
 // Import all screens here
-import Home from "./src/screens/Home";
-import Profile from "./src/screens/Profile";
-import Landing from "./src/screens/Landing";
+import HomeScreen from "./src/screens/HomeScreen";
+import SearchScreen from "./src/screens/SearchScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
+import LandingScreen from "./src/screens/LandingScreen";
 //
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -15,9 +17,9 @@ const Tab = createBottomTabNavigator();
 function NavBarVisible() {
     return (
         <Tab.Navigator headerMode="false">
-            <Tab.Screen name="Home" component={Landing} />
-            <Tab.Screen name="Explore" component={Home} />
-            <Tab.Screen name="Profile" component={Profile} />
+            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Search" component={SearchScreen} />
+            <Tab.Screen name="Profile" component={ProfileScreen} />
         </Tab.Navigator>
     );
 }
@@ -25,15 +27,12 @@ function NavBarVisible() {
 const App = () => {
     return (
         <NavigationContainer>
-            {/* <Home /> */}
-            {/* <Profile /> */}
             <Stack.Navigator
                 screenOptions={{
                     headerShown: false,
                 }}
             >
-                <Stack.Screen name="Home" component={NavBarVisible} />
-                {/* <Stack.Screen name="Profile" component={Profile} /> */}
+                <Stack.Screen name="HomeStack" component={NavBarVisible} />
             </Stack.Navigator>
         </NavigationContainer>
     );
