@@ -8,7 +8,9 @@ import { View, StyleSheet, Text } from "react-native";
 const HomeScreen = (props) => {
     return (
         <View>
-            <Text style={{ color: "red" }}>Hello! You're Home!</Text>
+            <Text style={{ color: "red", paddingTop: 90 }}>
+                Hello! You're Home!
+            </Text>
         </View>
     );
 };
