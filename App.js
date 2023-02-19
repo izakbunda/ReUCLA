@@ -11,21 +11,58 @@ import HomeScreen from "./src/screens/HomeScreen";
 import SearchScreen from "./src/screens/SearchScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import LandingScreen from "./src/screens/LandingScreen";
+import AddListingScreen from "./src/screens/AddListingScreen";
 //
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+// const profileProps = {
+//     profilePhoto: "https://google.com",
+//     name: "Izak Bunda",
+//     bio: "Hello! I am a 2nd year UCLA student interested in fashion. I have a problem of buying too many clothes, so this is my solution. Feel free to message me to negotiate, none of the prices are final!",
+//     contactInformation: [7609942957, "@izakbunda", "izakbunda@gmail.com"],
+//     listings: [
+//         {
+//             listingPhoto: "https://google.com",
+//             listingPrice: 10,
+//             listingname: "magic pants",
+//             listingDescription: "these are pants!",
+//             category: ["clothing", "menswear", "bottoms"],
+//             condition: 1,
+//         },
+//         {
+//             listingPhoto: "https://google.com",
+//             listingPrice: 7,
+//             listingname: "vintage shirt",
+//             listingDescription: "these are from the 90s!",
+//             category: ["clothing", "menswear", "tops"],
+//             condition: 1,
+//         },
+//         {
+//             listingPhoto: "https://google.com",
+//             listingPrice: 20,
+//             listingname: "lava lamp",
+//             listingDescription:
+//                 "I got scared of lava lamps, so I don't use anymore!",
+//             category: ["homegoods", "bedroom", "lights"],
+//             condition: 1,
+//         },
+//     ],
+// };
 
 function NavBarVisible(route) {
     return (
         <Tab.Navigator
             headerMode="false"
             screenOptions={({ route }) => ({
+                // tabBarItemStyle: { marginHorizontal: 50 },
+                tabBarActiveTintColor: "#2F6B25",
+                tabBarStyle: { marginHorizontal: 40, marginVertical: 5 },
                 tabBarShowLabel: false,
                 style: {
                     height: 90,
                 },
-                tabBarHideOnKeyboard: true,
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
 
@@ -33,8 +70,8 @@ function NavBarVisible(route) {
                         case "Home":
                             iconName = "home";
                             break;
-                        case "Search":
-                            iconName = "search";
+                        case "Add":
+                            iconName = "plus-square";
                             break;
                         case "Profile":
                             iconName = "user";
@@ -42,7 +79,7 @@ function NavBarVisible(route) {
                         default:
                             break;
                     }
-                    return <Icon name={iconName} size={24} color={color} />;
+                    return <Icon name={iconName} size={30} color={color} />;
                 },
             })}
         >
@@ -51,14 +88,17 @@ function NavBarVisible(route) {
                 component={HomeScreen}
                 options={{ headerShown: false }}
             />
+
             <Tab.Screen
-                name="Search"
-                component={SearchScreen}
+                name="Add"
+                component={AddListingScreen}
                 options={{ headerShown: false }}
             />
             <Tab.Screen
                 name="Profile"
                 component={ProfileScreen}
+                // children={() => <ProfileScreen propName={profileProps} />}
+                // {(profileProps) => ( <ProfileScreen {...profileProps} otherProp={otherProp} />)}
                 options={{ headerShown: false }}
             />
         </Tab.Navigator>
@@ -74,8 +114,10 @@ const App = () => {
                 screenOptions={{
                     headerShown: false,
                 }}
+                initialRouteName="HomeStack"
             >
                 <Stack.Screen name="HomeStack" component={NavBarVisible} />
+                {/* <Stack.Screen name="OtherStacks" component={OtherStacks} /> */}
             </Stack.Navigator>
         </NavigationContainer>
     );

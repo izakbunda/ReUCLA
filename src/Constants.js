@@ -8,11 +8,12 @@ export const Dim = {
 export const BorderRadius = 10;
 
 export const Colors = {
-    primary: "#6B4EFF",
-    secondary: "#5538EE",
-    light: "#C6C4FF",
-    lighter: "#E7E7FF",
-    darkGray: "#303437",
-    lightGray: "#979C9E",
+    primary: "#2F6B25",
+    secondary: "#112211",
+    third: "#667065",
+    error: "#FF3D3D",
+    primaryGray: "#484848",
+    darkGray: "#252525",
+    lightGray: "#7C7C7C",
     gray: "#E3E5E5",
 };
