@@ -1,11 +1,34 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Colors, Dim } from "../Constants";
 
 /*
   -- DOCUMENTATION --
 */
 const Button = (props) => {
-    return <View></View>;
+    return (
+        <TouchableOpacity onPress={props.onPress}>
+            <View
+                style={{
+                    ...props.style,
+                    width: Dim.width * 0.5,
+                    borderRadius: 10,
+                    backgroundColor: Colors.primary,
+                }}
+            >
+                <Text
+                    style={{
+                        padding: 15,
+                        fontSize: 16,
+                        color: "white",
+                        textAlign: "center",
+                    }}
+                >
+                    {props.title}
+                </Text>
+            </View>
+        </TouchableOpacity>
+    );
 };
 
 const styles = StyleSheet.create({});

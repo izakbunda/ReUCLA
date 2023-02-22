@@ -7,6 +7,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/Feather";
 
 // Import all screens here
+import SignIn from "./src/screens/SignIn";
+import SignUp from "./src/screens/SignUp";
+import CreateProfile from "./src/screens/CreateProfile";
 import HomeScreen from "./src/screens/HomeScreen";
 import SearchScreen from "./src/screens/SearchScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
@@ -105,25 +108,57 @@ function NavBarVisible(route) {
     );
 }
 
-const App = () => {
-    // const [user, setUser] = useState(false);
-    // if (user) {
+function SignInFlow(route) {
     return (
-        <NavigationContainer>
-            <Stack.Navigator
-                screenOptions={{
-                    headerShown: false,
-                }}
-                initialRouteName="HomeStack"
-            >
-                <Stack.Screen name="HomeStack" component={NavBarVisible} />
-                {/* <Stack.Screen name="OtherStacks" component={OtherStacks} /> */}
-            </Stack.Navigator>
-        </NavigationContainer>
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Sign In"
+                component={SignIn}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Sign Up"
+                component={SignUp}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="Create Profile"
+                component={CreateProfile}
+                options={{ headerShown: true }}
+            />
+        </Stack.Navigator>
     );
-    // } else {
-    //     return <LandingScreen />;
-    // }
+}
+
+const App = () => {
+    const [user, setUser] = useState(false);
+
+    if (user) {
+        return (
+            <NavigationContainer>
+                <Stack.Navigator
+                    screenOptions={{
+                        headerShown: false,
+                    }}
+                    initialRouteName="HomeStack"
+                >
+                    <Stack.Screen name="HomeStack" component={NavBarVisible} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
+    } else {
+        return (
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen
+                        name="Sign In Flow"
+                        component={SignInFlow}
+                        options={{ headerShown: false }}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
+    }
 };
 
 export default App;

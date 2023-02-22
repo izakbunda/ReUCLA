@@ -14,6 +14,6 @@ export const Colors = {
     error: "#FF3D3D",
     primaryGray: "#484848",
     darkGray: "#252525",
-    lightGray: "#7C7C7C",
+    lightGray: "#f2f2f2",
     gray: "#E3E5E5",
 };
