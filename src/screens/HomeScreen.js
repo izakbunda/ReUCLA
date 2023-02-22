@@ -4,14 +4,17 @@ import { View, StyleSheet, Text } from "react-native";
 /*
   -- DOCUMENTATION --
 */
-const Profile = (props) => {
+
+const HomeScreen = (props) => {
     return (
         <View>
-            <Text>Hello! You're in Profile Screen!</Text>
+            <Text style={{ color: "red", paddingTop: 90 }}>
+                Hello! You're Home!
+            </Text>
         </View>
     );
 };
 
 const styles = StyleSheet.create({});
 
-export default Profile;
+export default HomeScreen;
