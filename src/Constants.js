@@ -29,3 +29,5 @@ export const RegexInstagram =
 export const RegexDiscord = /^[a-zA-Z0-9_ ]{2,32}#\d{4}$/;
 export const RegexTwitter =
     /^[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{0,13}[a-zA-Z0-9]$/;
+
+

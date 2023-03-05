@@ -56,6 +56,7 @@ const Tab = createBottomTabNavigator();
 
 function NavBarVisible(route) {
     return (
+<<<<<<< Updated upstream
         <Tab.Navigator
             headerMode="false"
             screenOptions={({ route }) => ({
@@ -150,6 +151,13 @@ const App = () => {
         return (
             <NavigationContainer>
                 <Stack.Navigator>
+=======
+        <NavigationContainer>
+            <View style={styles.container}>
+                <Home />
+                {/* <Profile /> */}
+                {/* <Stack.Navigator >
+>>>>>>> Stashed changes
                     <Stack.Screen
                         name="Sign In Flow"
                         component={SignInFlow}
