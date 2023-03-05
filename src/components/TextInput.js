@@ -11,6 +11,7 @@ const TextInput = (props) => {
         <View>
             <Text style={styles.inputTitle}>{props.title}</Text>
             <RN_TextInput
+                {...props}
                 placeholder={props.placeholder}
                 onChangeText={props.setText}
                 value={props.text}
@@ -19,7 +20,13 @@ const TextInput = (props) => {
                 autoCorrect={props.autoCorrect}
                 clearButtonMode="always"
                 style={styles.inputStyle}
+                onEndEditing={props.onEndEditing}
             />
+            <View style={{ width: Dim.width * 0.8 }}>
+                {props.error ? (
+                    <Text style={styles.error}>{props.errorMessage}</Text>
+                ) : null}
+            </View>
         </View>
     );
 };
@@ -38,6 +45,13 @@ const styles = StyleSheet.create({
         marginTop: 4,
         fontSize: 15,
         color: Colors.darkGray,
+        textAlign: "left",
+    },
+    error: {
+        marginLeft: 20,
+        marginBottom: 15,
+        fontSize: 15,
+        color: Colors.error,
         textAlign: "left",
     },
 });
