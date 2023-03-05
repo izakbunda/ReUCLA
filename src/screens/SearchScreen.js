@@ -4,14 +4,16 @@ import { View, StyleSheet, Text } from "react-native";
 /*
   -- DOCUMENTATION --
 */
-const Profile = (props) => {
+const SearchScreen = (props) => {
     return (
         <View>
-            <Text>Hello! You're in Profile Screen!</Text>
+            <Text style={{ color: "red", paddingTop: 90 }}>
+                Hello! You're in Search!
+            </Text>
         </View>
     );
 };
 
 const styles = StyleSheet.create({});
 
-export default Profile;
+export default SearchScreen;

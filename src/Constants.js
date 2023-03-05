@@ -16,4 +16,8 @@ export const Colors = {
     darkGray: "#252525",
     lightGray: "#f2f2f2",
     gray: "#E3E5E5",
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> main
