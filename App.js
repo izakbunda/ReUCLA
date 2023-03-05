@@ -9,7 +9,7 @@ import Icon from "react-native-vector-icons/Feather";
 // Import all screens here
 import SignIn from "./src/screens/SignIn";
 import SignUp from "./src/screens/SignUp";
-import CreateProfile from "./src/screens/CreateProfile";
+import CreateProfileScreen from "./src/screens/CreateProfileScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import SearchScreen from "./src/screens/SearchScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
@@ -111,7 +111,7 @@ function NavBarVisible(route) {
 function SignInFlow(route) {
     return (
         <Stack.Navigator>
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="Sign In"
                 component={SignIn}
                 options={{ headerShown: false }}
@@ -119,12 +119,12 @@ function SignInFlow(route) {
             <Stack.Screen
                 name="Sign Up"
                 component={SignUp}
-                options={{ headerShown: false }}
-            />
+                options={{ headerShown: true }}
+            /> */}
             <Stack.Screen
                 name="Create Profile"
-                component={CreateProfile}
-                options={{ headerShown: true }}
+                component={CreateProfileScreen}
+                options={{ headerShown: false }}
             />
         </Stack.Navigator>
     );

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     View,
     StyleSheet,
@@ -8,9 +8,9 @@ import {
     Image,
     Alert,
 } from "react-native";
-import { Dim, Colors } from "../Constants";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
+import axios from "axios";
 
 /*
   -- DOCUMENTATION --
@@ -18,6 +18,10 @@ import Button from "../components/Button";
 const SignIn = ({ props, navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    useEffect(() => {
+        null;
+    });
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
