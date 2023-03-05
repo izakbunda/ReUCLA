@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import SearchBar from "../components/SearchBar";
 import Category from "../components/Category";
-import Button from "../components/Button";
+import CategoryButton from "../components/CategoryButton";
 import Icon from "react-native-vector-icons/Feather";
 import { Dim, Colors } from "../Constants";
 
@@ -111,13 +111,13 @@ const Home = (props) => {
                 </View>
                 <Text style={styles.sectionHeader}>PRODUCTS</Text>
                 <View style={{flexDirection: "row"}}>
-                    <Button
+                    <CatergoryButton
                         onPress={ () => {
                             Alert.alert("go to product page")
                         }}
                         product = "Clothes"
                     />
-                    <Button
+                    <CategoryButton
                         onPress={ () => {
                             Alert.alert("go to product page")
                         }}
@@ -125,13 +125,13 @@ const Home = (props) => {
                     />
                 </View>
                 <View style={{flexDirection: "row"}}>
-                    <Button
+                    <CategoryButton
                         onPress={ () => {
                             Alert.alert("go to product page")
                         }}
                         product = "Books"
                     />
-                    <Button
+                    <CategoryCategoryButton
                         onPress={ () => {
                             Alert.alert("go to product page")
                         }}
@@ -139,13 +139,13 @@ const Home = (props) => {
                     />
                 </View>
                 <View style={{flexDirection: "row"}}>
-                    <Button
+                    <CategoryButton
                         onPress={ () => {
                             Alert.alert("go to product page")
                         }}
                         product = "Food"
                     />
-                    <Button
+                    <CategoryButton
                         onPress={ () => {
                             Alert.alert("go to product page")
                         }}
