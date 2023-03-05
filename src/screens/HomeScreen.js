@@ -19,7 +19,6 @@ import { Dim, Colors } from "../Constants";
   -- DOCUMENTATION --
 */
 
-<<<<<<< HEAD:src/screens/Home.js
 const menProducts = [
     {
         product: "TOPS",
@@ -155,15 +154,6 @@ const Home = (props) => {
                 </View>
             </ScrollView>
         </SafeAreaView>
-=======
-const HomeScreen = (props) => {
-    return (
-        <View>
-            <Text style={{ color: "red", paddingTop: 90 }}>
-                Hello! You're Home!
-            </Text>
-        </View>
->>>>>>> main:src/screens/HomeScreen.js
     );
 };
 
