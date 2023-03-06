@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/Feather";
+import { Dim } from "./src/Constants";
 
 // Import all screens here
 import SignIn from "./src/screens/SignIn";
@@ -56,17 +57,19 @@ const Tab = createBottomTabNavigator();
 
 function NavBarVisible(route) {
     return (
-<<<<<<< Updated upstream
         <Tab.Navigator
             headerMode="false"
             screenOptions={({ route }) => ({
-                // tabBarItemStyle: { marginHorizontal: 50 },
                 tabBarActiveTintColor: "#2F6B25",
-                tabBarStyle: { marginHorizontal: 40, marginVertical: 5 },
-                tabBarShowLabel: false,
-                style: {
-                    height: 90,
+                tabBarStyle: {
+                    padding: 10,
+                    paddingTop: 10,
+                    paddingBottom: 20,
+                    // margin: 20,
+                    // width: Dim.width - 40,
+                    // borderRadius: 25,
                 },
+                // tabBarShowLabel: false,
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
 
@@ -112,7 +115,7 @@ function NavBarVisible(route) {
 function SignInFlow(route) {
     return (
         <Stack.Navigator>
-            {/* <Stack.Screen
+            <Stack.Screen
                 name="Sign In"
                 component={SignIn}
                 options={{ headerShown: false }}
@@ -120,8 +123,8 @@ function SignInFlow(route) {
             <Stack.Screen
                 name="Sign Up"
                 component={SignUp}
-                options={{ headerShown: true }}
-            /> */}
+                options={{ headerShown: false }}
+            />
             <Stack.Screen
                 name="Create Profile"
                 component={CreateProfileScreen}
@@ -132,7 +135,7 @@ function SignInFlow(route) {
 }
 
 const App = () => {
-    const [user, setUser] = useState(false);
+    const [user, setUser] = useState(true);
 
     if (user) {
         return (
@@ -151,13 +154,6 @@ const App = () => {
         return (
             <NavigationContainer>
                 <Stack.Navigator>
-=======
-        <NavigationContainer>
-            <View style={styles.container}>
-                <Home />
-                {/* <Profile /> */}
-                {/* <Stack.Navigator >
->>>>>>> Stashed changes
                     <Stack.Screen
                         name="Sign In Flow"
                         component={SignInFlow}

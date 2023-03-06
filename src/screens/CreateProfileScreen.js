@@ -85,9 +85,19 @@ const CreateProfileScreen = ({ props, navigation }) => {
                         alignItems: "center",
                     }}
                 >
-                    <Text style={styles.title}>Create your account.</Text>
+                    <Text style={styles.title}>Create your account</Text>
 
-                    <View style={{ marginVertical: 20 }}>
+                    <View
+                        style={{
+                            marginVertical: 10,
+                            marginLeft: 10,
+                            marginBottom: 20,
+                        }}
+                    >
+                        <Text style={{ marginBottom: 20 }}>
+                            Add Profile Photo:
+                        </Text>
+
                         <AddProfilePhoto />
                     </View>
 
@@ -100,43 +110,44 @@ const CreateProfileScreen = ({ props, navigation }) => {
                             autoCorrect={false}
                             error={errors.location}
                             errorMessage={"Enter a valid location."}
-                            // onEndEditing={() => {
-                            //     if (!RegexName.test(location)) {
-                            //         setErrors({
-                            //             ...errors,
-                            //             locationError:
-                            //                 "Please enter a valid location.",
-                            //         });
-                            //     } else {
-                            //         setErrors({
-                            //             ...errors,
-                            //             location: undefined,
-                            //         });
-                            //     }
-                            // }}
+                            onEndEditing={() => {
+                                if (!RegexName.test(location)) {
+                                    setErrors({
+                                        ...errors,
+                                        location:
+                                            "Please enter a valid location.",
+                                    });
+                                } else {
+                                    setErrors({
+                                        ...errors,
+                                        location: undefined,
+                                    });
+                                }
+                            }}
                         />
 
                         <TextInput
                             setText={setBio}
+                            multiline={true}
                             value={bio}
-                            placeholder={"Tell us about yourself (optional)"}
+                            placeholder={"Tell us about yourself"}
                             isPassword={false}
                             autoCorrect={false}
                             error={errors.bio}
                             errorMessage={"Enter a valid bio."}
-                            // onEndEditing={() => {
-                            //     if (!RegexName.test(bio)) {
-                            //         setErrors({
-                            //             ...errors,
-                            //             lastName: "Please enter a valid last name.",
-                            //         });
-                            //     } else {
-                            //         setErrors({
-                            //             ...errors,
-                            //             lastName: undefined,
-                            //         });
-                            //     }
-                            // }}
+                            onEndEditing={() => {
+                                if (!RegexName.test(bio)) {
+                                    setErrors({
+                                        ...errors,
+                                        bio: "Please enter a valid bio.",
+                                    });
+                                } else {
+                                    setErrors({
+                                        ...errors,
+                                        bio: undefined,
+                                    });
+                                }
+                            }}
                         />
 
                         <Text style={styles.subtitle}>Contact Information</Text>
@@ -200,7 +211,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                     setErrors({
                                         ...errors,
                                         twitter:
-                                            "Please enter a valid Twitter handle.",
+                                            "Please enter a Twitter handle.",
                                     });
                                 } else {
                                     setErrors({
@@ -232,12 +243,12 @@ const styles = StyleSheet.create({
         color: Colors.darkGray,
         textAlign: "center",
         paddingTop: 20,
-        paddingBottom: 30,
+        paddingBottom: 20,
     },
     subtitle: {
         paddingLeft: 20,
         marginTop: 30,
-        fontSize: 17,
+        fontSize: 15,
         color: Colors.darkGray,
         textAlign: "left",
         paddingBottom: 10,
