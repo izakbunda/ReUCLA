@@ -58,7 +58,7 @@ const womenProducts = [
 ]
 
 
-const Home = (props) => {
+const HomeScreen = (props) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView>
@@ -110,8 +110,8 @@ const Home = (props) => {
                     />
                 </View>
                 <Text style={styles.sectionHeader}>PRODUCTS</Text>
-                <View style={{flexDirection: "row"}}>
-                    <CatergoryButton
+                <View style={styles.button}>
+                    <CategoryButton
                         onPress={ () => {
                             Alert.alert("go to product page")
                         }}
@@ -124,21 +124,21 @@ const Home = (props) => {
                         product = "Technology"
                     />
                 </View>
-                <View style={{flexDirection: "row"}}>
+                <View style={styles.button}>
                     <CategoryButton
                         onPress={ () => {
                             Alert.alert("go to product page")
                         }}
                         product = "Books"
                     />
-                    <CategoryCategoryButton
+                    <CategoryButton
                         onPress={ () => {
                             Alert.alert("go to product page")
                         }}
                         product = "Furniture"
                     />
                 </View>
-                <View style={{flexDirection: "row"}}>
+                <View style={styles.button}>
                     <CategoryButton
                         onPress={ () => {
                             Alert.alert("go to product page")
@@ -162,22 +162,26 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         paddingTop: 30,
-        paddingLeft: 5,
+        paddingLeft: 20,
     },
     icon: {
-        paddingLeft: 20
+        paddingLeft: 30
     },
     sectionHeader: {
         fontSize: 25,
         fontWeight: "bold",
         marginTop: 35,
-        paddingLeft: 5,
+        paddingLeft: 20,
         paddingBottom: 15,
     },
     section: {
-        width: Dim.width * 0.9,
-        paddingLeft: 5, 
-    }
+        width: Dim.width,
+        paddingLeft: 20, 
+    },
+    button: {
+        paddingLeft: 20,
+        flexDirection: "row",
+    },
 });
 
 export default HomeScreen;

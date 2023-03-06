@@ -56,9 +56,8 @@ const Tab = createBottomTabNavigator();
 
 function NavBarVisible(route) {
     return (
-<<<<<<< Updated upstream
         <Tab.Navigator
-            headerMode="false"
+           headerMode="false"
             screenOptions={({ route }) => ({
                 // tabBarItemStyle: { marginHorizontal: 50 },
                 tabBarActiveTintColor: "#2F6B25",
@@ -112,7 +111,7 @@ function NavBarVisible(route) {
 function SignInFlow(route) {
     return (
         <Stack.Navigator>
-            {/* <Stack.Screen
+            <Stack.Screen
                 name="Sign In"
                 component={SignIn}
                 options={{ headerShown: false }}
@@ -120,8 +119,8 @@ function SignInFlow(route) {
             <Stack.Screen
                 name="Sign Up"
                 component={SignUp}
-                options={{ headerShown: true }}
-            /> */}
+                options={{ headerShown: false }}
+            />
             <Stack.Screen
                 name="Create Profile"
                 component={CreateProfileScreen}
@@ -132,7 +131,7 @@ function SignInFlow(route) {
 }
 
 const App = () => {
-    const [user, setUser] = useState(false);
+    const [user, setUser] = useState(true);
 
     if (user) {
         return (
@@ -151,13 +150,6 @@ const App = () => {
         return (
             <NavigationContainer>
                 <Stack.Navigator>
-=======
-        <NavigationContainer>
-            <View style={styles.container}>
-                <Home />
-                {/* <Profile /> */}
-                {/* <Stack.Navigator >
->>>>>>> Stashed changes
                     <Stack.Screen
                         name="Sign In Flow"
                         component={SignInFlow}
