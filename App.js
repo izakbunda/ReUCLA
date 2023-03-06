@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/Feather";
+import { Dim } from "./src/Constants";
 
 // Import all screens here
 import SignIn from "./src/screens/SignIn";
@@ -59,13 +60,16 @@ function NavBarVisible(route) {
         <Tab.Navigator
            headerMode="false"
             screenOptions={({ route }) => ({
-                // tabBarItemStyle: { marginHorizontal: 50 },
                 tabBarActiveTintColor: "#2F6B25",
-                tabBarStyle: { marginHorizontal: 40, marginVertical: 5 },
-                tabBarShowLabel: false,
-                style: {
-                    height: 90,
+                tabBarStyle: {
+                    padding: 10,
+                    paddingTop: 10,
+                    paddingBottom: 20,
+                    // margin: 20,
+                    // width: Dim.width - 40,
+                    // borderRadius: 25,
                 },
+                // tabBarShowLabel: false,
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
 

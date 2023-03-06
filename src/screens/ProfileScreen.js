@@ -52,6 +52,19 @@ const listingData = [
     },
 ];
 
+const savedData = [
+    {
+        listingPhoto:
+            "https://www.etsy.com/img/13961967/r/il/a150c5/3045227226/il_570xN.3045227226_4gag.jpg",
+        listingPrice: 10,
+        listingName: "magic pants",
+        listingDescription: "these are pants!",
+        category: ["clothing", "menswear", "bottoms"],
+        condition: 1,
+        sold: 1,
+    },
+];
+
 const ProfileScreen = ({ navigation, props }) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -64,7 +77,6 @@ const ProfileScreen = ({ navigation, props }) => {
                             }}
                             style={styles.photoContainer}
                         />
-                        <Text style={{ color: "white" }}>Profile photo</Text>
                     </View>
 
                     <Text style={styles.name}>Izak Bunda </Text>
@@ -100,10 +112,38 @@ const ProfileScreen = ({ navigation, props }) => {
                             }}
                         />
                     </View>
+
                     <View
                         style={{
                             width: Dim.width * 0.9,
                             paddingTop: 20,
+                            marginBottom: 10,
+                        }}
+                    >
+                        <Text style={styles.listings}>Saved</Text>
+                        <FlatList
+                            data={savedData}
+                            horizontal={true}
+                            renderItem={({ item }) => {
+                                return (
+                                    <SmallListing
+                                        listingPhoto={item.listingPhoto}
+                                        listingPrice={item.listingPrice}
+                                        listingName={item.listingName}
+                                        sold={item.sold}
+                                        onPress={() => {
+                                            Alert.alert("Fix tomorrow");
+                                        }}
+                                        // useNavigation to navigate // figure out tmr
+                                    />
+                                );
+                            }}
+                        />
+                    </View>
+                    <View
+                        style={{
+                            width: Dim.width * 0.9,
+                            paddingVertical: 20,
                         }}
                     >
                         <Text style={styles.listings}>Contact Me</Text>
