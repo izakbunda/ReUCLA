@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, ScrollView, Alert } from "react-native";
+import { View, StyleSheet, Text, ScrollView, Alert, Image } from "react-native";
 import { useState } from "react";
 import TextInput from "../components/TextInput";
 import {
@@ -13,6 +13,7 @@ import Button from "../components/Button";
 import { RegexPassword, RegexName } from "../Constants";
 import AddProfilePhoto from "../components/AddProfilePhoto";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as ImagePicker from "expo-image-picker";
 
 /*
   -- DOCUMENTATION --
@@ -34,6 +35,28 @@ const CreateProfileScreen = ({ props, navigation }) => {
 
     // console.log(errors);
     // console.log(lastName);
+
+    const [image, setImage] = useState(null);
+    const [imagePicked, setImagePicked] = useState(false);
+
+    console.log(imagePicked);
+    console.log(image);
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            // aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log(result);
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+            setImagePicked(true);
+        }
+    };
 
     function success(navigation) {
         {
@@ -85,6 +108,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
                         alignItems: "center",
                     }}
                 >
+                    
                     <Text style={styles.title}>Create your account</Text>
 
                     <View
@@ -98,7 +122,31 @@ const CreateProfileScreen = ({ props, navigation }) => {
                             Add Profile Photo:
                         </Text>
 
-                        <AddProfilePhoto />
+                        {image ? (
+                            <View>
+                                {image && (
+                                    <Image
+                                        source={{ uri: image }}
+                                        style={{
+                                            width: 104,
+                                            height: 104,
+                                            borderRadius: 1000,
+                                            marginBottom: 20,
+                                        }}
+                                    />
+                                )}
+                            </View>
+                        ) : (
+                            <View>
+                                <AddProfilePhoto
+                                    style={{
+                                        margin: 10,
+                                        backgroundColor: Colors.primaryGreen,
+                                    }}
+                                    onPress={pickImage}
+                                />
+                            </View>
+                        )}
                     </View>
 
                     <View>
