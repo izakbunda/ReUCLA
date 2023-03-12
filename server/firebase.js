@@ -1,7 +1,10 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getFirestore } from 'firebase/firestore';
-// TODO: Add SDKs for Firebase products that you want to use
+const { initializeApp } = require("firebase/app");
+const { getAuth } = require("firebase/auth")
+const admin = require("firebase-admin");
+const serviceAccount = require("./.firebase/service_account.json");
+
+//TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -17,9 +20,14 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-const database = getFirestore(app);
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const auth = getAuth();
+const database = admin.fireStore;
 
 module.exports = {
-    app,
+    auth,
     database
 }

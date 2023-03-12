@@ -16,6 +16,7 @@ import SearchScreen from "./src/screens/SearchScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import LandingScreen from "./src/screens/LandingScreen";
 import AddListingScreen from "./src/screens/AddListingScreen";
+import TestScreen from "./src/screens/TestScreen";
 //
 
 const Stack = createNativeStackNavigator();
@@ -135,7 +136,7 @@ function SignInFlow(route) {
 }
 
 const App = () => {
-    const [user, setUser] = useState(true);
+    const [user, setUser] = useState(false);
 
     if (user) {
         return (
@@ -156,7 +157,7 @@ const App = () => {
                 <Stack.Navigator>
                     <Stack.Screen
                         name="Sign In Flow"
-                        component={SignInFlow}
+                        component={TestScreen}
                         options={{ headerShown: false }}
                     />
                 </Stack.Navigator>
