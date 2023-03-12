@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, ScrollView, Alert, Image } from "react-native";
+import { View, StyleSheet, Text, ScrollView, Alert, Image, Image } from "react-native";
 import { useState } from "react";
 import TextInput from "../components/TextInput";
 import {
@@ -14,7 +14,6 @@ import { RegexPassword, RegexName } from "../Constants";
 import AddProfilePhoto from "../components/AddProfilePhoto";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 /*
   -- DOCUMENTATION --
@@ -56,6 +55,12 @@ const CreateProfileScreen = ({ props, navigation }) => {
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             setImagePicked(true);
+        }
+    };
+
+    function success(navigation) {
+        {
+            navigation.navigate("Create Profile");
         }
     };
 
@@ -117,7 +122,8 @@ const CreateProfileScreen = ({ props, navigation }) => {
                         paddingTop: 25,
                     }}
                 >
-                    <Text style={styles.title}>Create your profile</Text>
+                    
+                    <Text style={styles.title}>Create your account</Text>
 
                     <View
                         style={{
