@@ -7,6 +7,7 @@ import {
     SafeAreaView,
     Image,
     Alert,
+    ActivityIndicator,
 } from "react-native";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
@@ -18,9 +19,31 @@ const SignIn = ({ props, navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    useEffect(() => {
-        null;
+    const [errors, setErrors] = useState({
+        email: undefined,
+        password: undefined,
     });
+
+    const onPressRegister = async () => {
+        const passwordError =
+            password.length > 0 && RegexPassword.test(password)
+                ? undefined
+                : "Please enter a valid password.";
+        const emailError =
+            email.length > 0 && RegexEmail.test(email)
+                ? undefined
+                : "You must enter a valid email.";
+        if (passwordError || emailError) {
+            setErrors({
+                password: passwordError,
+                email: emailError,
+            });
+        } else {
+            setLoading(true);
+            await signUp(firstName, lastName, email, password);
+            setLoading(false);
+        }
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -66,7 +89,11 @@ const SignIn = ({ props, navigation }) => {
                     autoCorrect={false}
                 />
 
-                <Button title="Log In" onPress={() => Alert.alert("Login")} />
+                <Button
+                    title="Log In"
+                    onPress={() => Alert.alert("Login")}
+                    style={styles.button}
+                />
 
                 <View>
                     <Text
@@ -88,10 +115,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "#9B9BA5",
         textAlign: "center",
-        paddingBottom: 50,
+        paddingBottom: 25,
     },
     button: {
-        marginTop: 10,
+        marginTop: 15,
     },
     signUp: {
         fontSize: 16,

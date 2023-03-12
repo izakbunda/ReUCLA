@@ -18,52 +18,58 @@ import Icon from "react-native-vector-icons/Feather";
   -- DOCUMENTATION --
 */
 
-const listingData = [
-    {
-        listingPhoto:
-            "https://www.etsy.com/img/13961967/r/il/a150c5/3045227226/il_570xN.3045227226_4gag.jpg",
-        listingPrice: 10,
-        listingName: "magic pants",
-        listingDescription: "these are pants!",
-        category: ["clothing", "menswear", "bottoms"],
-        condition: 1,
-        sold: 1,
-    },
-    {
-        listingPhoto:
-            "https://i.etsystatic.com/6071918/r/il/168482/1159433180/il_1588xN.1159433180_p347.jpg",
-        listingPrice: 7,
-        listingName: "vintage shirt",
-        listingDescription: "these are from the 90s!",
-        category: ["clothing", "menswear", "tops"],
-        condition: 1,
-        sold: 0,
-    },
-    {
-        listingPhoto:
-            "https://i.ebayimg.com/images/g/KyAAAOSwaaphBavz/s-l1600.jpg",
-        listingPrice: 20,
-        listingName: "lava lamp",
-        listingDescription:
-            "I got scared of lava lamps, so I don't use anymore!",
-        category: ["homegoods", "bedroom", "lights"],
-        condition: 1,
-        sold: 0,
-    },
-];
-
-const savedData = [
-    {
-        listingPhoto:
-            "https://www.etsy.com/img/13961967/r/il/a150c5/3045227226/il_570xN.3045227226_4gag.jpg",
-        listingPrice: 10,
-        listingName: "magic pants",
-        listingDescription: "these are pants!",
-        category: ["clothing", "menswear", "bottoms"],
-        condition: 1,
-        sold: 1,
-    },
-];
+const profileProps = {
+    profilePhoto: "https://google.com",
+    name: "Izak Bunda",
+    major: "Computer Science",
+    bio: "Hello! I am a 2nd year UCLA student interested in fashion. I have a problem of buying too many clothes, so this is my solution. Feel free to message me to negotiate, none of the prices are final!",
+    contactInformation: [7609942957, "@izakbunda", "izakbunda@gmail.com"],
+    listingData: [
+        {
+            listingPhoto:
+                "https://www.etsy.com/img/13961967/r/il/a150c5/3045227226/il_570xN.3045227226_4gag.jpg",
+            listingPrice: 10,
+            listingName: "magic pants",
+            listingDescription: "these are pants!",
+            category: ["clothing", "menswear", "bottoms"],
+            condition: 1,
+            sold: 1,
+        },
+        {
+            listingPhoto:
+                "https://i.etsystatic.com/6071918/r/il/168482/1159433180/il_1588xN.1159433180_p347.jpg",
+            listingPrice: 7,
+            listingName: "vintage shirt",
+            listingDescription: "these are from the 90s!",
+            category: ["clothing", "menswear", "tops"],
+            condition: 1,
+            sold: 0,
+        },
+        {
+            listingPhoto:
+                "https://i.ebayimg.com/images/g/KyAAAOSwaaphBavz/s-l1600.jpg",
+            listingPrice: 20,
+            listingName: "lava lamp",
+            listingDescription:
+                "I got scared of lava lamps, so I don't use anymore!",
+            category: ["homegoods", "bedroom", "lights"],
+            condition: 1,
+            sold: 0,
+        },
+    ],
+    savedData: [
+        {
+            listingPhoto:
+                "https://www.etsy.com/img/13961967/r/il/a150c5/3045227226/il_570xN.3045227226_4gag.jpg",
+            listingPrice: 10,
+            listingName: "magic pants",
+            listingDescription: "these are pants!",
+            category: ["clothing", "menswear", "bottoms"],
+            condition: 1,
+            sold: 1,
+        },
+    ],
+};
 
 const ProfileScreen = ({ navigation, props }) => {
     return (
@@ -73,28 +79,23 @@ const ProfileScreen = ({ navigation, props }) => {
                     <View style={styles.photoContainer}>
                         <Image
                             source={{
-                                uri: "https://media.licdn.com/dms/image/C5603AQGsX8VW3ipkDg/profile-displayphoto-shrink_400_400/0/1606506813396?e=1682553600&v=beta&t=qpnUylxLLjogr-V2WzSpOpt3nH8SKvlB-zCQgMoEtfc",
+                                uri: profileProps.profilePhoto,
                             }}
                             style={styles.photoContainer}
                         />
                     </View>
 
-                    <Text style={styles.name}>Izak Bunda </Text>
-                    <Text style={styles.major}>Computer Science '25 </Text>
+                    <Text style={styles.name}>{profileProps.name} </Text>
+                    <Text style={styles.major}>{profileProps.major} </Text>
 
                     <View style={styles.bioContainer}>
-                        <Text style={styles.bio}>
-                            I am a 2nd year UCLA student interested in fashion.
-                            I have a problem of buying too many clothes, so this
-                            is my solution. Feel free to message me to
-                            negotiate, none of the prices are final! 🐻🌟
-                        </Text>
+                        <Text style={styles.bio}>{profileProps.bio}</Text>
                     </View>
 
                     <View style={{ width: Dim.width * 0.9, paddingTop: 20 }}>
                         <Text style={styles.listings}>Listings</Text>
                         <FlatList
-                            data={listingData}
+                            data={profileProps.listingData}
                             horizontal={true}
                             renderItem={({ item }) => {
                                 return (
@@ -122,7 +123,7 @@ const ProfileScreen = ({ navigation, props }) => {
                     >
                         <Text style={styles.listings}>Saved</Text>
                         <FlatList
-                            data={savedData}
+                            data={profileProps.savedData}
                             horizontal={true}
                             renderItem={({ item }) => {
                                 return (

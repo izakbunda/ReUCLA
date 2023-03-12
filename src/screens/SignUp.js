@@ -1,5 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Text, ScrollView, Alert } from "react-native";
+import {
+    View,
+    StyleSheet,
+    Text,
+    ScrollView,
+    Alert,
+    TouchableOpacity,
+} from "react-native";
 import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TextInput from "../components/TextInput";
@@ -7,6 +14,7 @@ import { Colors } from "../Constants";
 import Button from "../components/Button";
 import { RegexEmail, RegexPassword, RegexName } from "../Constants";
 import { Underline } from "react-native-feather";
+import Icon from "react-native-vector-icons/Feather";
 
 /*
   -- DOCUMENTATION --
@@ -83,6 +91,16 @@ const SignUp = ({ props, navigation }) => {
                         paddingTop: 25,
                     }}
                 >
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("Sign In")}
+                    >
+                        <Icon
+                            name={"arrow-left"}
+                            size={30}
+                            color={"#2F6B25"}
+                            style={styles.icon}
+                        />
+                    </TouchableOpacity>
                     <Text style={styles.title}>Create your account</Text>
 
                     <View>
@@ -172,7 +190,7 @@ const SignUp = ({ props, navigation }) => {
                             value={password}
                             title={"Password"}
                             placeholder={"Enter your password"}
-                            isPassword={false}
+                            isPassword={true}
                             autoCorrect={false}
                             error={errors.password}
                             errorMessage={
@@ -198,7 +216,7 @@ const SignUp = ({ props, navigation }) => {
                             value={confirm}
                             title={"Cofirm Password"}
                             placeholder={"Enter your password again"}
-                            isPassword={false}
+                            isPassword={true}
                             autoCorrect={false}
                             error={errors.confirm}
                             errorMessage={"Your password does not match."}
@@ -237,6 +255,12 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 30,
         alignSelf: "center",
+    },
+    icon: {
+        alignSelf: "flex-start",
+        position: "absolute",
+        top: 5,
+        left: -170,
     },
 });
 
