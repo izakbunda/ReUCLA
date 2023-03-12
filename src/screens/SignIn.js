@@ -19,6 +19,23 @@ const SignIn = ({ props, navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const asyncSignUp = async (userid) => {
+        return await fetch("http://localhost:4000", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userid }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                return data;
+            })
+            .catch((error) => {
+                return error;
+            });
+    };
+
     const [errors, setErrors] = useState({
         email: undefined,
         password: undefined,
@@ -91,7 +108,7 @@ const SignIn = ({ props, navigation }) => {
 
                 <Button
                     title="Log In"
-                    onPress={() => Alert.alert("Login")}
+                    onPress={() => onPressRegister}
                     style={styles.button}
                 />
 
