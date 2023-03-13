@@ -11,10 +11,12 @@ const router = express.Router();
 // User Routing
 router.post('/create/User', createUser);
 router.get('/fetch/UserData', getUser);
-router.get('user/signin', signIn);
+router.post('/user/signIn', signIn);
 
 // Marketplace Routing
-router.post('/create/Listing', createListing);
+router.post('listing/create/', createListing);
+// router.get('listing/fetch/one')
+// router.get('listing/fetch/page')
 // router.get()
 
 module.exports=router

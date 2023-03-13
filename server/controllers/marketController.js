@@ -8,7 +8,7 @@ const { doc, setDoc, Timestamp, addDoc, getDoc } = require('firebase/firestore')
 
 
 const createListing = async(req, res) => {
-
+    
 }
 
 

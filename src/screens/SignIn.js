@@ -14,14 +14,52 @@ import Button from "../components/Button";
 /*
   -- DOCUMENTATION --
 */
+
+const asyncSignIn = async (email, password) => {
+    // console.log(email)
+    return await fetch("http://localhost:4000/user/signIn", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+        return data;
+    })
+    .catch((error) => {
+      return error;
+    });
+};
+
+
+
+
 const SignIn = ({ props, navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [userID, setUID] = useState("")
 
     useEffect(() => {
         null;
     });
 
+    const onPress = async ( email, password ) => {
+        const resp = await asyncSignIn(email, password)
+        if (resp == null)
+            console.log("empty")
+        else{
+            console.log(resp);
+            setUID(resp.userID);
+        }
+        // console.log(userID);
+    };
+
+    const onChangeHandler = event => {
+        setInputValue(event.target.value);
+    };
+        
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
             <View
@@ -49,7 +87,7 @@ const SignIn = ({ props, navigation }) => {
                 </Text>
 
                 <TextInput
-                    onChangeText={setEmail}
+                    setText={setEmail}
                     value={email}
                     title={"Enter your email"}
                     placeholder={"Email"}
@@ -58,15 +96,19 @@ const SignIn = ({ props, navigation }) => {
                 />
 
                 <TextInput
-                    onChangeText={setPassword}
+                    setText={setPassword}
                     value={password}
                     title={"Enter your password"}
                     placeholder={"Password"}
-                    isPassword={true}
+                    isPassword={false}
                     autoCorrect={false}
                 />
 
-                <Button title="Log In" onPress={() => Alert.alert("Login")} />
+                <Button title="Log In" onPress={ () => {
+                        // console.log("The email is: ", email);
+                        // console.log("The password is: ", password);
+                        onPress(email, password);
+                    }} />
 
                 <View>
                     <Text
