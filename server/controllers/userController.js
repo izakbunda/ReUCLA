@@ -16,13 +16,10 @@ const createUser = async(req, res)=>{
         .then(userCredentials => {
             user = userCredentials.user;
             const uID = JSON.stringify(user.uid)
-            // console.log("Created user with username " + user.uid);
-            // console.log(userID);
-            for (var i = 0; i < uID.length; i++){
-                if (uID[i] == '\"')
-                    continue;
-                userID += uID[i];
-            }
+
+            userID = uID.replace('\"', '');
+            console.log(userID);
+
             docRef = doc(database, 'userData', userID);
             const docData = {
                 firstName : first_name,
@@ -99,11 +96,14 @@ const signIn = async(req, res) => {
         return;
     // Retrieves User Data
     onAuthStateChanged(auth, (user) => {
-        userID = user.uid;
+        const uID = user.uid;
+        userID = uID.replace('\"', '');
+        docRef = doc(database, "userData", userID);
     });
     console.log(userID);
 
-    const docRef = doc(database, "userData", userID);
+    await delay(1000);
+    
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       console.log("Doc Data: ", docSnap.data());
@@ -111,7 +111,7 @@ const signIn = async(req, res) => {
       res.send( { userID, userData } )
     } else {
       console.log("Doc Data doesn't Exist");
-      res.send({ errCode: 1, error: "Doesn't Exist" });
+      res.send({ userID });
     }    
 }
 
