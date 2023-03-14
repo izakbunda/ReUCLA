@@ -27,16 +27,16 @@ const createUser = async(req, res)=>{
             };
             setDoc(docRef, docData);
             signInWithEmailAndPassword(auth, email, password)
-            .then((userCredentials) =>{
-                // console.log("User Exists");
-                user = userCredentials.user;
-                userID = user.uid;
-                userExists = true;
-            }) // Send's an error back if this log-in isn't complete
-            .catch(err => {
-                console.log(err);
-                res.send(err);
-            });
+                .then((userCredentials) =>{
+                    // console.log("User Exists");
+                    user = userCredentials.user;
+                    userID = user.uid;
+                    userExists = true;
+                }) // Send's an error back if this log-in isn't complete
+                .catch(err => {
+                    console.log(err);
+                    res.send(err);
+                });
         })
         .catch(err =>{
             console.log(err);
@@ -65,7 +65,27 @@ const createUser = async(req, res)=>{
 }
 
 const updateUser = async(req, res)=>{
+    const tempID = req.body.uID;
+    const userID = JSON.stringify(tempID).replace('\"', '');
+
     
+
+
+    docRef = doc(database, 'userData', userID);
+    const docData = {
+        firstName : first_name,
+        lastName : last_name
+    };
+    setDoc(docRef, docData);
+
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()){
+        console.log("Doc Data: ", docSnap.data());
+    }
+    else{
+        console.log("Doc Data doesn't Exist");
+        res.send({ errCode: 1, error: "Doesn't Exist" });
+    }
 }
 
 const signIn = async(req, res) => {
@@ -73,7 +93,7 @@ const signIn = async(req, res) => {
 
     // Variables used later
     const email = req.body.email; const password = req.body.password;
-    var user, userID, userData;
+    var user, userID, userData, docRef;
     var userExists = false;
 
     // Tries to Sign in with firebase authentification
@@ -81,8 +101,11 @@ const signIn = async(req, res) => {
         .then((userCredentials) =>{
             console.log("User Exists");
             user = userCredentials.user;
-            userID = user.uid;
+            const uID = JSON.stringify(user.uid);
+            userID = uID.replace('\"', '');
             userExists = true;
+            console.log(userID);
+            docRef = doc(database, 'userData', userID);
         }) // Send's an error back if this log-in isn't complete
         .catch(err => {
             console.log(err);
@@ -96,14 +119,9 @@ const signIn = async(req, res) => {
         return;
     // Retrieves User Data
     onAuthStateChanged(auth, (user) => {
-        const uID = user.uid;
-        userID = uID.replace('\"', '');
-        docRef = doc(database, "userData", userID);
+        userID = user.uid;
     });
-    console.log(userID);
-
-    await delay(1000);
-    
+    // console.log(userID);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       console.log("Doc Data: ", docSnap.data());
@@ -111,8 +129,9 @@ const signIn = async(req, res) => {
       res.send( { userID, userData } )
     } else {
       console.log("Doc Data doesn't Exist");
-      res.send({ userID });
-    }    
+    //   res.send({ errCode: 1, error: "Doesn't Exist" });
+        res.send({userID});
+    }     
 }
 
 
