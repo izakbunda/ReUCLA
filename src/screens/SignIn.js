@@ -71,24 +71,29 @@ const SignIn = ({ props, navigation }) => {
             });
         } else {
             setLoading(true);
-            // await signIn() // THIS WILL SET THE USERID FIELD IN ASYNCSTORAGE AND WHICH WILL TRIGGER THE APP TO SWITCH TO HOME SCREEN
-            setLoading(false);
-        }
-    };
-
-    const onPress = async (email, password) => {
-        const resp = await asyncSignIn(email, password);
-        if (resp == null) console.log("empty");
-        else {
-            console.log(resp);
+            const resp = await asyncSignIn(email, password);
+            // if (resp == null) console.log("empty");
+            // console.log(resp);
             setUID(resp.userID);
+            setLoading(false);
+            AsyncStorage.setItem("@userId", userID); // confirm this stores !!
+            AsyncStorage.setItem("@signedIn", "true");
+
+            // AsyncStorage.getItem("@userId", (err, item) =>
+            //     console.log("USER ID FROM SIGN IN:" + item)
+            // );
         }
-        // console.log(userID);
     };
 
-    const onChangeHandler = (event) => {
-        setInputValue(event.target.value);
-    };
+    // const onPress = async (email, password) => {
+    //     const resp = await asyncSignIn(email, password);
+    //     if (resp == null) console.log("empty");
+    //     else {
+    //         console.log(resp);
+    //         setUID(resp.userID);
+    //     }
+    //     // console.log(userID);
+    // };
 
     return (
         <KeyboardAwareScrollView
@@ -163,7 +168,7 @@ const SignIn = ({ props, navigation }) => {
                         value={password}
                         title={"Enter your password"}
                         placeholder={"Password"}
-                        isPassword={false}
+                        isPassword={true}
                         autoCorrect={false}
                         error={errors.password}
                         errorMessage={"Enter a valid password."}

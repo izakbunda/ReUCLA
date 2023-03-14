@@ -22,9 +22,10 @@ const App = () => {
     const [loading, setLoading] = useState(false);
 
     // useEffect(() => {
-    //     AsyncStorage.getItem("@userId").then((userId) => {
+    //     AsyncStorage.multiGet(["@userId", "@signedIn"]).then((userId) => {
     //         console.log(userId);
-    //         if (userId !== null) {
+    //         // console.log(signedIn);
+    //         if (userId[0][1] && userId[1][1] == "true") {
     //             setUser(true);
     //             setLoading(false);
     //         } else {
