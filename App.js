@@ -17,6 +17,7 @@ import ProfileScreen from "./src/screens/ProfileScreen";
 import LandingScreen from "./src/screens/LandingScreen";
 import AddListingScreen from "./src/screens/AddListingScreen";
 import TestScreen from "./src/screens/TestScreen";
+import {ListingScreen, Dummy} from "./src/screens/ListingScreen";
 //
 
 const Stack = createNativeStackNavigator();
@@ -97,9 +98,14 @@ function NavBarVisible(route) {
                 options={{ headerShown: false }}
             />
 
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="Add"
                 component={AddListingScreen}
+                options={{ headerShown: false }}
+            /> */}
+            <Tab.Screen
+                name="Add"
+                component={Dummy} // ListingScreen changed to Dummy wrapper component // TO DO:change this back later to AddListingScreen
                 options={{ headerShown: false }}
             />
             <Tab.Screen
@@ -136,7 +142,8 @@ function SignInFlow(route) {
 }
 
 const App = () => {
-    const [user, setUser] = useState(false);
+    // TODO: change back to false
+    const [user, setUser] = useState(true);
 
     if (user) {
         return (
@@ -157,7 +164,7 @@ const App = () => {
                 <Stack.Navigator>
                     <Stack.Screen
                         name="Sign In Flow"
-                        component={TestScreen}
+                        component={SignInFlow}
                         options={{ headerShown: false }}
                     />
                 </Stack.Navigator>
