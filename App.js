@@ -157,7 +157,7 @@ const App = () => {
                 <Stack.Navigator>
                     <Stack.Screen
                         name="Sign In Flow"
-                        component={TestScreen}
+                        component={SignInFlow}
                         options={{ headerShown: false }}
                     />
                 </Stack.Navigator>

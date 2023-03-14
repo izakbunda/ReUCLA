@@ -11,6 +11,27 @@ import { Underline } from "react-native-feather";
 /*
   -- DOCUMENTATION --
 */
+const asyncSignUp = async (email, password, first_name, last_name) => {
+    // console.log("HERE!!!")
+    // console.log(email)
+    return await fetch("http://localhost:4000/create/User", {
+    // If you are posting something, use POST
+    // If you are fetching something, use GET
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password, first_name, last_name}),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+        return data;
+    })
+    .catch((error) => {
+      return error;
+    });
+};
+
 const SignUp = ({ props, navigation }) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -18,6 +39,7 @@ const SignUp = ({ props, navigation }) => {
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
     const [create, setCreate] = useState(true);
+    const [userID, setUID] = useState("");
 
     const [errors, setErrors] = useState({
         firstName: undefined,
@@ -70,6 +92,10 @@ const SignUp = ({ props, navigation }) => {
             });
         } else {
             setCreate(true);
+            const resp = await asyncSignUp(email, password, firstName, lastName);
+            console.log(resp);
+            setUID(JSON.stringify(resp.userID));
+            console.log(userID);
         }
     };
 
