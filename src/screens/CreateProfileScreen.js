@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, ScrollView, Alert } from "react-native";
+import { View, StyleSheet, Text, ScrollView, Alert, Image } from "react-native";
 import { useState } from "react";
 import TextInput from "../components/TextInput";
 import {
@@ -13,6 +13,8 @@ import Button from "../components/Button";
 import { RegexPassword, RegexName } from "../Constants";
 import AddProfilePhoto from "../components/AddProfilePhoto";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as ImagePicker from "expo-image-picker";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 /*
   -- DOCUMENTATION --
@@ -35,11 +37,27 @@ const CreateProfileScreen = ({ props, navigation }) => {
     // console.log(errors);
     // console.log(lastName);
 
-    function success(navigation) {
-        {
-            navigation.navigate("Create Profile");
+    const [image, setImage] = useState(null);
+    const [imagePicked, setImagePicked] = useState(false);
+
+    console.log(imagePicked);
+    console.log(image);
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            // aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log(result);
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+            setImagePicked(true);
         }
-    }
+    };
 
     const onPressRegister = async () => {
         const locationError =
@@ -77,15 +95,29 @@ const CreateProfileScreen = ({ props, navigation }) => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+        <KeyboardAwareScrollView
+            style={{
+                backgroundColor: "white",
+                flex: Platform.OS === "ios" ? 1 : null,
+                paddingTop: 50,
+            }}
+            contentContainerStyle={{
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            extraScrollHeight={25}
+            keyboardShouldPersistTaps="handled"
+        >
             <ScrollView>
                 <View
                     style={{
                         flexDirection: "column",
                         alignItems: "center",
+                        paddingTop: 25,
                     }}
                 >
-                    <Text style={styles.title}>Create your account</Text>
+                    <Text style={styles.title}>Create your profile</Text>
 
                     <View
                         style={{
@@ -98,11 +130,36 @@ const CreateProfileScreen = ({ props, navigation }) => {
                             Add Profile Photo:
                         </Text>
 
-                        <AddProfilePhoto />
+                        {image ? (
+                            <View>
+                                {image && (
+                                    <Image
+                                        source={{ uri: image }}
+                                        style={{
+                                            width: 104,
+                                            height: 104,
+                                            borderRadius: 1000,
+                                            marginBottom: 20,
+                                        }}
+                                    />
+                                )}
+                            </View>
+                        ) : (
+                            <View>
+                                <AddProfilePhoto
+                                    style={{
+                                        margin: 10,
+                                        backgroundColor: Colors.primaryGreen,
+                                    }}
+                                    onPress={pickImage}
+                                />
+                            </View>
+                        )}
                     </View>
 
                     <View>
                         <TextInput
+                            title={"Location"}
                             setText={setLocation}
                             value={location}
                             placeholder={"Where are you located?"}
@@ -127,6 +184,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
                         />
 
                         <TextInput
+                            title={"Bio"}
                             setText={setBio}
                             multiline={true}
                             value={bio}
@@ -233,17 +291,18 @@ const CreateProfileScreen = ({ props, navigation }) => {
                     </View>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </KeyboardAwareScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 24,
+        marginTop: 4,
+        fontSize: 25,
         color: Colors.darkGray,
         textAlign: "center",
-        paddingTop: 20,
-        paddingBottom: 20,
+        fontWeight: "bold",
+        paddingBottom: 30,
     },
     subtitle: {
         paddingLeft: 20,
