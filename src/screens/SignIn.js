@@ -29,6 +29,7 @@ const SignIn = ({ props, navigation }) => {
 
     // console.log(email);
     // console.log(password);
+<<<<<<< HEAD
 
 
 
@@ -44,6 +45,8 @@ const SignIn = ({ props, navigation }) => {
 
     // console.log(email);
     // console.log(password);
+=======
+>>>>>>> e306685 (Finishing up frontend of Sign In Flow)
 
     const [errors, setErrors] = useState({
         email: undefined,

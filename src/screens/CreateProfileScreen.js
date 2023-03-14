@@ -14,6 +14,7 @@ import { RegexPassword, RegexName } from "../Constants";
 import AddProfilePhoto from "../components/AddProfilePhoto";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 /*
   -- DOCUMENTATION --
@@ -58,12 +59,15 @@ const CreateProfileScreen = ({ props, navigation }) => {
         }
     };
 
+<<<<<<< HEAD
     function success(navigation) {
         {
             navigation.navigate("Create Profile");
         }
     };
 
+=======
+>>>>>>> e306685 (Finishing up frontend of Sign In Flow)
     const onPressRegister = async () => {
         const locationError =
             location.length > 0 ? undefined : "You must enter a location";
@@ -122,8 +126,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
                         paddingTop: 25,
                     }}
                 >
-                    
-                    <Text style={styles.title}>Create your account</Text>
+                    <Text style={styles.title}>Create your profile</Text>
 
                     <View
                         style={{
