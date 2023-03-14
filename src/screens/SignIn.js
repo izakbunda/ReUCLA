@@ -22,31 +22,33 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 /*
   -- DOCUMENTATION --
 */
+
+const asyncSignIn = async (email, password) => {
+    // console.log(email)
+    return await fetch("http://localhost:4000/user/signIn", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            return data;
+        })
+        .catch((error) => {
+            return error;
+        });
+};
+
 const SignIn = ({ props, navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [userID, setUID] = useState("");
     const [loading, setLoading] = useState(false);
 
     // console.log(email);
     // console.log(password);
-<<<<<<< HEAD
-
-
-
-
-const SignIn = ({ props, navigation }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-<<<<<<< HEAD
-    const [userID, setUID] = useState("")
-=======
-    const [loading, setLoading] = useState(false);
->>>>>>> e306685 (Finishing up frontend of Sign In Flow)
-
-    // console.log(email);
-    // console.log(password);
-=======
->>>>>>> e306685 (Finishing up frontend of Sign In Flow)
 
     const [errors, setErrors] = useState({
         email: undefined,

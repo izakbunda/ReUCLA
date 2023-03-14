@@ -78,13 +78,19 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const tempID = req.body.uID;
-    const userID = JSON.stringify(tempID).replace('"', "");
-    docRef = doc(database, "userData", userID);
+    const userID = JSON.stringify(tempID).replace('\"', "");
+    docRef = doc(database, "userData", req.body.uID);
+
+    const tempPath = req.body.pfpPath;
+    console.log(tempPath);
+    const lastIndex = tempPath.lastIndexOf('/');
+    const path = tempPath.substring(lastIndex + 1);
 
     const docData = {
         major: req.body.major,
         bio: req.body.bio,
         contact: [req.body.instagram, req.body.discord, req.body.twitter],
+        pfpPath: path
     };
 
     // {major: , bio:, contact: {instagram: , discord: ,twitter:}}
@@ -94,6 +100,8 @@ const updateUser = async (req, res) => {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
         console.log("Doc Data: ", docSnap.data());
+        const userData = docSnap.data();
+        res.send({userData, userID});
     } else {
         console.log("Doc Data doesn't Exist");
         res.send({ errCode: 1, error: "Doesn't Exist" });

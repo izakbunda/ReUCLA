@@ -28,21 +28,21 @@ const asyncSignUp = async (email, password, first_name, last_name) => {
     // console.log("HERE!!!")
     // console.log(email)
     return await fetch("http://localhost:4000/create/User", {
-    // If you are posting something, use POST
-    // If you are fetching something, use GET
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password, first_name, last_name}),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-        return data;
+        // If you are posting something, use POST
+        // If you are fetching something, use GET
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, first_name, last_name }),
     })
-    .catch((error) => {
-      return error;
-    });
+        .then((res) => res.json())
+        .then((data) => {
+            return data;
+        })
+        .catch((error) => {
+            return error;
+        });
 };
 
 const SignUp = ({ props, navigation }) => {
@@ -52,6 +52,7 @@ const SignUp = ({ props, navigation }) => {
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
     const [loading, setLoading] = useState(false);
+    const [userID, setUID] = useState("");
 
     const [errors, setErrors] = useState({
         firstName: undefined,
@@ -104,10 +105,10 @@ const SignUp = ({ props, navigation }) => {
                 firstName,
                 lastName
             );
-            // console.log(resp);
+            console.log(resp);
             setUID(resp.userID);
-            // console.log(userID);
-            AsyncStorage.setItem("@userId", userID); // confirm this stores !!
+            // console.log("HELLO " + userID);
+            AsyncStorage.setItem("@userId", resp.userID); // confirm this stores !!
             AsyncStorage.setItem("@firstName", resp.userData.firstName); // confirm this stores !!
             AsyncStorage.setItem("@lastName", resp.userData.lastName);
             AsyncStorage.setItem("@firstName", resp.userData.firstName);
@@ -115,13 +116,15 @@ const SignUp = ({ props, navigation }) => {
             // AsyncStorage.getItem("@firstName", (err, item) =>
             //     console.log("FIRST NAME FROM SIGN UP:" + item)
             // );
-            AsyncStorage.getItem("@userId", (err, item) =>
-                console.log("USERID FROM SIGN IN:" + item)
-            );
+            // AsyncStorage.getItem("@userId", (err, item) =>
+            //     console.log("USERID FROM SIGN IN:" + item)
+            // );
             setLoading(false);
             navigation.navigate("Create Profile");
         }
     };
+
+    // console.log(userID);
 
     return (
         <KeyboardAwareScrollView

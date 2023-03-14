@@ -27,7 +27,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { deleteApp } from "firebase/app";
+import { ref, uploadBytes } from "firebase/storage";
+import { storage } from './firebase';
 /*
   -- DOCUMENTATION --
 */
@@ -38,10 +40,11 @@ const asyncCreateProfile = async (
     instagram,
     discord,
     twitter,
-    uID
+    uID,
+    pfpPath
 ) => {
     // console.log("HERE!!!")
-    // console.log(email)
+    uID = 'SF1uSzR5cYVde8v5nfdbY02uFQm2';
     return await fetch("http://localhost:4000/user/update", {
         // If you are posting something, use POST
         // If you are fetching something, use GET
@@ -49,7 +52,7 @@ const asyncCreateProfile = async (
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ major, bio, instagram, discord, twitter, uID }),
+        body: JSON.stringify({ major, bio, instagram, discord, twitter, uID, pfpPath }),
     })
         .then((res) => res.json())
         .then((data) => {
@@ -67,6 +70,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
     const [discord, setDiscrod] = useState("");
     const [twitter, setTwitter] = useState(true);
     const [uID, setUserId] = useState("");
+    const [pfpPath, setPath] = useState(null);
 
     const [errors, setErrors] = useState({
         major: undefined,
@@ -83,7 +87,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
     const [loading, setLoading] = useState(false);
 
     // console.log(imagePicked);
-    // console.log(image);
+    // console.log(pfp);
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -94,22 +98,37 @@ const CreateProfileScreen = ({ props, navigation }) => {
             quality: 1,
         });
 
-        console.log(result);
+        // console.log(result);
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             setImagePicked(true);
+            const path = result.assets[0].uri.substring(result.assets[0].uri.lastIndexOf('/')+1);
+            console.log(path);
+            
+            const reference = ref(storage, path);
+
+            const img = await fetch(result.assets[0].uri);
+            const bytes = await img.blob();
+            // console.log(bytes);
+            
+            const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+            await delay(1500);
+            await uploadBytes(reference, bytes)
+                .then(() => {
+                    console.log("File Uploaded");
+                });
+
+            setPath(path);
+            setUserId('SF1uSzR5cYVde8v5nfdbY02uFQm2');
         }
     };
 
-<<<<<<< HEAD
     function success(navigation) {
         {
             navigation.navigate("Create Profile");
         }
     };
 
-=======
->>>>>>> e306685 (Finishing up frontend of Sign In Flow)
     const onPressRegister = async () => {
         const majorError =
             major.length > 0 ? undefined : "You must enter a major";
@@ -148,14 +167,16 @@ const CreateProfileScreen = ({ props, navigation }) => {
                 instagram,
                 discord,
                 twitter,
-                uID
+                uID,
+                image,
+                pfpPath
             );
-            console.log(resp);
+            // console.log(resp);
             // console.log(userID);
-            AsyncStorage.setItem("@bio", resp.bio);
-            AsyncStorage.setItem("@contact", resp.contact); // ARRAY!!
-            AsyncStorage.setItem("@major", resp.major);
-            AsyncStorage.setItem("@signedIn", "true");
+            // AsyncStorage.setItem("@bio", resp.bio);
+            // AsyncStorage.setItem("@contact", resp.contact); // ARRAY!!
+            // AsyncStorage.setItem("@major", resp.major);
+            // AsyncStorage.setItem("@signedIn", "true");
             setLoading(false);
         }
     };
