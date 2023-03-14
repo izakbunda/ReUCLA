@@ -9,7 +9,7 @@ const { isErrored } = require('stream')
 
 const createUser = async(req, res)=>{
     const email = req.body.email; const password = req.body.password;
-    const first_name = JSON.stringify(req.body.first_name); const last_name = req.body.last_name;
+    const first_name = req.body.first_name; const last_name = req.body.last_name;
     var user, userID, docRef;
     // console.log(req.body)
     createUserWithEmailAndPassword(auth, email, password)
@@ -67,16 +67,17 @@ const createUser = async(req, res)=>{
 const updateUser = async(req, res)=>{
     const tempID = req.body.uID;
     const userID = JSON.stringify(tempID).replace('\"', '');
-
-    
-
-
     docRef = doc(database, 'userData', userID);
+
     const docData = {
-        firstName : first_name,
-        lastName : last_name
+        major: req.body.major,
+        bio: req.body.bio,
+        contact: [req.body.instagram, req.body.discord, req.body.twitter]
     };
-    setDoc(docRef, docData);
+
+    // {major: , bio:, contact: {instagram: , discord: ,twitter:}}
+
+    setDoc(docRef, docData, {merge: true});
 
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()){

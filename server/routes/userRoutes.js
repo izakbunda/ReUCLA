@@ -12,6 +12,7 @@ const router = express.Router();
 router.post('/create/User', createUser);
 router.get('/fetch/UserData', getUser);
 router.post('/user/signIn', signIn);
+router.post('/user/update')
 
 // Marketplace Routing
 router.post('listing/create/', createListing);
