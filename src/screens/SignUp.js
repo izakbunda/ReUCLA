@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     ActivityIndicator,
+    Platform,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,7 +20,7 @@ import { RegexEmail, RegexPassword, RegexName } from "../Constants";
 import { Underline } from "react-native-feather";
 import Icon from "react-native-vector-icons/Feather";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 /*
   -- DOCUMENTATION --
 */
@@ -61,24 +62,7 @@ const SignUp = ({ props, navigation }) => {
     });
 
     // console.log(errors);
-    console.log(lastName);
-
-    const asyncSignUp = async (userid) => {
-        return await fetch("http://localhost:4000", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userid }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                return data;
-            })
-            .catch((error) => {
-                return error;
-            });
-    };
+    // console.log(lastName);
 
     const onPressRegister = async () => {
         const firstNameError =
@@ -114,7 +98,26 @@ const SignUp = ({ props, navigation }) => {
             });
         } else {
             setLoading(true);
-            // await asyncSignUp(firstName, lastName, email, password); // POST EVERYTHING TO BACKEND
+            const resp = await asyncSignUp(
+                email,
+                password,
+                firstName,
+                lastName
+            );
+            // console.log(resp);
+            setUID(resp.userID);
+            // console.log(userID);
+            AsyncStorage.setItem("@userId", userID); // confirm this stores !!
+            AsyncStorage.setItem("@firstName", resp.userData.firstName); // confirm this stores !!
+            AsyncStorage.setItem("@lastName", resp.userData.lastName);
+            AsyncStorage.setItem("@firstName", resp.userData.firstName);
+            AsyncStorage.setItem("@signedIn", "false");
+            // AsyncStorage.getItem("@firstName", (err, item) =>
+            //     console.log("FIRST NAME FROM SIGN UP:" + item)
+            // );
+            AsyncStorage.getItem("@userId", (err, item) =>
+                console.log("USERID FROM SIGN IN:" + item)
+            );
             setLoading(false);
             navigation.navigate("Create Profile");
         }
@@ -125,7 +128,7 @@ const SignUp = ({ props, navigation }) => {
             style={{
                 backgroundColor: "white",
                 flex: Platform.OS === "ios" ? 1 : null,
-                paddingTop: 50,
+                paddingTop: 0,
             }}
             contentContainerStyle={{
                 alignItems: "center",
@@ -135,8 +138,8 @@ const SignUp = ({ props, navigation }) => {
             extraScrollHeight={25}
             keyboardShouldPersistTaps="handled"
         >
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <ScrollView>
+            <SafeAreaView>
+                <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                     <View
                         style={{
                             flexDirection: "column",
@@ -297,8 +300,8 @@ const SignUp = ({ props, navigation }) => {
                             </View>
                         </View>
                     </View>
-                </ScrollView>
-            </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>
+            </SafeAreaView>
         </KeyboardAwareScrollView>
     );
 };
@@ -322,10 +325,10 @@ const styles = StyleSheet.create({
         paddingBottom: 30,
     },
     button: {
-        marginTop: 30,
+        marginTop: 40,
         alignSelf: "center",
     },
-    activity: { marginTop: 20, marginBottom: 10 },
+    activity: { marginTop: 20, marginBottom: 40 },
     icon: {
         alignSelf: "flex-start",
         position: "absolute",
