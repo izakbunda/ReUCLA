@@ -22,9 +22,29 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 /*
   -- DOCUMENTATION --
 */
+
+const asyncSignIn = async (email, password) => {
+    // console.log(email)
+    return await fetch("http://localhost:4000/user/signIn", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            return data;
+        })
+        .catch((error) => {
+            return error;
+        });
+};
+
 const SignIn = ({ props, navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [userID, setUID] = useState("");
     const [loading, setLoading] = useState(false);
 
     // console.log(email);
@@ -54,6 +74,20 @@ const SignIn = ({ props, navigation }) => {
             // await signIn() // THIS WILL SET THE USERID FIELD IN ASYNCSTORAGE AND WHICH WILL TRIGGER THE APP TO SWITCH TO HOME SCREEN
             setLoading(false);
         }
+    };
+
+    const onPress = async (email, password) => {
+        const resp = await asyncSignIn(email, password);
+        if (resp == null) console.log("empty");
+        else {
+            console.log(resp);
+            setUID(resp.userID);
+        }
+        // console.log(userID);
+    };
+
+    const onChangeHandler = (event) => {
+        setInputValue(event.target.value);
     };
 
     return (
