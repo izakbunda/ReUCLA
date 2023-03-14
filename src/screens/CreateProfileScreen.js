@@ -20,6 +20,7 @@ import {
     RegexUsername,
 } from "../Constants";
 import { useEffect } from "react";
+import { useEffect } from "react";
 import Button from "../components/Button";
 import { RegexPassword, RegexName } from "../Constants";
 import AddProfilePhoto from "../components/AddProfilePhoto";
@@ -27,7 +28,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { deleteApp } from "firebase/app";
+import { ref, uploadBytes } from "firebase/storage";
+import { storage } from './firebase';
 /*
   -- DOCUMENTATION --
 */
@@ -38,10 +41,11 @@ const asyncCreateProfile = async (
     instagram,
     discord,
     twitter,
-    uID
+    uID,
+    pfpPath
 ) => {
     // console.log("HERE!!!")
-    // console.log(email)
+    uID = 'SF1uSzR5cYVde8v5nfdbY02uFQm2';
     return await fetch("http://localhost:4000/user/update", {
         // If you are posting something, use POST
         // If you are fetching something, use GET
@@ -49,7 +53,7 @@ const asyncCreateProfile = async (
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ major, bio, instagram, discord, twitter, uID }),
+        body: JSON.stringify({ major, bio, instagram, discord, twitter, uID, pfpPath }),
     })
         .then((res) => res.json())
         .then((data) => {
@@ -67,6 +71,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
     const [discord, setDiscrod] = useState("");
     const [twitter, setTwitter] = useState(true);
     const [uID, setUserId] = useState("");
+    const [pfpPath, setPath] = useState(null);
 
     const [errors, setErrors] = useState({
         major: undefined,
@@ -83,7 +88,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
     const [loading, setLoading] = useState(false);
 
     // console.log(imagePicked);
-    // console.log(image);
+    // console.log(pfp);
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -94,10 +99,34 @@ const CreateProfileScreen = ({ props, navigation }) => {
             quality: 1,
         });
 
-        console.log(result);
+        // console.log(result);
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             setImagePicked(true);
+            const path = result.assets[0].uri.substring(result.assets[0].uri.lastIndexOf('/')+1);
+            console.log(path);
+            
+            const reference = ref(storage, path);
+
+            const img = await fetch(result.assets[0].uri);
+            const bytes = await img.blob();
+            // console.log(bytes);
+            
+            const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+            await delay(1500);
+            await uploadBytes(reference, bytes)
+                .then(() => {
+                    console.log("File Uploaded");
+                });
+
+            setPath(path);
+            setUserId('SF1uSzR5cYVde8v5nfdbY02uFQm2');
+        }
+    };
+
+    function success(navigation) {
+        {
+            navigation.navigate("Create Profile");
         }
     };
 
@@ -139,14 +168,16 @@ const CreateProfileScreen = ({ props, navigation }) => {
                 instagram,
                 discord,
                 twitter,
-                uID
+                uID,
+                image,
+                pfpPath
             );
-            console.log(resp);
+            // console.log(resp);
             // console.log(userID);
-            AsyncStorage.setItem("@bio", resp.bio);
-            AsyncStorage.setItem("@contact", resp.contact); // ARRAY!!
-            AsyncStorage.setItem("@major", resp.major);
-            AsyncStorage.setItem("@signedIn", "true");
+            // AsyncStorage.setItem("@bio", resp.bio);
+            // AsyncStorage.setItem("@contact", resp.contact); // ARRAY!!
+            // AsyncStorage.setItem("@major", resp.major);
+            // AsyncStorage.setItem("@signedIn", "true");
             setLoading(false);
         }
     };
@@ -180,16 +211,16 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                 Create your profile
                             </Text>
 
-                            <View
-                                style={{
-                                    marginVertical: 10,
-                                    marginLeft: 10,
-                                    marginBottom: 20,
-                                }}
-                            >
-                                <Text style={{ marginBottom: 20 }}>
-                                    Add Profile Photo:
-                                </Text>
+                                    <View
+                                        style={{
+                                            marginVertical: 10,
+                                            marginLeft: 10,
+                                            marginBottom: 20,
+                                        }}
+                                    >
+                                        <Text style={{ marginBottom: 20 }}>
+                                            Add Profile Photo:
+                                        </Text>
 
                                 {image ? (
                                     <View>
@@ -244,110 +275,119 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                     }}
                                 />
 
-                                <TextInput
+                                        <TextInput
                                     title={"Bio"}
+                                            title={"Bio"}
                                     setText={setBio}
-                                    multiline={true}
-                                    value={bio}
-                                    placeholder={"Tell us about yourself"}
-                                    isPassword={false}
-                                    autoCorrect={false}
-                                    error={errors.bio}
-                                    errorMessage={"Enter a valid bio."}
-                                    onEndEditing={() => {
-                                        if (!RegexName.test(bio)) {
-                                            setErrors({
-                                                ...errors,
-                                                bio: "Please enter a valid bio.",
-                                            });
-                                        } else {
-                                            setErrors({
-                                                ...errors,
-                                                bio: undefined,
-                                            });
-                                        }
-                                    }}
-                                />
+                                            multiline={true}
+                                            value={bio}
+                                            placeholder={"Tell us about yourself"}
+                                            isPassword={false}
+                                            autoCorrect={false}
+                                            error={errors.bio}
+                                            errorMessage={"Enter a valid bio."}
+                                            onEndEditing={() => {
+                                                if (!RegexName.test(bio)) {
+                                                    setErrors({
+                                                        ...errors,
+                                                        bio: "Please enter a valid bio.",
+                                                    });
+                                                } else {
+                                                    setErrors({
+                                                        ...errors,
+                                                        bio: undefined,
+                                                    });
+                                                }
+                                            }}
+                                        />
 
-                                <Text style={styles.subtitle}>
+                                        <Text style={styles.subtitle}>
+                                    
                                     Contact Information
+                                
                                 </Text>
 
-                                <TextInput
-                                    setText={setInstagram}
-                                    value={instagram}
-                                    placeholder={"@instagram_handle"}
-                                    isPassword={false}
-                                    autoCorrect={false}
-                                    error={errors.instagram}
-                                    errorMessage={
+                                        <TextInput
+                                            setText={setInstagram}
+                                            value={instagram}
+                                            placeholder={"@instagram_handle"}
+                                            isPassword={false}
+                                            autoCorrect={false}
+                                            error={errors.instagram}
+                                            errorMessage={
+                                        
                                         "Enter a valid Instagram handle"
+                                    
                                     }
-                                    onEndEditing={() => {
-                                        if (!RegexInstagram.test(instagram)) {
-                                            setErrors({
-                                                ...errors,
-                                                instagram:
-                                                    "Please enter a valid instagram handle.",
-                                            });
-                                        } else {
-                                            setErrors({
-                                                ...errors,
-                                                instagram: undefined,
-                                            });
-                                        }
-                                    }}
-                                />
-                                <TextInput
-                                    setText={setDiscrod}
-                                    value={discord}
-                                    placeholder={"#discord_tag"}
-                                    isPassword={false}
-                                    autoCorrect={false}
-                                    error={errors.discord}
-                                    errorMessage={
+                                            onEndEditing={() => {
+                                                if (!RegexInstagram.test(instagram)) {
+                                                    setErrors({
+                                                        ...errors,
+                                                        instagram:
+                                                            "Please enter a valid instagram handle.",
+                                                    });
+                                                } else {
+                                                    setErrors({
+                                                        ...errors,
+                                                        instagram: undefined,
+                                                    });
+                                                }
+                                            }}
+                                        />
+                                        <TextInput
+                                            setText={setDiscrod}
+                                            value={discord}
+                                            placeholder={"#discord_tag"}
+                                            isPassword={false}
+                                            autoCorrect={false}
+                                            error={errors.discord}
+                                            errorMessage={
+                                        
                                         "Please enter a valid Discord tag."
+                                    
                                     }
-                                    onEndEditing={() => {
-                                        if (!RegexDiscord.test(discord)) {
-                                            setErrors({
-                                                ...errors,
-                                                discord:
-                                                    "Please enter a valid Discord tag.",
-                                            });
-                                        } else {
-                                            setErrors({
-                                                ...errors,
-                                                discord: undefined,
-                                            });
-                                        }
-                                    }}
-                                />
-                                <TextInput
-                                    setText={setTwitter}
-                                    value={twitter}
-                                    placeholder={"@twitter_user"}
-                                    isPassword={false}
-                                    autoCorrect={false}
-                                    error={errors.twitter}
-                                    errorMessage={
+                                            onEndEditing={() => {
+                                                if (!RegexDiscord.test(discord)) {
+                                                    setErrors({
+                                                        ...errors,
+                                                        discord:
+                                                            "Please enter a valid Discord tag.",
+                                                    });
+                                                } else {
+                                                    setErrors({
+                                                        ...errors,
+                                                        discord: undefined,
+                                                    });
+                                                }
+                                            }}
+                                        />
+                                        <TextInput
+                                            setText={setTwitter}
+                                            value={twitter}
+                                            placeholder={"@twitter_user"}
+                                            isPassword={false}
+                                            autoCorrect={false}
+                                            error={errors.twitter}
+                                            errorMessage={
+                                        
                                         "Enter a valid Twitter handle."
+                                    
                                     }
-                                    onEndEditing={() => {
-                                        if (!RegexTwitter.test(twitter)) {
-                                            setErrors({
-                                                ...errors,
-                                                twitter:
-                                                    "Please enter a Twitter handle.",
-                                            });
-                                        } else {
-                                            setErrors({
-                                                ...errors,
-                                                twitter: undefined,
-                                            });
-                                        }
-                                    }}
-                                />
+                                            onEndEditing={() => {
+                                                if (!RegexTwitter.test(twitter)) {
+                                                    setErrors({
+                                                        ...errors,
+                                                        twitter:
+                                                            "Please enter a Twitter handle.",
+                                                    });
+                                                } else {
+                                                    setErrors({
+                                                        ...errors,
+                                                        twitter: undefined,
+                                                    });
+                                                }
+                                            }}
+                                        />
 
                                 <View>
                                     {loading ? (
@@ -393,8 +433,14 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 30,
         marginBottom: 40,
+        marginBottom: 40,
         alignSelf: "center",
         backgroundColor: Colors.primaryGreen,
+    },
+    activity: {
+        marginTop: 30,
+        marginBottom: 40,
+        alignSelf: "center",
     },
     activity: {
         marginTop: 30,

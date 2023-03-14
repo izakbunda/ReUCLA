@@ -28,21 +28,21 @@ const asyncSignUp = async (email, password, first_name, last_name) => {
     // console.log("HERE!!!")
     // console.log(email)
     return await fetch("http://localhost:4000/create/User", {
-        // If you are posting something, use POST
-        // If you are fetching something, use GET
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password, first_name, last_name }),
-    })
-        .then((res) => res.json())
-        .then((data) => {
-            return data;
-        })
-        .catch((error) => {
-            return error;
-        });
+            // If you are posting something, use POST
+            // If you are fetching something, use GET
+            method: "POST",
+            headers: {
+                  "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password, first_name, last_name  }),
+      })
+            .then((res) => res.json())
+            .then((data) => {
+                return data;
+            })
+            .catch((error) => {
+                  return error;
+            });
 };
 
 const SignUp = ({ props, navigation }) => {
@@ -105,10 +105,10 @@ const SignUp = ({ props, navigation }) => {
                 firstName,
                 lastName
             );
-            // console.log(resp);
+            console.log(resp);
             setUID(resp.userID);
-            // console.log(userID);
-            AsyncStorage.setItem("@userId", userID); // confirm this stores !!
+            // console.log("HELLO " + userID);
+            AsyncStorage.setItem("@userId", resp.userID); // confirm this stores !!
             AsyncStorage.setItem("@firstName", resp.userData.firstName); // confirm this stores !!
             AsyncStorage.setItem("@lastName", resp.userData.lastName);
             AsyncStorage.setItem("@firstName", resp.userData.firstName);
@@ -116,13 +116,15 @@ const SignUp = ({ props, navigation }) => {
             // AsyncStorage.getItem("@firstName", (err, item) =>
             //     console.log("FIRST NAME FROM SIGN UP:" + item)
             // );
-            AsyncStorage.getItem("@userId", (err, item) =>
-                console.log("USERID FROM SIGN IN:" + item)
-            );
+            // AsyncStorage.getItem("@userId", (err, item) =>
+            //     console.log("USERID FROM SIGN IN:" + item)
+            // );
             setLoading(false);
             navigation.navigate("Create Profile");
         }
     };
+
+    // console.log(userID);
 
     return (
         <KeyboardAwareScrollView
@@ -160,64 +162,64 @@ const SignUp = ({ props, navigation }) => {
                         </TouchableOpacity>
                         <Text style={styles.title}>Create your account</Text>
 
-                        <View>
-                            <Text style={styles.subtitle}>
-                                Tell us a little about yourself
-                            </Text>
+                            <View>
+                                <Text style={styles.subtitle}>
+                                    Tell us a little about yourself
+                                </Text>
 
-                            <TextInput
-                                setText={setFirstName}
-                                value={firstName}
-                                title={"First name"}
-                                placeholder={"Enter your first name"}
-                                isPassword={false}
-                                autoCorrect={false}
-                                error={errors.firstName}
-                                errorMessage={"Enter a valid first name."}
-                                onEndEditing={() => {
-                                    if (!RegexName.test(firstName)) {
-                                        setErrors({
-                                            ...errors,
-                                            firstName:
-                                                "Please enter a valid first name.",
-                                        });
-                                    } else {
-                                        setErrors({
-                                            ...errors,
-                                            firstName: undefined,
-                                        });
-                                    }
-                                }}
-                            />
+                                <TextInput
+                                    setText={setFirstName}
+                                    value={firstName}
+                                    title={"First name"}
+                                    placeholder={"Enter your first name"}
+                                    isPassword={false}
+                                    autoCorrect={false}
+                                    error={errors.firstName}
+                                    errorMessage={"Enter a valid first name."}
+                                    onEndEditing={() => {
+                                        if (!RegexName.test(firstName)) {
+                                            setErrors({
+                                                ...errors,
+                                                firstName:
+                                                    "Please enter a valid first name.",
+                                            });
+                                        } else {
+                                            setErrors({
+                                                ...errors,
+                                                firstName: undefined,
+                                            });
+                                        }
+                                    }}
+                                />
 
-                            <TextInput
-                                setText={setLastName}
-                                value={lastName}
-                                title={"Last name"}
-                                placeholder={"Enter your last name"}
-                                isPassword={false}
-                                autoCorrect={false}
-                                error={errors.lastName}
-                                errorMessage={"Enter a valid last name."}
-                                onEndEditing={() => {
-                                    if (!RegexName.test(lastName)) {
-                                        setErrors({
-                                            ...errors,
-                                            lastName:
-                                                "Please enter a valid last name.",
-                                        });
-                                    } else {
-                                        setErrors({
-                                            ...errors,
-                                            lastName: undefined,
-                                        });
-                                    }
-                                }}
-                            />
+                                <TextInput
+                                    setText={setLastName}
+                                    value={lastName}
+                                    title={"Last name"}
+                                    placeholder={"Enter your last name"}
+                                    isPassword={false}
+                                    autoCorrect={false}
+                                    error={errors.lastName}
+                                    errorMessage={"Enter a valid last name."}
+                                    onEndEditing={() => {
+                                        if (!RegexName.test(lastName)) {
+                                            setErrors({
+                                                ...errors,
+                                                lastName:
+                                                    "Please enter a valid last name.",
+                                            });
+                                        } else {
+                                            setErrors({
+                                                ...errors,
+                                                lastName: undefined,
+                                            });
+                                        }
+                                    }}
+                                />
 
-                            <Text style={styles.subtitle}>
-                                Now for the real thing
-                            </Text>
+                                <Text style={styles.subtitle}>
+                                    Now for the real thing
+                                </Text>
 
                             <TextInput
                                 setText={setEmail}
@@ -328,6 +330,13 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 40,
         alignSelf: "center",
+    },
+    activity: { marginTop: 20, marginBottom: 40 },
+    icon: {
+        alignSelf: "flex-start",
+        position: "absolute",
+        top: 5,
+        left: -170,
     },
     activity: { marginTop: 20, marginBottom: 40 },
     icon: {
