@@ -6,33 +6,29 @@ import {
     Text,
     SafeAreaView,
     Image,
-    Alert,
+    Keyboard,
+    TouchableWithoutFeedback,
+    KeyboardAvoidingView,
+    ScrollView,
     ActivityIndicator,
 } from "react-native";
+import { Colors } from "../Constants";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
+import { RegexEmail, RegexPassword } from "../Constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 /*
   -- DOCUMENTATION --
 */
+const SignIn = ({ props, navigation }) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
-const asyncSignIn = async (email, password) => {
-    // console.log(email)
-    return await fetch("http://localhost:4000/user/signIn", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-        return data;
-    })
-    .catch((error) => {
-      return error;
-    });
-};
+    // console.log(email);
+    // console.log(password);
 
 
 
@@ -40,24 +36,14 @@ const asyncSignIn = async (email, password) => {
 const SignIn = ({ props, navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+<<<<<<< HEAD
     const [userID, setUID] = useState("")
+=======
+    const [loading, setLoading] = useState(false);
+>>>>>>> e306685 (Finishing up frontend of Sign In Flow)
 
-    const asyncSignUp = async (userid) => {
-        return await fetch("http://localhost:4000", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userid }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                return data;
-            })
-            .catch((error) => {
-                return error;
-            });
-    };
+    // console.log(email);
+    // console.log(password);
 
     const [errors, setErrors] = useState({
         email: undefined,
@@ -80,76 +66,138 @@ const SignIn = ({ props, navigation }) => {
             });
         } else {
             setLoading(true);
-            await signUp(firstName, lastName, email, password);
+            // await signIn() // THIS WILL SET THE USERID FIELD IN ASYNCSTORAGE AND WHICH WILL TRIGGER THE APP TO SWITCH TO HOME SCREEN
             setLoading(false);
         }
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-            <View
-                style={{
-                    flexDirection: "column",
-                    alignItems: "center",
-                    paddingTop: 25,
-                }}
-            >
-                <Image
-                    source={require("../../assets/icon.png")}
-                    style={{ maxHeight: 170, maxWidth: 170, marginTop: 50 }}
-                />
-                <Text
+        <KeyboardAwareScrollView
+            style={{
+                backgroundColor: "white",
+                flex: Platform.OS === "ios" ? 1 : null,
+                paddingTop: 30,
+            }}
+            contentContainerStyle={{
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            extraScrollHeight={25}
+            keyboardShouldPersistTaps="handled"
+        >
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <View
                     style={{
-                        marginTop: 10,
-                        fontSize: 50,
-                        fontWeight: "bold",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        paddingTop: 25,
                     }}
                 >
-                    ReUCLA
-                </Text>
-                <Text style={styles.subtitle}>
-                    Buy, Sell, and Trade{"\n"}Bruin to Bruin 💛💙
-                </Text>
-
-                <TextInput
-                    setText={setEmail}
-                    value={email}
-                    title={"Enter your email"}
-                    placeholder={"Email"}
-                    isPassword={false}
-                    autoCorrect={false}
-                />
-
-                <TextInput
-                    setText={setPassword}
-                    value={password}
-                    title={"Enter your password"}
-                    placeholder={"Password"}
-                    isPassword={false}
-                    autoCorrect={false}
-                />
-
-                <Button
-                    title="Log In"
-                    onPress={() => onPressRegister}
-                    style={styles.button}
-                />
-
-                <View>
+                    <Image
+                        source={require("../../assets/204CF76C-0F8F-4FB6-99B7-ACAB2C7D8548logo.png")}
+                        style={{
+                            maxHeight: 170,
+                            maxWidth: 170,
+                            marginTop: 50,
+                            marginBottom: -10,
+                        }}
+                    />
                     <Text
-                        // onPress={() => Alert.alert("Sign Up")}
-                        onPress={() => navigation.navigate("Sign Up")}
-                        style={styles.signUp}
+                        style={{
+                            marginTop: 10,
+                            fontSize: 50,
+                            fontWeight: "bold",
+                        }}
                     >
-                        New here? Sign up now.
+                        ReUCLA
                     </Text>
+
+                    <Text style={styles.subtitle}>Buy, Sell, and Trade</Text>
+
+                    <TextInput
+                        setText={setEmail}
+                        value={email}
+                        title={"Enter your email"}
+                        placeholder={"Email"}
+                        isPassword={false}
+                        autoCorrect={false}
+                        error={errors.email}
+                        errorMessage={"Enter a valid email."}
+                        onEndEditing={() => {
+                            if (!RegexEmail.test(email)) {
+                                setErrors({
+                                    ...errors,
+                                    email: "Please enter a valid email.",
+                                });
+                            } else {
+                                setErrors({
+                                    ...errors,
+                                    email: undefined,
+                                });
+                            }
+                        }}
+                        autoCapitalize={"none"}
+                    />
+                    <TextInput
+                        setText={setPassword}
+                        value={password}
+                        title={"Enter your password"}
+                        placeholder={"Password"}
+                        isPassword={false}
+                        autoCorrect={false}
+                        error={errors.password}
+                        errorMessage={"Enter a valid password."}
+                        onEndEditing={() => {
+                            if (!RegexPassword.test(password)) {
+                                setErrors({
+                                    ...errors,
+                                    password: "Please enter a valid password.",
+                                });
+                            } else {
+                                setErrors({
+                                    ...errors,
+                                    password: undefined,
+                                });
+                            }
+                        }}
+                        autoCapitalize={"none"}
+                    />
+
+                    <View>
+                        {loading ? (
+                            <ActivityIndicator
+                                size="large"
+                                color={Colors.primary}
+                                style={styles.activity}
+                            />
+                        ) : (
+                            <Button
+                                title="Log In"
+                                onPress={onPressRegister}
+                                style={styles.button}
+                            />
+                        )}
+                    </View>
+
+                    <View>
+                        <Text
+                            onPress={() => navigation.navigate("Sign Up")}
+                            style={styles.signUp}
+                        >
+                            New here? Sign up now.
+                        </Text>
+                    </View>
                 </View>
-            </View>
-        </SafeAreaView>
+            </TouchableWithoutFeedback>
+        </KeyboardAwareScrollView>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: "white",
+    },
     subtitle: {
         marginTop: 4,
         fontSize: 20,
@@ -160,6 +208,7 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 15,
     },
+    activity: { marginTop: 20, marginBottom: 10 },
     signUp: {
         fontSize: 16,
         marginTop: 20,

@@ -14,6 +14,7 @@ import { RegexPassword, RegexName } from "../Constants";
 import AddProfilePhoto from "../components/AddProfilePhoto";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 /*
   -- DOCUMENTATION --
@@ -58,12 +59,6 @@ const CreateProfileScreen = ({ props, navigation }) => {
         }
     };
 
-    function success(navigation) {
-        {
-            navigation.navigate("Create Profile");
-        }
-    }
-
     const onPressRegister = async () => {
         const locationError =
             location.length > 0 ? undefined : "You must enter a location";
@@ -100,16 +95,29 @@ const CreateProfileScreen = ({ props, navigation }) => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+        <KeyboardAwareScrollView
+            style={{
+                backgroundColor: "white",
+                flex: Platform.OS === "ios" ? 1 : null,
+                paddingTop: 50,
+            }}
+            contentContainerStyle={{
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            extraScrollHeight={25}
+            keyboardShouldPersistTaps="handled"
+        >
             <ScrollView>
                 <View
                     style={{
                         flexDirection: "column",
                         alignItems: "center",
+                        paddingTop: 25,
                     }}
                 >
-                    
-                    <Text style={styles.title}>Create your account</Text>
+                    <Text style={styles.title}>Create your profile</Text>
 
                     <View
                         style={{
@@ -151,6 +159,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
 
                     <View>
                         <TextInput
+                            title={"Location"}
                             setText={setLocation}
                             value={location}
                             placeholder={"Where are you located?"}
@@ -175,6 +184,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
                         />
 
                         <TextInput
+                            title={"Bio"}
                             setText={setBio}
                             multiline={true}
                             value={bio}
@@ -281,17 +291,18 @@ const CreateProfileScreen = ({ props, navigation }) => {
                     </View>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </KeyboardAwareScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 24,
+        marginTop: 4,
+        fontSize: 25,
         color: Colors.darkGray,
         textAlign: "center",
-        paddingTop: 20,
-        paddingBottom: 20,
+        fontWeight: "bold",
+        paddingBottom: 30,
     },
     subtitle: {
         paddingLeft: 20,
