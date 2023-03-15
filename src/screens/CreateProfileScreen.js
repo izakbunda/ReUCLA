@@ -29,7 +29,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { deleteApp } from "firebase/app";
 import { ref, uploadBytes } from "firebase/storage";
-import { storage } from './firebase';
+import { storage } from "./firebase";
 /*
   -- DOCUMENTATION --
 */
@@ -51,7 +51,15 @@ const asyncCreateProfile = async (
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ major, bio, instagram, discord, twitter, uID, pfpPath }),
+        body: JSON.stringify({
+            major,
+            bio,
+            instagram,
+            discord,
+            twitter,
+            uID,
+            pfpPath,
+        }),
     })
         .then((res) => res.json())
         .then((data) => {
@@ -101,22 +109,24 @@ const CreateProfileScreen = ({ props, navigation }) => {
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             setImagePicked(true);
-            const path = result.assets[0].uri.substring(result.assets[0].uri.lastIndexOf('/')+1);
+            const path = result.assets[0].uri.substring(
+                result.assets[0].uri.lastIndexOf("/") + 1
+            );
             console.log(path);
-            
+
             const reference = ref(storage, path);
 
             const img = await fetch(result.assets[0].uri);
             // AsyncStorage.setItem("@pfpURI", image);
             const bytes = await img.blob();
             // console.log(bytes);
-            
-            const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+            const delay = (ms) =>
+                new Promise((resolve) => setTimeout(resolve, ms));
             await delay(1500);
-            await uploadBytes(reference, bytes)
-                .then(() => {
-                    console.log("File Uploaded");
-                });
+            await uploadBytes(reference, bytes).then(() => {
+                console.log("File Uploaded");
+            });
 
             setPath(path);
         }
@@ -190,6 +200,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
             navigation.navigate("NavBarStack");
             setLoading(false);
         // }
+
     };
 
     return (
@@ -221,16 +232,16 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                 Create your profile
                             </Text>
 
-                                    <View
-                                        style={{
-                                            marginVertical: 10,
-                                            marginLeft: 10,
-                                            marginBottom: 20,
-                                        }}
-                                    >
-                                        <Text style={{ marginBottom: 20 }}>
-                                            Add Profile Photo:
-                                        </Text>
+                            <View
+                                style={{
+                                    marginVertical: 10,
+                                    marginLeft: 10,
+                                    marginBottom: 20,
+                                }}
+                            >
+                                <Text style={{ marginBottom: 20 }}>
+                                    Add Profile Photo:
+                                </Text>
 
                                 {image ? (
                                     <View>
@@ -270,7 +281,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                     autoCorrect={false}
                                 />
 
-                                        <TextInput
+                                <TextInput
                                     title={"Bio"}
                                     setText={setBio}
                                             multiline={true}
@@ -280,10 +291,8 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                             autoCorrect={false}
                                         />
 
-                                        <Text style={styles.subtitle}>
-                                    
+                                <Text style={styles.subtitle}>
                                     Contact Information
-                                
                                 </Text>
 
                                         <TextInput

@@ -108,25 +108,26 @@ const updateUser = async (req, res) => {
     if (docSnap.exists()) {
         console.log("Doc Data: ", docSnap.data());
         const userData = docSnap.data();
-        res.send({userData, userID});
+        res.send({ userData, userID });
     } else {
         console.log("Doc Data doesn't Exist");
         res.send({ errCode: 1, error: "Doesn't Exist" });
     }
 };
 
-const signIn = async  (req, res) => {
+const signIn = async (req, res) => {
     // console.log("attempting to signin");
 
     // Variables used later
     const email = req.body.email;
+
     const password = req.body.password;
     var user, userData, docRef, docRef, userID;
     var userExists = false;
 
     // Tries to Sign in with firebase authentification
     signInWithEmailAndPassword(auth, email, password)
-        .then((userCredentials) =>  {
+        .then((userCredentials) => {
             console.log("User Exists");
             user = userCredentials.user;
             userID = user.uid;
@@ -155,7 +156,7 @@ const signIn = async  (req, res) => {
     }
 };
 
-const getUser = async  (req, res) => {
+const getUser = async (req, res) => {
     // const userID = req.body.userID;
     // const docRef = doc(database, 'userData', userID);
     // const docSnap = await getDoc(docRef);
@@ -168,7 +169,7 @@ const getUser = async  (req, res) => {
     //     console.log("No user data");
     //     res.send({errCode: 1 , error: "Doesn't Exist"});
     // }
-};;
+};
 
 module.exports = {
     createUser,

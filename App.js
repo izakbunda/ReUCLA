@@ -18,7 +18,7 @@ import { NavBarStack } from "./src/navigation/NavBarStack";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-    const [user, setUser] = useState(true);
+    const [user, setUser] = useState(false);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {

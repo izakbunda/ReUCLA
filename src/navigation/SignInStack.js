@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 
 export const SignInStack = (route) => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ gestureEnabled: false }}>
             <Stack.Screen
                 name="Sign In"
                 component={SignIn}

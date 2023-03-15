@@ -4,12 +4,9 @@ import {
     View,
     StyleSheet,
     Text,
-    SafeAreaView,
     Image,
     Keyboard,
     TouchableWithoutFeedback,
-    KeyboardAvoidingView,
-    ScrollView,
     ActivityIndicator,
     TouchableOpacity
 } from "react-native";
@@ -85,16 +82,6 @@ const SignIn = ({ props, navigation }) => {
             // );
         }
     };
-
-    // const onPress = async (email, password) => {
-    //     const resp = await asyncSignIn(email, password);
-    //     if (resp == null) console.log("empty");
-    //     else {
-    //         console.log(resp);
-    //         setUID(resp.userID);
-    //     }
-    //     // console.log(userID);
-    // };
 
     return (
         <KeyboardAwareScrollView

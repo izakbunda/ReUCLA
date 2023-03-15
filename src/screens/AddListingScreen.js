@@ -31,6 +31,7 @@ import { storage } from './firebase';
 /*
   -- DOCUMENTATION --
 */
+
 const asyncCreateListing = async (title, description, photoPath, category, condition, price, gender,
                             subcategory, uID) => {
     // console.log("HERE!!!")
@@ -42,8 +43,10 @@ const asyncCreateListing = async (title, description, photoPath, category, condi
         headers: {
             "Content-Type": "application/json",
         },
+
         body: JSON.stringify({ title, description, photoPath, category, condition, price, gender,
             subcategory, uID }),
+
     })
         .then((res) => res.json())
         .then((data) => {
@@ -68,6 +71,7 @@ const AddListingScreen = ({ props, navigation }) => {
     const [uID, setuid] = useState("bruh");
     const [open, setOpen] = useState(false);
     const [openType, setOpenType] = useState(false);
+
     const [items, setItems] = useState([
         { label: "Clothes", value: "clothes" },
         { label: "Books", value: "books" },
@@ -82,6 +86,7 @@ const AddListingScreen = ({ props, navigation }) => {
         { label: "Shoes", value: "shoes" },
         { label: "Outerwear", value: "outerwear" },
     ]);
+
 
     // console.log(category);
     // console.log(condition);
@@ -118,6 +123,7 @@ const AddListingScreen = ({ props, navigation }) => {
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
+
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
@@ -409,6 +415,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
         alignSelf: "center",
     },
+
     button2: {
         marginTop: 20,
         alignSelf: "center",
@@ -424,6 +431,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: Colors.primary,
     },
+
     activity: { marginTop: 20, marginBottom: 40 },
     icon: {
         alignSelf: "flex-start",
