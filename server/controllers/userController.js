@@ -137,13 +137,16 @@ const signIn = async (req, res) => {
         }) // Send's an error back if this log-in isn't complete
         .catch((err) => {
             console.log(err);
-            res.send(err);
+            res.send({err, status : "Failed"});
         });
 
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await delay(1500);
 
-    if (!userExists) return;
+    // console.log(userExists);
+
+    if (!userExists) 
+        res.send({status: "Failed"});
     // Retrieves User Data
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
