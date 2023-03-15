@@ -18,11 +18,7 @@ import { NavBarStack } from "./src/navigation/NavBarStack";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-<<<<<<< HEAD
     const [user, setUser] = useState(true);
-=======
-    const [user, setUser] = useState(false);
->>>>>>> 60f5558 (Implemented The Add Listing Feature)
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
