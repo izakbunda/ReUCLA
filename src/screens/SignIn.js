@@ -70,16 +70,25 @@ const SignIn = ({ props, navigation }) => {
         } else {
             setLoading(true);
             const resp = await asyncSignIn(email, password);
-            // if (resp == null) console.log("empty");
-            // console.log(resp);
-            setUID(resp.userID);
-            setLoading(false);
-            AsyncStorage.setItem("@userId", userID); // confirm this stores !!
-            AsyncStorage.setItem("@signedIn", "true");
-            navigation.navigate("NavBarStack");
-            // AsyncStorage.getItem("@userId", (err, item) =>
-            //     console.log("USER ID FROM SIGN IN:" + item)
-            // );
+            if (!resp.status){
+                // if (resp == null) console.log("empty");
+                // console.log(resp);
+                setUID(resp.userID);
+                setLoading(false);
+                AsyncStorage.setItem("@userId", userID); // confirm this stores !!
+                AsyncStorage.setItem("@signedIn", "true");
+                setLoading(false);
+                navigation.navigate("NavBarStack");
+                // AsyncStorage.getItem("@userId", (err, item) =>
+                //     console.log("USER ID FROM SIGN IN:" + item)
+                // );
+            }
+            else{
+                setErrors({
+                    password: emailError
+                });
+                setLoading(false);
+            }
         }
     };
 
