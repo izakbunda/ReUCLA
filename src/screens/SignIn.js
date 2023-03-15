@@ -4,13 +4,11 @@ import {
     View,
     StyleSheet,
     Text,
-    SafeAreaView,
     Image,
     Keyboard,
     TouchableWithoutFeedback,
-    KeyboardAvoidingView,
-    ScrollView,
     ActivityIndicator,
+    TouchableOpacity,
 } from "react-native";
 import { Colors } from "../Constants";
 import TextInput from "../components/TextInput";
@@ -78,22 +76,12 @@ const SignIn = ({ props, navigation }) => {
             setLoading(false);
             AsyncStorage.setItem("@userId", userID); // confirm this stores !!
             AsyncStorage.setItem("@signedIn", "true");
-
+            navigation.navigate("NavBarStack");
             // AsyncStorage.getItem("@userId", (err, item) =>
             //     console.log("USER ID FROM SIGN IN:" + item)
             // );
         }
     };
-
-    // const onPress = async (email, password) => {
-    //     const resp = await asyncSignIn(email, password);
-    //     if (resp == null) console.log("empty");
-    //     else {
-    //         console.log(resp);
-    //         setUID(resp.userID);
-    //     }
-    //     // console.log(userID);
-    // };
 
     return (
         <KeyboardAwareScrollView
@@ -118,15 +106,18 @@ const SignIn = ({ props, navigation }) => {
                         paddingTop: 25,
                     }}
                 >
-                    <Image
-                        source={require("../../assets/204CF76C-0F8F-4FB6-99B7-ACAB2C7D8548logo.png")}
-                        style={{
-                            maxHeight: 170,
-                            maxWidth: 170,
-                            marginTop: 50,
-                            marginBottom: -10,
-                        }}
-                    />
+                    <TouchableOpacity onPress={() => AsyncStorage.clear()}>
+                        <Image
+                            source={require("../../assets/204CF76C-0F8F-4FB6-99B7-ACAB2C7D8548logo.png")}
+                            style={{
+                                maxHeight: 170,
+                                maxWidth: 170,
+                                marginTop: 50,
+                                marginBottom: -10,
+                            }}
+                        />
+                    </TouchableOpacity>
+
                     <Text
                         style={{
                             marginTop: 10,
