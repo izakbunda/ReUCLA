@@ -141,7 +141,8 @@ const listingData = [
     },
 ];
 
-const CategoryScreen = (props) => {
+const CategoryScreen = ({navigation, route}) => {
+    const { category } = route.params;
     return (
         <SafeAreaView style={{flex: 1}}>
             <View style={styles.container}>
@@ -149,16 +150,14 @@ const CategoryScreen = (props) => {
                 name={"arrow-left"}
                 size={28}
                 color={"#2F6B25"}
-                onPress={() => {
-                    Alert.alert("go back")
-                }}
+                onPress={() => navigation.goBack()}
                 style={styles.icon}
                 />
-                <Text style={styles.header}> category </Text>
+                <Text style={styles.header}> {category} </Text>
             </View>
             <View>
                 <FlatList
-                    style={{width: "100%", height: "100%"}}
+                    style={{width: "100%", height: "95%"}}
                     data={listingData}
                     horizontal={false}
                     numColumns={2}
