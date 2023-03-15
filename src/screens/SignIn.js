@@ -8,7 +8,7 @@ import {
     Keyboard,
     TouchableWithoutFeedback,
     ActivityIndicator,
-    TouchableOpacity
+    TouchableOpacity,
 } from "react-native";
 import { Colors } from "../Constants";
 import TextInput from "../components/TextInput";
@@ -70,18 +70,28 @@ const SignIn = ({ props, navigation }) => {
         } else {
             setLoading(true);
             const resp = await asyncSignIn(email, password);
+
             if (!resp.status){
                 // if (resp == null) console.log("empty");
-                // console.log(resp);
-                setUID(resp.userID);
-                setLoading(false);
-                AsyncStorage.setItem("@userId", userID); // confirm this stores !!
-                AsyncStorage.setItem("@signedIn", "true");
-                setLoading(false);
-                navigation.navigate("NavBarStack");
-                // AsyncStorage.getItem("@userId", (err, item) =>
-                //     console.log("USER ID FROM SIGN IN:" + item)
-                // );
+            console.log(resp);
+            setUID(resp.userID);
+            setLoading(false);
+            AsyncStorage.setItem("@userId", userID); // confirm this stores !!
+            AsyncStorage.setItem("@signedIn", "true");
+
+            AsyncStorage.setItem("@firstName", resp.userData.firstName);
+            AsyncStorage.setItem("@lastName", resp.userData.lastName);
+            AsyncStorage.setItem("@bio", resp.userData.bio);
+            AsyncStorage.setItem("@instagram", resp.userData.contact[0]);
+            AsyncStorage.setItem("@discord", resp.userData.contact[1]);
+            AsyncStorage.setItem("@twitter", resp.userData.contact[2]);
+            AsyncStorage.setItem("@major", resp.userData.major);
+            AsyncStorage.setItem("@pfpURI", resp.userData.signInPath);
+
+            navigation.navigate("NavBarStack");
+            // AsyncStorage.getItem("@userId", (err, item) =>
+            //     console.log("USER ID FROM SIGN IN:" + item)
+            // );
             }
             else{
                 setErrors({

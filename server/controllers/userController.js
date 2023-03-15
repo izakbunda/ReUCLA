@@ -14,7 +14,7 @@ const {
     Timestamp,
     addDoc,
     getDoc,
-    updateDoc
+    updateDoc,
 } = require("firebase/firestore");
 // const { isErrored } = require("stream");
 
@@ -41,21 +41,21 @@ const createUser = async (req, res) => {
             };
             setDoc(docRef, docData);
             signInWithEmailAndPassword(auth, email, password)
-                    .then((userCredentials) =>  {
-                        // console.log("User Exists");
-                        user = userCredentials.user;
-                        userID = user.uid;
-                        userExists = true;
-                    }) // Send's an error back if this log-in isn't complete
-                    .catch((err) => {
-                        console.log(err);
-                        res.send(err);
-                    });
+                .then((userCredentials) => {
+                    // console.log("User Exists");
+                    user = userCredentials.user;
+                    userID = user.uid;
+                    userExists = true;
+                }) // Send's an error back if this log-in isn't complete
+                .catch((err) => {
+                    console.log(err);
+                    res.send(err);
+                });
         })
-        .catch((err =>  {
+        .catch((err) => {
             console.log(err);
             res.send(err);
-        }));
+        });
 
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await delay(2500);
@@ -85,10 +85,10 @@ const updateUser = async (req, res) => {
 
     const tempPath = req.body.pfpPath;
     console.log(tempPath);
-    var path = '/';
-    if (tempPath){
-       const lastIndex = tempPath.lastIndexOf('/');
-        path = tempPath.substring(lastIndex + 1); 
+    var path = "/";
+    if (tempPath) {
+        const lastIndex = tempPath.lastIndexOf("/");
+        path = tempPath.substring(lastIndex + 1);
     }
 
     const docData = {
@@ -97,7 +97,7 @@ const updateUser = async (req, res) => {
         contact: [req.body.instagram, req.body.discord, req.body.twitter],
         pfpPath: path,
         signInPath: tempPath,
-        userListings : []
+        userListings: [],
     };
 
     // {major: , bio:, contact: {instagram: , discord: ,twitter:}}
@@ -155,7 +155,7 @@ const signIn = async (req, res) => {
         res.send({ userID, userData });
     } else {
         console.log("Doc Data doesn't Exist");
-          res.send({ errCode: 1, error: "Doesn't Exist" });
+        res.send({ errCode: 1, error: "Doesn't Exist" });
     }
 };
 

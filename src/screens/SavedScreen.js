@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Dim } from "../Constants";
 import SavedItem from "../components/SavedItem";
+import Icon from "react-native-vector-icons/Feather";
 // import { Alert } from "react-native";
 /*
   -- DOCUMENTATION --
@@ -48,28 +49,34 @@ const savedData = [
 const SavedScreen = ({ navigation, props }) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={styles.container}>
+            <View style={styles.header}>
+                <Icon
+                    name={"arrow-left"}
+                    size={28}
+                    color={"#2F6B25"}
+                    onPress={() => navigation.goBack()}
+                    style={styles.icon}
+                />
                 <Text style={styles.saves}>My Saves</Text>
-
-                <View style={{ width: Dim.width * 0.9 }}>
-                    <FlatList
-                        data={savedData}
-                        renderItem={({ item }) => {
-                            return (
-                                <SavedItem
-                                    listingPhoto={item.listingPhoto}
-                                    listingPrice={item.listingPrice}
-                                    listingName={item.listingName}
-                                    sold={item.sold}
-                                    saved={item.saved}
-                                    onPress={() => {
-                                        Alert.alert("Fix tomorrow");
-                                    }}
-                                />
-                            );
-                        }}
-                    />
-                </View>
+            </View>
+            <View style={{ width: Dim.width * 0.9, marginLeft: 20 }}>
+                <FlatList
+                    data={savedData}
+                    renderItem={({ item }) => {
+                        return (
+                            <SavedItem
+                                listingPhoto={item.listingPhoto}
+                                listingPrice={item.listingPrice}
+                                listingName={item.listingName}
+                                sold={item.sold}
+                                saved={item.saved}
+                                onPress={() => {
+                                    Alert.alert("Fix tomorrow");
+                                }}
+                            />
+                        );
+                    }}
+                />
             </View>
         </SafeAreaView>
     );
@@ -81,12 +88,19 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     saves: {
-        textAlign: "center",
-        fontSize: 25,
+        fontSize: 20,
         fontWeight: "bold",
-        marginTop: 10,
-        marginBottom: 15,
     },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        height: Dim.height * 0.06
+    },
+    icon: {
+        position: "absolute",
+        left: 4,
+    }
 });
 
 export default SavedScreen;
