@@ -117,6 +117,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
             const reference = ref(storage, path);
 
             const img = await fetch(result.assets[0].uri);
+            // AsyncStorage.setItem("@pfpURI", image);
             const bytes = await img.blob();
             // console.log(bytes);
 
@@ -131,37 +132,46 @@ const CreateProfileScreen = ({ props, navigation }) => {
         }
     };
 
-    const onPressRegister = async () => {
-        const majorError =
-            major.length > 0 ? undefined : "You must enter a major";
-        const bioError =
-            bio.length > 0 ? undefined : "Please enter a valid password.";
-        const instagramError =
-            instagram.length > 0 ? undefined : "Enter a valid Instagram handle";
-        const discordError =
-            discord.length > 0
-                ? undefined
-                : "You must enter valid Discord tag.";
-        const twitterError =
-            twitter.length > 0
-                ? undefined
-                : "You must enter valid Twitter handle.";
+    function success(navigation) {
+        {
+            navigation.navigate("Create Profile");
+        }
+    };
 
-        if (
-            majorError ||
-            bioError ||
-            instagramError ||
-            discordError ||
-            twitterError
-        ) {
-            setErrors({
-                major: majorError,
-                bio: bioError,
-                instagram: instagramError,
-                discord: discordError,
-                twitter: twitterError,
-            });
-        } else {
+    const onPressRegister = async () => {
+        AsyncStorage.getItem("@userId").then((userId) => {
+            setUserId(userId);
+        });
+        // const majorError =
+        //     major.length > 0 ? undefined : "You must enter a major";
+        // const bioError =
+        //     bio.length > 0 ? undefined : "Please enter a valid password.";
+        // const instagramError =
+        //     instagram.length > 0 ? undefined : "Enter a valid Instagram handle";
+        // const discordError =
+        //     discord.length > 0
+        //         ? undefined
+        //         : "You must enter valid Discord tag.";
+        // const twitterError =
+        //     twitter.length > 0
+        //         ? undefined
+        //         : "You must enter valid Twitter handle.";
+
+        // if (
+        //     majorError ||
+        //     bioError ||
+        //     instagramError ||
+        //     discordError ||
+        //     twitterError
+        // ) {
+        //     setErrors({
+        //         major: majorError,
+        //         bio: bioError,
+        //         instagram: instagramError,
+        //         discord: discordError,
+        //         twitter: twitterError,
+        //     });
+        // } else {
             setLoading(true);
             const resp = await asyncCreateProfile(
                 major,
@@ -174,20 +184,23 @@ const CreateProfileScreen = ({ props, navigation }) => {
                 pfpPath
             );
             console.log(resp);
+            setLoading(false);
+            console.log(resp.userID);
             // console.log(userID);
             AsyncStorage.setItem("@bio", resp.userData.bio);
             AsyncStorage.setItem("@instagram", resp.userData.contact[0]);
             AsyncStorage.setItem("@discord", resp.userData.contact[1]);
             AsyncStorage.setItem("@twitter", resp.userData.contact[2]);
             AsyncStorage.setItem("@major", resp.userData.major);
-            AsyncStorage.setItem("@pfpURI", image);
+            // AsyncStorage.setItem("@pfpURI", image);
             AsyncStorage.setItem("@signedIn", "true");
-            setLoading(false);
             AsyncStorage.multiGet(["@userId", "@signedIn"]).then((userId) => {
                 console.log(userId);
             });
             navigation.navigate("NavBarStack");
-        }
+            setLoading(false);
+        // }
+
     };
 
     return (
@@ -271,38 +284,38 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                 <TextInput
                                     title={"Bio"}
                                     setText={setBio}
-                                    multiline={true}
-                                    value={bio}
-                                    placeholder={"Tell us about yourself"}
-                                    isPassword={false}
-                                    autoCorrect={false}
-                                />
+                                            multiline={true}
+                                            value={bio}
+                                            placeholder={"Tell us about yourself"}
+                                            isPassword={false}
+                                            autoCorrect={false}
+                                        />
 
                                 <Text style={styles.subtitle}>
                                     Contact Information
                                 </Text>
 
-                                <TextInput
-                                    setText={setInstagram}
-                                    value={instagram}
-                                    placeholder={"@instagram_handle"}
-                                    isPassword={false}
-                                    autoCorrect={false}
-                                />
-                                <TextInput
-                                    setText={setDiscrod}
-                                    value={discord}
-                                    placeholder={"#discord_tag"}
-                                    isPassword={false}
-                                    autoCorrect={false}
-                                />
-                                <TextInput
-                                    setText={setTwitter}
-                                    value={twitter}
-                                    placeholder={"@twitter_user"}
-                                    isPassword={false}
-                                    autoCorrect={false}
-                                />
+                                        <TextInput
+                                            setText={setInstagram}
+                                            value={instagram}
+                                            placeholder={"@instagram_handle"}
+                                            isPassword={false}
+                                            autoCorrect={false}
+                                        />
+                                        <TextInput
+                                            setText={setDiscrod}
+                                            value={discord}
+                                            placeholder={"#discord_tag"}
+                                            isPassword={false}
+                                            autoCorrect={false}
+                                        />
+                                        <TextInput
+                                            setText={setTwitter}
+                                            value={twitter}
+                                            placeholder={"@twitter_user"}
+                                            isPassword={false}
+                                            autoCorrect={false}
+                                        />
 
                                 <View>
                                     {loading ? (

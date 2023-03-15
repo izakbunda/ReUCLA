@@ -25,21 +25,28 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Dim } from "../Constants";
 import * as ImagePicker from "expo-image-picker";
+import { ref, uploadBytes } from "firebase/storage";
+import { storage } from './firebase';
 
 /*
   -- DOCUMENTATION --
 */
-const asyncfunction = async (email, password, first_name, last_name) => {
+
+const asyncCreateListing = async (title, description, photoPath, category, condition, price, gender,
+                            subcategory, uID) => {
     // console.log("HERE!!!")
     // console.log(email)
-    return await fetch("http://localhost:4000/create/User", {
+    return await fetch("http://localhost:4000/listings/create", {
         // If you are posting something, use POST
         // If you are fetching something, use GET
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, first_name, last_name }),
+
+        body: JSON.stringify({ title, description, photoPath, category, condition, price, gender,
+            subcategory, uID }),
+
     })
         .then((res) => res.json())
         .then((data) => {
@@ -56,10 +63,15 @@ const AddListingScreen = ({ props, navigation }) => {
     const [image, setImage] = useState("");
     const [imagePicked, setImagePicked] = useState(false);
     const [category, setCategory] = useState(null);
+    const [subcategory, setSubcategory] = useState("null");
+    const [gender, setGender] = useState(0);
     const [condition, setCondition] = useState(null);
     const [price, setPrice] = useState("");
-
+    const [pfpPath, setPath] = useState(null);
+    const [uID, setuid] = useState("bruh");
     const [open, setOpen] = useState(false);
+    const [openType, setOpenType] = useState(false);
+
     const [items, setItems] = useState([
         { label: "Clothes", value: "clothes" },
         { label: "Books", value: "books" },
@@ -68,6 +80,13 @@ const AddListingScreen = ({ props, navigation }) => {
         { label: "Furniture", value: "furniture" },
         { label: "Plants", value: "plants" },
     ]);
+    const [itemType, setItemType] = useState([
+        { label: "Tops", value: "tops" },
+        { label: "Bottoms", value: "bottoms" },
+        { label: "Shoes", value: "shoes" },
+        { label: "Outerwear", value: "outerwear" },
+    ]);
+
 
     // console.log(category);
     // console.log(condition);
@@ -81,54 +100,30 @@ const AddListingScreen = ({ props, navigation }) => {
         price: undefined,
     });
 
-    // console.log(errors);
-    // console.log(lastName);
-
     const onPressCreate = async () => {
-        const titleError =
-            title.length > 0 ? undefined : "You must enter a title.";
-        const descriptionError =
-            description.length > 0
-                ? undefined
-                : "You must enter a item description.";
-        const priceError =
-            price.length > 0 ? undefined : "You must enter a price.";
-
-        if (titleError || descriptionError || priceError) {
-            setErrors({
-                title: titleError,
-                description: descriptionError,
-                price: priceError,
-            });
-        } else {
+            AsyncStorage.getItem("@userId", (err, item) =>
+                setuid(item)
+            );
+            await asyncCreateListing(title, description, pfpPath, category, 
+                condition, price, gender, subcategory, uID);
             setLoading(true);
-            console.log(title);
-            console.log(description);
-            console.log(category);
-            console.log(condition);
-            console.log(price);
-            // const resp = await asyncSignUp(
-            //     email,
-            //     password,
-            //     firstName,
-            //     lastName
-            // );
-            // console.log(resp);
-            // setUID(resp.userID);
-            // console.log("HELLO " + userID);
             setLoading(false);
-            setTitle("");
-            setDescription("");
-            setCategory(null);
-            setCondition(null);
-            setPrice("");
-            setImagePicked(false);
-            setImage("");
-            navigation.navigate("Profile");
-        }
+            // setTitle("");
+            // setDescription("");
+            // setCategory(null);
+            // setCondition(null);
+            // setPrice("");
+            // setImagePicked(false);
+            // setImage("");
+            // setSubcategory("null");
+            // setGender(0);
+            
+            // navigation.navigate("Profile");
     };
 
     const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
@@ -136,10 +131,27 @@ const AddListingScreen = ({ props, navigation }) => {
             quality: 1,
         });
 
-        console.log(result);
+        // console.log(result);
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             setImagePicked(true);
+            const path = result.assets[0].uri.substring(result.assets[0].uri.lastIndexOf('/')+1);
+            console.log(path);
+            
+            const reference = ref(storage, path);
+
+            const img = await fetch(result.assets[0].uri);
+            const bytes = await img.blob();
+            // console.log(bytes);
+            
+            const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+            await delay(1500);
+            await uploadBytes(reference, bytes)
+                .then(() => {
+                    console.log("File Uploaded");
+                });
+
+            setPath(path);
         }
     };
 
@@ -176,8 +188,6 @@ const AddListingScreen = ({ props, navigation }) => {
                             placeholder={""}
                             isPassword={false}
                             autoCorrect={false}
-                            error={errors.title}
-                            errorMessage={"Enter a valid title."}
                         />
 
                         <TextInput
@@ -187,8 +197,6 @@ const AddListingScreen = ({ props, navigation }) => {
                             placeholder={""}
                             isPassword={false}
                             autoCorrect={false}
-                            error={errors.description}
-                            errorMessage={"Enter a valid description."}
                             multiline={true}
                         />
 
@@ -208,6 +216,7 @@ const AddListingScreen = ({ props, navigation }) => {
                         >
                             <Text style={styles.inputTitle}>Category</Text>
                             <DropDownPicker
+                                placeholder="Select a category"
                                 open={open}
                                 value={category}
                                 items={items}
@@ -227,6 +236,71 @@ const AddListingScreen = ({ props, navigation }) => {
                                 }}
                                 style={styles.modalContent}
                             />
+
+                            {category == "clothes" ? (
+                                <View>
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                            alignSelf: "center",
+                                        }}
+                                    >
+                                        {gender == 1 ? (
+                                            <Button
+                                                title="Mens"
+                                                onPress={() => setGender(1)}
+                                                style={styles.button2}
+                                                small={true}
+                                            />
+                                        ) : (
+                                            <Button
+                                                title="Mens"
+                                                onPress={() => setGender(1)}
+                                                style={styles.button2}
+                                                unselected={true}
+                                            />
+                                        )}
+
+                                        {gender == 2 ? (
+                                            <Button
+                                                title="Womens"
+                                                onPress={() => setGender(2)}
+                                                style={styles.button2}
+                                                small={true}
+                                            />
+                                        ) : (
+                                            <Button
+                                                title="Womens"
+                                                onPress={() => setGender(2)}
+                                                style={styles.button2}
+                                                unselected={true}
+                                            />
+                                        )}
+                                    </View>
+
+                                    <DropDownPicker
+                                        placeholder="Select a subcategory"
+                                        open={openType}
+                                        value={subcategory}
+                                        items={itemType}
+                                        setOpen={setOpenType}
+                                        setValue={setSubcategory}
+                                        setItems={setItemType}
+                                        selectedItemContainerStyle={{
+                                            backgroundColor: Colors.primary,
+                                        }}
+                                        listMode={"MODAL"}
+                                        modalProps={{
+                                            animationType: "slide",
+                                        }}
+                                        textStyle={{
+                                            fontSize: 17,
+                                            padding: 10,
+                                        }}
+                                        style={styles.modalContent}
+                                    />
+                                </View>
+                            ) : null}
                         </View>
 
                         <View style={{ width: Dim.width * 0.8 }}>
@@ -296,8 +370,6 @@ const AddListingScreen = ({ props, navigation }) => {
                             isPassword={false}
                             autoCorrect={false}
                             inputMode={"numeric"}
-                            error={errors.price}
-                            errorMessage={"Enter a valid price."}
                         />
                         <View>
                             {loading ? (
@@ -343,6 +415,23 @@ const styles = StyleSheet.create({
         marginTop: 30,
         alignSelf: "center",
     },
+
+    button2: {
+        marginTop: 20,
+        alignSelf: "center",
+        marginHorizontal: 10,
+        marginBottom: 20,
+    },
+    button2_unselected: {
+        marginTop: 20,
+        alignSelf: "center",
+        marginHorizontal: 10,
+        marginBottom: 20,
+        backgroundColor: "white",
+        borderWidth: 2,
+        borderColor: Colors.primary,
+    },
+
     activity: { marginTop: 20, marginBottom: 40 },
     icon: {
         alignSelf: "flex-start",

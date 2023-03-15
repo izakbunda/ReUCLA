@@ -14,6 +14,7 @@ const {
     Timestamp,
     addDoc,
     getDoc,
+    updateDoc
 } = require("firebase/firestore");
 // const { isErrored } = require("stream");
 
@@ -27,9 +28,9 @@ const createUser = async (req, res) => {
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
             user = userCredentials.user;
-            // // const uID = JSON.stringify(user.uid);;
+            const uID = JSON.stringify(user.uid);
 
-            // userID = uID.replace('"', "");
+            userID = uID.replace('"', "");
             userID = user.uid;
             console.log(userID);
 
@@ -40,21 +41,21 @@ const createUser = async (req, res) => {
             };
             setDoc(docRef, docData);
             signInWithEmailAndPassword(auth, email, password)
-                .then((userCredentials) => {
-                    // console.log("User Exists");
-                    user = userCredentials.user;
-                    userID = user.uid;
-                    userExists = true;
-                }) // Send's an error back if this log-in isn't complete
-                .catch((err) => {
-                    console.log(err);
-                    res.send(err);
-                });
+                    .then((userCredentials) =>  {
+                        // console.log("User Exists");
+                        user = userCredentials.user;
+                        userID = user.uid;
+                        userExists = true;
+                    }) // Send's an error back if this log-in isn't complete
+                    .catch((err) => {
+                        console.log(err);
+                        res.send(err);
+                    });
         })
-        .catch((err) => {
+        .catch((err =>  {
             console.log(err);
             res.send(err);
-        });
+        }));
 
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await delay(2500);
@@ -77,25 +78,31 @@ const createUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-    const tempID = req.body.uID;
-    const userID = JSON.stringify(tempID).replace('"', "");
+    // const tempID = req.body.uID;
+    const userID = req.body.uID;
+    console.log(req.body.uID);
     docRef = doc(database, "userData", req.body.uID);
 
     const tempPath = req.body.pfpPath;
     console.log(tempPath);
-    const lastIndex = tempPath.lastIndexOf("/");
-    const path = tempPath.substring(lastIndex + 1);
+    var path = '/';
+    if (tempPath){
+       const lastIndex = tempPath.lastIndexOf('/');
+        path = tempPath.substring(lastIndex + 1); 
+    }
 
     const docData = {
         major: req.body.major,
         bio: req.body.bio,
         contact: [req.body.instagram, req.body.discord, req.body.twitter],
         pfpPath: path,
+        signInPath: tempPath,
+        userListings : []
     };
 
     // {major: , bio:, contact: {instagram: , discord: ,twitter:}}
 
-    setDoc(docRef, docData, { merge: true });
+    await updateDoc(docRef, docData);
 
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -115,7 +122,7 @@ const signIn = async (req, res) => {
     const email = req.body.email;
 
     const password = req.body.password;
-    var user, userID, userData, docRef, docRef;
+    var user, userData, docRef, docRef, userID;
     var userExists = false;
 
     // Tries to Sign in with firebase authentification
@@ -123,12 +130,9 @@ const signIn = async (req, res) => {
         .then((userCredentials) => {
             console.log("User Exists");
             user = userCredentials.user;
-            const uID = JSON.stringify(user.uid);
-            userID = uID.replace('"', "");
+            userID = user.uid;
             userExists = true;
-            console.log(userID);
             docRef = doc(database, "userData", userID);
-            console.log(userID);
             docRef = doc(database, "userData", userID);
         }) // Send's an error back if this log-in isn't complete
         .catch((err) => {
@@ -137,14 +141,10 @@ const signIn = async (req, res) => {
         });
 
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    await delay(1500);
+    // await delay(1500);
 
     if (!userExists) return;
     // Retrieves User Data
-    onAuthStateChanged(auth, (user) => {
-        userID = user.uid;
-    });
-    // console.log(userID);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
         console.log("Doc Data: ", docSnap.data());
@@ -152,8 +152,7 @@ const signIn = async (req, res) => {
         res.send({ userID, userData });
     } else {
         console.log("Doc Data doesn't Exist");
-        //   res.send({ errCode: 1, error: "Doesn't Exist" });
-        res.send({ userID });
+          res.send({ errCode: 1, error: "Doesn't Exist" });
     }
 };
 

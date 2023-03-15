@@ -8,7 +8,7 @@ import {
     Keyboard,
     TouchableWithoutFeedback,
     ActivityIndicator,
-    TouchableOpacity,
+    TouchableOpacity
 } from "react-native";
 import { Colors } from "../Constants";
 import TextInput from "../components/TextInput";
@@ -117,7 +117,6 @@ const SignIn = ({ props, navigation }) => {
                             }}
                         />
                     </TouchableOpacity>
-
                     <Text
                         style={{
                             marginTop: 10,

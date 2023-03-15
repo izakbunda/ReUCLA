@@ -187,6 +187,40 @@ const ProfileScreen = ({ navigation, props }) => {
                         </TouchableOpacity>
                     </View>
 
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignSelf: "center",
+                            paddingTop: 20,
+                            paddingBottom: 10,
+                        }}
+                    >
+                        <TouchableOpacity>
+                            <Icon
+                                name={"instagram"}
+                                size={30}
+                                color={Colors.primary}
+                                style={styles.icon}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Icon
+                                name={"message-square"}
+                                size={30}
+                                color={Colors.primary}
+                                style={styles.icon}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Icon
+                                name={"twitter"}
+                                size={30}
+                                color={Colors.primary}
+                                style={styles.icon}
+                            />
+                        </TouchableOpacity>
+                    </View>
+
                     <View style={styles.bioContainer}>
                         <Text style={styles.bio}>{bio}</Text>
                     </View>
