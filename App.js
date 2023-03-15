@@ -20,7 +20,6 @@ const Stack = createNativeStackNavigator();
 const App = () => {
     const [user, setUser] = useState(true);
     const [loading, setLoading] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     // useEffect(() => {
     //     AsyncStorage.multiGet(["@userId", "@signedIn"]).then((userId) => {

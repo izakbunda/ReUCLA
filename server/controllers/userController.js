@@ -25,7 +25,7 @@ const createUser = async (req, res) => {
     var user, userID, docRef;
     // console.log(req.body)
     createUserWithEmailAndPassword(auth, email, password)
-        .then(((userCredentials)) => {
+        .then((userCredentials) => {
             user = userCredentials.user;
             // // const uID = JSON.stringify(user.uid);;
 
@@ -40,18 +40,18 @@ const createUser = async (req, res) => {
             };
             setDoc(docRef, docData);
             signInWithEmailAndPassword(auth, email, password)
-                    .then((userCredentials) =>  {
-                        // console.log("User Exists");
-                        user = userCredentials.user;
-                        userID = user.uid;
-                        userExists = true;
-                    }) // Send's an error back if this log-in isn't complete
-                    .catch(((err)) => {
-                        console.log(err);
-                        res.send(err);
-                    });
+                .then((userCredentials) => {
+                    // console.log("User Exists");
+                    user = userCredentials.user;
+                    userID = user.uid;
+                    userExists = true;
+                }) // Send's an error back if this log-in isn't complete
+                .catch((err) => {
+                    console.log(err);
+                    res.send(err);
+                });
         })
-        .catch(((err)) =>  {
+        .catch((err) => {
             console.log(err);
             res.send(err);
         });
@@ -78,19 +78,19 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const tempID = req.body.uID;
-    const userID = JSON.stringify(tempID).replace('\"', "");
+    const userID = JSON.stringify(tempID).replace('"', "");
     docRef = doc(database, "userData", req.body.uID);
 
     const tempPath = req.body.pfpPath;
     console.log(tempPath);
-    const lastIndex = tempPath.lastIndexOf('/');
+    const lastIndex = tempPath.lastIndexOf("/");
     const path = tempPath.substring(lastIndex + 1);
 
     const docData = {
         major: req.body.major,
         bio: req.body.bio,
         contact: [req.body.instagram, req.body.discord, req.body.twitter],
-        pfpPath: path
+        pfpPath: path,
     };
 
     // {major: , bio:, contact: {instagram: , discord: ,twitter:}}
@@ -101,26 +101,26 @@ const updateUser = async (req, res) => {
     if (docSnap.exists()) {
         console.log("Doc Data: ", docSnap.data());
         const userData = docSnap.data();
-        res.send({userData, userID});
+        res.send({ userData, userID });
     } else {
         console.log("Doc Data doesn't Exist");
         res.send({ errCode: 1, error: "Doesn't Exist" });
     }
 };
 
-const signIn = async  (req, res) => {
+const signIn = async (req, res) => {
     // console.log("attempting to signin");
 
     // Variables used later
     const email = req.body.email;
-   
+
     const password = req.body.password;
     var user, userID, userData, docRef, docRef;
     var userExists = false;
 
     // Tries to Sign in with firebase authentification
     signInWithEmailAndPassword(auth, email, password)
-        .then((userCredentials) =>  {
+        .then((userCredentials) => {
             console.log("User Exists");
             user = userCredentials.user;
             const uID = JSON.stringify(user.uid);
@@ -131,7 +131,7 @@ const signIn = async  (req, res) => {
             console.log(userID);
             docRef = doc(database, "userData", userID);
         }) // Send's an error back if this log-in isn't complete
-        .catch(((err)) => {
+        .catch((err) => {
             console.log(err);
             res.send(err);
         });
@@ -157,7 +157,7 @@ const signIn = async  (req, res) => {
     }
 };
 
-const getUser = async  (req, res) => {
+const getUser = async (req, res) => {
     // const userID = req.body.userID;
     // const docRef = doc(database, 'userData', userID);
     // const docSnap = await getDoc(docRef);
@@ -170,7 +170,7 @@ const getUser = async  (req, res) => {
     //     console.log("No user data");
     //     res.send({errCode: 1 , error: "Doesn't Exist"});
     // }
-};;
+};
 
 module.exports = {
     createUser,
