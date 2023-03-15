@@ -18,23 +18,22 @@ import { NavBarStack } from "./src/navigation/NavBarStack";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-    const [user, setUser] = useState(true);
-    const [loading, setLoading] = useState(false);
+    const [user, setUser] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // useEffect(() => {
-    //     AsyncStorage.multiGet(["@userId", "@signedIn"]).then((userId) => {
-    //         console.log(userId);
-    //         // console.log(signedIn);
-    //         if (userId[0][1] && userId[1][1] == "true") {
-    //             setUser(true);
-    //             setLoading(false);
-    //         } else {
-    //             setUser(false);
-    //             setLoading(false);
-    //         }
-    //     });
-    // }, []);
+    useEffect(() => {
+        AsyncStorage.getItem("@signedIn").then((signedIn) => {
+            console.log(signedIn);
+            // console.log(signedIn);
+            if (signedIn == "true") {
+                setUser(true);
+                setLoading(false);
+            } else {
+                setUser(false);
+                setLoading(false);
+            }
+        });
+    }, []);
 
     return (
         <NavigationContainer>

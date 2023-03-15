@@ -20,7 +20,6 @@ import {
     RegexUsername,
 } from "../Constants";
 import { useEffect } from "react";
-import { useEffect } from "react";
 import Button from "../components/Button";
 import { RegexPassword, RegexName } from "../Constants";
 import AddProfilePhoto from "../components/AddProfilePhoto";
@@ -45,7 +44,6 @@ const asyncCreateProfile = async (
     pfpPath
 ) => {
     // console.log("HERE!!!")
-    uID = 'SF1uSzR5cYVde8v5nfdbY02uFQm2';
     return await fetch("http://localhost:4000/user/update", {
         // If you are posting something, use POST
         // If you are fetching something, use GET
@@ -109,6 +107,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
             const reference = ref(storage, path);
 
             const img = await fetch(result.assets[0].uri);
+            // AsyncStorage.setItem("@pfpURI", image);
             const bytes = await img.blob();
             // console.log(bytes);
             
@@ -120,7 +119,6 @@ const CreateProfileScreen = ({ props, navigation }) => {
                 });
 
             setPath(path);
-            setUserId('SF1uSzR5cYVde8v5nfdbY02uFQm2');
         }
     };
 
@@ -131,36 +129,39 @@ const CreateProfileScreen = ({ props, navigation }) => {
     };
 
     const onPressRegister = async () => {
-        const majorError =
-            major.length > 0 ? undefined : "You must enter a major";
-        const bioError =
-            bio.length > 0 ? undefined : "Please enter a valid password.";
-        const instagramError =
-            instagram.length > 0 ? undefined : "Enter a valid Instagram handle";
-        const discordError =
-            discord.length > 0
-                ? undefined
-                : "You must enter valid Discord tag.";
-        const twitterError =
-            twitter.length > 0
-                ? undefined
-                : "You must enter valid Twitter handle.";
+        AsyncStorage.getItem("@userId").then((userId) => {
+            setUserId(userId);
+        });
+        // const majorError =
+        //     major.length > 0 ? undefined : "You must enter a major";
+        // const bioError =
+        //     bio.length > 0 ? undefined : "Please enter a valid password.";
+        // const instagramError =
+        //     instagram.length > 0 ? undefined : "Enter a valid Instagram handle";
+        // const discordError =
+        //     discord.length > 0
+        //         ? undefined
+        //         : "You must enter valid Discord tag.";
+        // const twitterError =
+        //     twitter.length > 0
+        //         ? undefined
+        //         : "You must enter valid Twitter handle.";
 
-        if (
-            majorError ||
-            bioError ||
-            instagramError ||
-            discordError ||
-            twitterError
-        ) {
-            setErrors({
-                major: majorError,
-                bio: bioError,
-                instagram: instagramError,
-                discord: discordError,
-                twitter: twitterError,
-            });
-        } else {
+        // if (
+        //     majorError ||
+        //     bioError ||
+        //     instagramError ||
+        //     discordError ||
+        //     twitterError
+        // ) {
+        //     setErrors({
+        //         major: majorError,
+        //         bio: bioError,
+        //         instagram: instagramError,
+        //         discord: discordError,
+        //         twitter: twitterError,
+        //     });
+        // } else {
             setLoading(true);
             const resp = await asyncCreateProfile(
                 major,
@@ -172,14 +173,23 @@ const CreateProfileScreen = ({ props, navigation }) => {
                 image,
                 pfpPath
             );
-            // console.log(resp);
-            // console.log(userID);
-            // AsyncStorage.setItem("@bio", resp.bio);
-            // AsyncStorage.setItem("@contact", resp.contact); // ARRAY!!
-            // AsyncStorage.setItem("@major", resp.major);
-            // AsyncStorage.setItem("@signedIn", "true");
+            console.log(resp);
             setLoading(false);
-        }
+            console.log(resp.userID);
+            // console.log(userID);
+            AsyncStorage.setItem("@bio", resp.userData.bio);
+            AsyncStorage.setItem("@instagram", resp.userData.contact[0]);
+            AsyncStorage.setItem("@discord", resp.userData.contact[1]);
+            AsyncStorage.setItem("@twitter", resp.userData.contact[2]);
+            AsyncStorage.setItem("@major", resp.userData.major);
+            // AsyncStorage.setItem("@pfpURI", image);
+            AsyncStorage.setItem("@signedIn", "true");
+            AsyncStorage.multiGet(["@userId", "@signedIn"]).then((userId) => {
+                console.log(userId);
+            });
+            navigation.navigate("NavBarStack");
+            setLoading(false);
+        // }
     };
 
     return (
@@ -258,47 +268,16 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                     placeholder={"Where is your major?"}
                                     isPassword={false}
                                     autoCorrect={false}
-                                    error={errors.major}
-                                    errorMessage={"Enter a valid major."}
-                                    onEndEditing={() => {
-                                        if (!RegexName.test(major)) {
-                                            setErrors({
-                                                ...errors,
-                                                major: "Please enter a valid major.",
-                                            });
-                                        } else {
-                                            setErrors({
-                                                ...errors,
-                                                major: undefined,
-                                            });
-                                        }
-                                    }}
                                 />
 
                                         <TextInput
                                     title={"Bio"}
-                                            title={"Bio"}
                                     setText={setBio}
                                             multiline={true}
                                             value={bio}
                                             placeholder={"Tell us about yourself"}
                                             isPassword={false}
                                             autoCorrect={false}
-                                            error={errors.bio}
-                                            errorMessage={"Enter a valid bio."}
-                                            onEndEditing={() => {
-                                                if (!RegexName.test(bio)) {
-                                                    setErrors({
-                                                        ...errors,
-                                                        bio: "Please enter a valid bio.",
-                                                    });
-                                                } else {
-                                                    setErrors({
-                                                        ...errors,
-                                                        bio: undefined,
-                                                    });
-                                                }
-                                            }}
                                         />
 
                                         <Text style={styles.subtitle}>
@@ -313,26 +292,6 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                             placeholder={"@instagram_handle"}
                                             isPassword={false}
                                             autoCorrect={false}
-                                            error={errors.instagram}
-                                            errorMessage={
-                                        
-                                        "Enter a valid Instagram handle"
-                                    
-                                    }
-                                            onEndEditing={() => {
-                                                if (!RegexInstagram.test(instagram)) {
-                                                    setErrors({
-                                                        ...errors,
-                                                        instagram:
-                                                            "Please enter a valid instagram handle.",
-                                                    });
-                                                } else {
-                                                    setErrors({
-                                                        ...errors,
-                                                        instagram: undefined,
-                                                    });
-                                                }
-                                            }}
                                         />
                                         <TextInput
                                             setText={setDiscrod}
@@ -340,26 +299,6 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                             placeholder={"#discord_tag"}
                                             isPassword={false}
                                             autoCorrect={false}
-                                            error={errors.discord}
-                                            errorMessage={
-                                        
-                                        "Please enter a valid Discord tag."
-                                    
-                                    }
-                                            onEndEditing={() => {
-                                                if (!RegexDiscord.test(discord)) {
-                                                    setErrors({
-                                                        ...errors,
-                                                        discord:
-                                                            "Please enter a valid Discord tag.",
-                                                    });
-                                                } else {
-                                                    setErrors({
-                                                        ...errors,
-                                                        discord: undefined,
-                                                    });
-                                                }
-                                            }}
                                         />
                                         <TextInput
                                             setText={setTwitter}
@@ -367,26 +306,6 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                             placeholder={"@twitter_user"}
                                             isPassword={false}
                                             autoCorrect={false}
-                                            error={errors.twitter}
-                                            errorMessage={
-                                        
-                                        "Enter a valid Twitter handle."
-                                    
-                                    }
-                                            onEndEditing={() => {
-                                                if (!RegexTwitter.test(twitter)) {
-                                                    setErrors({
-                                                        ...errors,
-                                                        twitter:
-                                                            "Please enter a Twitter handle.",
-                                                    });
-                                                } else {
-                                                    setErrors({
-                                                        ...errors,
-                                                        twitter: undefined,
-                                                    });
-                                                }
-                                            }}
                                         />
 
                                 <View>
