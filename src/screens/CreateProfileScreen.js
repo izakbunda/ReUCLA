@@ -19,6 +19,7 @@ import {
     RegexTwitter,
     RegexUsername,
 } from "../Constants";
+import { useEffect } from "react";
 import Button from "../components/Button";
 import { RegexPassword, RegexName } from "../Constants";
 import AddProfilePhoto from "../components/AddProfilePhoto";
@@ -26,7 +27,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { deleteApp } from "firebase/app";
+import { ref, uploadBytes } from "firebase/storage";
+import { storage } from "./firebase";
 /*
   -- DOCUMENTATION --
 */
@@ -37,10 +40,10 @@ const asyncCreateProfile = async (
     instagram,
     discord,
     twitter,
-    uID
+    uID,
+    pfpPath
 ) => {
     // console.log("HERE!!!")
-    // console.log(email)
     return await fetch("http://localhost:4000/user/update", {
         // If you are posting something, use POST
         // If you are fetching something, use GET
@@ -48,7 +51,15 @@ const asyncCreateProfile = async (
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ major, bio, instagram, discord, twitter, uID }),
+        body: JSON.stringify({
+            major,
+            bio,
+            instagram,
+            discord,
+            twitter,
+            uID,
+            pfpPath,
+        }),
     })
         .then((res) => res.json())
         .then((data) => {
@@ -66,6 +77,7 @@ const CreateProfileScreen = ({ props, navigation }) => {
     const [discord, setDiscrod] = useState("");
     const [twitter, setTwitter] = useState(true);
     const [uID, setUserId] = useState("");
+    const [pfpPath, setPath] = useState(null);
 
     const [errors, setErrors] = useState({
         major: undefined,
@@ -75,14 +87,14 @@ const CreateProfileScreen = ({ props, navigation }) => {
         twitter: undefined,
     });
 
-    // AsyncStorage.getItem("@userId", (err, item) => setUserId(item));
+    AsyncStorage.getItem("@userId", (err, item) => setUserId(item));
 
     const [image, setImage] = useState(null);
     const [imagePicked, setImagePicked] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    console.log(imagePicked);
-    console.log(image);
+    // console.log(imagePicked);
+    // console.log(pfp);
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -93,10 +105,29 @@ const CreateProfileScreen = ({ props, navigation }) => {
             quality: 1,
         });
 
-        console.log(result);
+        // console.log(result);
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             setImagePicked(true);
+            const path = result.assets[0].uri.substring(
+                result.assets[0].uri.lastIndexOf("/") + 1
+            );
+            console.log(path);
+
+            const reference = ref(storage, path);
+
+            const img = await fetch(result.assets[0].uri);
+            const bytes = await img.blob();
+            // console.log(bytes);
+
+            const delay = (ms) =>
+                new Promise((resolve) => setTimeout(resolve, ms));
+            await delay(1500);
+            await uploadBytes(reference, bytes).then(() => {
+                console.log("File Uploaded");
+            });
+
+            setPath(path);
         }
     };
 
@@ -138,17 +169,24 @@ const CreateProfileScreen = ({ props, navigation }) => {
                 instagram,
                 discord,
                 twitter,
-                uID
+                uID,
+                image,
+                pfpPath
             );
             console.log(resp);
-            // AsyncStorage.getItem("@userId", (err, item) => console.log(item));
-
-            console.log(uID);
-            AsyncStorage.setItem("@bio", resp.bio);
-            AsyncStorage.setItem("@contact", resp.contact); // ARRAY!!
-            AsyncStorage.setItem("@major", resp.major);
+            // console.log(userID);
+            AsyncStorage.setItem("@bio", resp.userData.bio);
+            AsyncStorage.setItem("@instagram", resp.userData.contact[0]);
+            AsyncStorage.setItem("@discord", resp.userData.contact[1]);
+            AsyncStorage.setItem("@twitter", resp.userData.contact[2]);
+            AsyncStorage.setItem("@major", resp.userData.major);
+            AsyncStorage.setItem("@pfpURI", image);
             AsyncStorage.setItem("@signedIn", "true");
             setLoading(false);
+            AsyncStorage.multiGet(["@userId", "@signedIn"]).then((userId) => {
+                console.log(userId);
+            });
+            navigation.navigate("NavBarStack");
         }
     };
 
@@ -228,21 +266,6 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                     placeholder={"Where is your major?"}
                                     isPassword={false}
                                     autoCorrect={false}
-                                    error={errors.major}
-                                    errorMessage={"Enter a valid major."}
-                                    onEndEditing={() => {
-                                        if (!RegexName.test(major)) {
-                                            setErrors({
-                                                ...errors,
-                                                major: "Please enter a valid major.",
-                                            });
-                                        } else {
-                                            setErrors({
-                                                ...errors,
-                                                major: undefined,
-                                            });
-                                        }
-                                    }}
                                 />
 
                                 <TextInput
@@ -253,21 +276,6 @@ const CreateProfileScreen = ({ props, navigation }) => {
                                     placeholder={"Tell us about yourself"}
                                     isPassword={false}
                                     autoCorrect={false}
-                                    error={errors.bio}
-                                    errorMessage={"Enter a valid bio."}
-                                    onEndEditing={() => {
-                                        if (!RegexName.test(bio)) {
-                                            setErrors({
-                                                ...errors,
-                                                bio: "Please enter a valid bio.",
-                                            });
-                                        } else {
-                                            setErrors({
-                                                ...errors,
-                                                bio: undefined,
-                                            });
-                                        }
-                                    }}
                                 />
 
                                 <Text style={styles.subtitle}>
@@ -340,8 +348,14 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 30,
         marginBottom: 40,
+        marginBottom: 40,
         alignSelf: "center",
         backgroundColor: Colors.primaryGreen,
+    },
+    activity: {
+        marginTop: 30,
+        marginBottom: 40,
+        alignSelf: "center",
     },
     activity: {
         marginTop: 30,

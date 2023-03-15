@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     View,
     StyleSheet,
@@ -10,20 +10,17 @@ import {
     Alert,
     TouchableOpacity,
 } from "react-native";
+import { useEffect } from "react";
 import { Dim, Colors } from "../Constants";
 import SmallListing from "../components/SmallListing";
 import Icon from "react-native-vector-icons/Feather";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /*
   -- DOCUMENTATION --
 */
 
 const profileProps = {
-    profilePhoto: "https://google.com",
-    name: "Izak Bunda",
-    major: "Computer Science",
-    bio: "Hello! I am a 2nd year UCLA student interested in fashion. I have a problem of buying too many clothes, so this is my solution. Feel free to message me to negotiate, none of the prices are final!",
-    contactInformation: [7609942957, "@izakbunda", "izakbunda@gmail.com"],
     listingData: [
         {
             listingPhoto:
@@ -72,6 +69,72 @@ const profileProps = {
 };
 
 const ProfileScreen = ({ navigation, props }) => {
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [bio, setBio] = useState("");
+    const [major, setMajor] = useState("");
+    const [instagram, setInstagram] = useState("");
+    const [discord, setDiscord] = useState("");
+    const [twitter, setTwitter] = useState("");
+    const [pfp, setPfp] = useState("");
+
+    // console.log("LAST NAME FROM SIGN IN:" + item);
+    // console.log("LAST NAME FROM SIGN IN:" + item);
+    // console.log("BIO FROM SIGN IN:" + item);
+    // console.log("MAJOR FROM SIGN IN:" + item);
+    // console.log("INSTAGRAM FROM SIGN IN:" + item);
+
+    useEffect(() => {
+        AsyncStorage.getItem("@firstName", (err, item) => {
+            // console.log("FIRST NAME FROM SIGN IN:" + item);
+            setFirstName(item);
+        });
+        AsyncStorage.getItem("@lastName", (err, item) => {
+            // console.log("LAST NAME FROM SIGN IN:" + item);
+            setLastName(item);
+        });
+        AsyncStorage.getItem("@bio", (err, item) => {
+            // console.log("BIO FROM SIGN IN:" + item);
+            setBio(item);
+        });
+        AsyncStorage.getItem("@major", (err, item) => {
+            // console.log("MAJOR FROM SIGN IN:" + item);
+            setMajor(item);
+        });
+        AsyncStorage.getItem("@instagram", (err, item) => {
+            // console.log("INSTA FROM SIGN IN:" + item);
+            setInstagram(item);
+        });
+        AsyncStorage.getItem("@discord", (err, item) => {
+            // console.log("DISCORD FROM SIGN IN:" + item);
+            setDiscord(item);
+        });
+        AsyncStorage.getItem("@twitter", (err, item) => {
+            // console.log("TWITTER FROM SIGN IN:" + item);
+            setTwitter(item);
+        });
+        AsyncStorage.getItem("@pfpURI", (err, item) => {
+            // console.log("PFP FROM SIGN IN:" + item);
+            setPfp(item);
+        });
+    }, []);
+
+    const handleClick = (type) => {
+        {
+            switch (type) {
+                case 1:
+                    Alert.alert("Follow me on Instagram: " + instagram);
+                    break;
+                case 2:
+                    Alert.alert("Add me on Discord " + discord);
+                    break;
+                case 3:
+                    Alert.alert("Follow me on Twitter " + twitter);
+                    break;
+            }
+        }
+    };
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView>
@@ -79,14 +142,16 @@ const ProfileScreen = ({ navigation, props }) => {
                     <View style={styles.photoContainer}>
                         <Image
                             source={{
-                                uri: profileProps.profilePhoto,
+                                uri: pfp,
                             }}
                             style={styles.photoContainer}
                         />
                     </View>
 
-                    <Text style={styles.name}>{profileProps.name} </Text>
-                    <Text style={styles.major}>{profileProps.major} </Text>
+                    <Text style={styles.name}>
+                        {firstName + " " + lastName}
+                    </Text>
+                    <Text style={styles.major}>{major} </Text>
 
                     <View
                         style={{
@@ -96,7 +161,7 @@ const ProfileScreen = ({ navigation, props }) => {
                             paddingBottom: 10,
                         }}
                     >
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleClick(1)}>
                             <Icon
                                 name={"instagram"}
                                 size={30}
@@ -104,7 +169,7 @@ const ProfileScreen = ({ navigation, props }) => {
                                 style={styles.icon}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleClick(2)}>
                             <Icon
                                 name={"message-square"}
                                 size={30}
@@ -112,7 +177,7 @@ const ProfileScreen = ({ navigation, props }) => {
                                 style={styles.icon}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleClick(3)}>
                             <Icon
                                 name={"twitter"}
                                 size={30}
@@ -123,7 +188,7 @@ const ProfileScreen = ({ navigation, props }) => {
                     </View>
 
                     <View style={styles.bioContainer}>
-                        <Text style={styles.bio}>{profileProps.bio}</Text>
+                        <Text style={styles.bio}>{bio}</Text>
                     </View>
 
                     <View style={{ width: Dim.width * 0.9, paddingTop: 20 }}>
@@ -217,6 +282,12 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginRight: 14,
+    },
+    logout: {
+        alignSelf: "flex-start",
+        position: "absolute",
+        top: -15,
+        right: -165,
     },
 });
 

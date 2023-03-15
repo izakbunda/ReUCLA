@@ -17,6 +17,7 @@ export const NavBarStack = (route) => {
                     paddingTop: 10,
                     paddingBottom: 20,
                 },
+                gestureEnabled: false,
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
 
