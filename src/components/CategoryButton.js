@@ -1,24 +1,16 @@
 import React from "react";
-import {
-    View,
-    StyleSheet,
-    Text,
-    Image,
-    TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import { Dim, Colors } from "../Constants";
 
 const CategoryButton = (props) => {
     return (
-        <TouchableOpacity onPress={ props.onPress }>
+        <TouchableOpacity onPress={props.onPress}>
             <View style={styles.button}>
-                <Text style={styles.text}>
-                    {props.product}
-                </Text>
+                <Text style={styles.text}>{props.product}</Text>
             </View>
         </TouchableOpacity>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     button: {
@@ -35,7 +27,7 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         fontSize: 15,
-      }
-})
+    },
+});
 
 export default CategoryButton;

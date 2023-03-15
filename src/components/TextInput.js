@@ -9,19 +9,37 @@ import { Dim, Colors } from "../Constants";
 const TextInput = (props) => {
     return (
         <View>
-            <Text style={styles.inputTitle}>{props.title}</Text>
-            <RN_TextInput
-                {...props}
-                placeholder={props.placeholder}
-                onChangeText={props.setText}
-                value={props.text}
-                secureTextEntry={props.isPassword}
-                autoComplete={props.autoComplete}
-                autoCorrect={props.autoCorrect}
-                clearButtonMode="always"
-                style={styles.inputStyle}
-                onEndEditing={props.onEndEditing}
-            />
+            {props.title ? (
+                <Text style={styles.inputTitle}>{props.title}</Text>
+            ) : null}
+            {props.multiline ? (
+                <RN_TextInput
+                    {...props}
+                    placeholder={props.placeholder}
+                    onChangeText={props.setText}
+                    value={props.text}
+                    secureTextEntry={props.isPassword}
+                    autoComplete={props.autoComplete}
+                    autoCorrect={props.autoCorrect}
+                    clearButtonMode="always"
+                    style={styles.multilineInput}
+                    onEndEditing={props.onEndEditing}
+                />
+            ) : (
+                <RN_TextInput
+                    {...props}
+                    placeholder={props.placeholder}
+                    onChangeText={props.setText}
+                    value={props.text}
+                    secureTextEntry={props.isPassword}
+                    autoComplete={props.autoComplete}
+                    autoCorrect={props.autoCorrect}
+                    clearButtonMode="always"
+                    style={styles.inputStyle}
+                    onEndEditing={props.onEndEditing}
+                />
+            )}
+
             <View style={{ width: Dim.width * 0.8 }}>
                 {props.error ? (
                     <Text style={styles.error}>{props.errorMessage}</Text>
@@ -36,6 +54,15 @@ const styles = StyleSheet.create({
         height: 50,
         width: Dim.width * 0.8,
         margin: 12,
+        padding: 10,
+        backgroundColor: Colors.lightGray,
+        borderRadius: 10,
+    },
+    multilineInput: {
+        height: 100,
+        width: Dim.width * 0.8,
+        margin: 12,
+        paddingTop: 15,
         padding: 10,
         backgroundColor: Colors.lightGray,
         borderRadius: 10,

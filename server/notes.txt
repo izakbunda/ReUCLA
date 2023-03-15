@@ -1,0 +1,40 @@
+// const {database} = require('./firebase.js');
+
+// const { doc, setDoc, addDoc, collection, getDoc, query, getDocs} = require("firebase/firestore"); 
+
+// const q = query(collection(database, "userData"));
+// var userData;
+
+// async function getAllData() {
+//   const querySnapshot = await getDocs(q);
+//   querySnapshot.forEach((doc) => {
+//     // doc.data() is never undefined for query doc snapshots
+    
+//     userData += JSON.stringify(doc.data());
+//     // console.log(doc.id, " => ", doc.data());
+//     // console.log(typeof userData);
+//     // console.log(userData);
+//   });
+// }
+
+// getAllData();
+// // console.log(userData);
+
+// const docRef = doc(database, "userData", "32948y123094871293578");
+// const docSnap = await getDoc(docRef);
+
+// async function getAllData(database, ) {
+//     const userDB = collection(database, 'userData');
+//     const allUserData = await getDoc(userDB);
+//     // allIntern.docs is an array of WEIRD db OBJECTS, using .data() on EACH ELEMENT will convert it to a normal javascript object
+//     const userData = await allUserData.docs.map(element => element.data());
+//     return userData;
+// };
+// getAllData(database)
+//     .then((data) => {
+//         setPokemon(data);
+//         console.log(userData);
+// })
+
+
+// // getAllData(database);
