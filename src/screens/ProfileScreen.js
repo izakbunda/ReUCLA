@@ -88,6 +88,40 @@ const ProfileScreen = ({ navigation, props }) => {
                     <Text style={styles.name}>{profileProps.name} </Text>
                     <Text style={styles.major}>{profileProps.major} </Text>
 
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignSelf: "center",
+                            paddingTop: 20,
+                            paddingBottom: 10,
+                        }}
+                    >
+                        <TouchableOpacity>
+                            <Icon
+                                name={"instagram"}
+                                size={30}
+                                color={Colors.primary}
+                                style={styles.icon}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Icon
+                                name={"message-square"}
+                                size={30}
+                                color={Colors.primary}
+                                style={styles.icon}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Icon
+                                name={"twitter"}
+                                size={30}
+                                color={Colors.primary}
+                                style={styles.icon}
+                            />
+                        </TouchableOpacity>
+                    </View>
+
                     <View style={styles.bioContainer}>
                         <Text style={styles.bio}>{profileProps.bio}</Text>
                     </View>
@@ -140,45 +174,6 @@ const ProfileScreen = ({ navigation, props }) => {
                                 );
                             }}
                         />
-                    </View>
-                    <View
-                        style={{
-                            width: Dim.width * 0.9,
-                            paddingVertical: 20,
-                        }}
-                    >
-                        <Text style={styles.listings}>Contact Me</Text>
-                        <View
-                            style={{
-                                width: Dim.width * 0.9,
-                                flexDirection: "row",
-                            }}
-                        >
-                            <TouchableOpacity>
-                                <Icon
-                                    name={"message-circle"}
-                                    size={30}
-                                    color={Colors.primary}
-                                    style={styles.icon}
-                                />
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <Icon
-                                    name={"instagram"}
-                                    size={30}
-                                    color={Colors.primary}
-                                    style={styles.icon}
-                                />
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <Icon
-                                    name={"mail"}
-                                    size={30}
-                                    color={Colors.primary}
-                                    style={styles.icon}
-                                />
-                            </TouchableOpacity>
-                        </View>
                     </View>
                 </View>
             </ScrollView>
