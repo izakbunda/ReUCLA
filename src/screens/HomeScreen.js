@@ -85,8 +85,10 @@ const HomeScreen = ({ navigation, props }) => {
                                     photo={item.photo}
                                     product={item.product}
                                     onPress={() => {
-                                        Alert.alert("go to category page");
-                                    }}
+                                        navigation.navigate("Category", {
+                                            category: item.product
+                                        });
+                                    }}  
                                 />
                             );
                         }}
@@ -103,7 +105,9 @@ const HomeScreen = ({ navigation, props }) => {
                                     photo={item.photo}
                                     product={item.product}
                                     onPress={() => {
-                                        Alert.alert("go to category page");
+                                        navigation.navigate("Category", {
+                                            category: item.product
+                                        });
                                     }}
                                 />
                             );
@@ -114,43 +118,55 @@ const HomeScreen = ({ navigation, props }) => {
                 <View style={styles.button}>
                     <CategoryButton
                         onPress={() => {
-                            Alert.alert("go to product page");
+                            navigation.navigate("Category", {
+                                category: "CLOTHES"
+                            });
                         }}
-                        product="Clothes"
+                        product="CLOTHES"
                     />
                     <CategoryButton
                         onPress={() => {
-                            Alert.alert("go to product page");
+                            navigation.navigate("Category", {
+                                category: "TECHNOLOGY"
+                            });
                         }}
-                        product="Technology"
-                    />
-                </View>
-                <View style={styles.button}>
-                    <CategoryButton
-                        onPress={() => {
-                            Alert.alert("go to product page");
-                        }}
-                        product="Books"
-                    />
-                    <CategoryButton
-                        onPress={() => {
-                            Alert.alert("go to product page");
-                        }}
-                        product="Furniture"
+                        product="TECHNOLOGY"
                     />
                 </View>
                 <View style={styles.button}>
                     <CategoryButton
                         onPress={() => {
-                            Alert.alert("go to product page");
+                            navigation.navigate("Category", {
+                                category: "BOOKS"
+                            });
                         }}
-                        product="Food"
+                        product="BOOKS"
                     />
                     <CategoryButton
                         onPress={() => {
-                            Alert.alert("go to product page");
+                            navigation.navigate("Category", {
+                                category: "FURNITURE"
+                            });
                         }}
-                        product="Plants"
+                        product="FURNITURE"
+                    />
+                </View>
+                <View style={styles.button}>
+                    <CategoryButton
+                        onPress={() => {
+                            navigation.navigate("Category", {
+                                category: "FOOD"
+                            });
+                        }}
+                        product="FOOD"
+                    />
+                    <CategoryButton
+                        onPress={() => {
+                            navigation.navigate("Category", {
+                                category: "PLANTS"
+                            });
+                        }}
+                        product="PLANTS"
                     />
                 </View>
             </ScrollView>
@@ -171,7 +187,7 @@ const styles = StyleSheet.create({
     sectionHeader: {
         fontSize: 25,
         fontWeight: "bold",
-        marginTop: 35,
+        marginTop: 25,
         paddingLeft: 20,
         paddingBottom: 15,
     },

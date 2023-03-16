@@ -70,7 +70,9 @@ const SignIn = ({ props, navigation }) => {
         } else {
             setLoading(true);
             const resp = await asyncSignIn(email, password);
-            // if (resp == null) console.log("empty");
+
+            if (!resp.status){
+                // if (resp == null) console.log("empty");
             console.log(resp);
             setUID(resp.userID);
             setLoading(false);
@@ -90,6 +92,13 @@ const SignIn = ({ props, navigation }) => {
             // AsyncStorage.getItem("@userId", (err, item) =>
             //     console.log("USER ID FROM SIGN IN:" + item)
             // );
+            }
+            else{
+                setErrors({
+                    password: emailError
+                });
+                setLoading(false);
+            }
         }
     };
 
