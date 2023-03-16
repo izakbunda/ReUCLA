@@ -39,9 +39,9 @@ const createListing = async(req, res) => {
 
     if (category == 'clothes'){
         if (gender == 1)
-            collectionPath = collectionPath + '/menswear';
+            collectionPath = collectionPath + '/clothing/menswear';
         else
-            collectionPath = collectionPath + '/womenswear';
+            collectionPath = collectionPath + '/clothing/womenswear';
     } else {
         collectionPath = collectionPath + '/products/other';
     }
