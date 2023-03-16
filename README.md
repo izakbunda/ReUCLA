@@ -1,7 +1,10 @@
 # ReUCLA App
+<<<<<<< HEAD
 
 <img src="https://user-images.githubusercontent.com/98503066/225775163-8322adf7-111e-4ecf-8f74-cfae934acf88.png"  width="255" height="330">
 
+=======
+>>>>>>> 370b0b7 (Update README.md)
 ### By Izak Bunda, Lawrence Lee, Ying Chou, and Sean Chan for COM SCI 35L Winter 2023 ###
 
 ## Starting the dev server 
