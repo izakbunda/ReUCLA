@@ -96,7 +96,14 @@ const ListingScreen = (props) => {
                         </View>
 
             </View>
-            
+        
+
+            <SaveButton 
+                onPress={ () => {
+                Alert.alert("Item has been saved to bag.")
+            }}
+            label="Save Item"
+            />
 
         </SafeAreaView>
         </ScrollView>
