@@ -1,4 +1,5 @@
-# Frontend repository for ReUCLA
+# ReUCLA App
+### By Izak Bunda, Lawrence Lee, Ying Chou, and Sean Chan for COM SCI 35L Winter 2023 ###
 
 ## Starting the dev server 
 ### `npm start` or `expo start`
