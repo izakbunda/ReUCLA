@@ -2,7 +2,6 @@
 
 <img src="https://user-images.githubusercontent.com/98503066/225775163-8322adf7-111e-4ecf-8f74-cfae934acf88.png"  width="255" height="330">
 
->>>>>>> 370b0b7 (Update README.md)
 
 <img src="https://user-images.githubusercontent.com/98503066/225775163-8322adf7-111e-4ecf-8f74-cfae934acf88.png"  width="255" height="330">
 
