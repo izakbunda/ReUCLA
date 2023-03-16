@@ -11,9 +11,42 @@ import { AlignCenter, List } from "react-native-feather";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "../components/Button.js";
 import SaveButton from "../components/SaveButton.js";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 // import CategoryButton from "../components/CategoryButton";
 
+
+
+// const ProfileScreen = ({ navigation, props }) => {
+//     const [firstName, setFirstName] = useState("");
+//     const [lastName, setLastName] = useState("");
+//     const [bio, setBio] = useState("");
+//     const [major, setMajor] = useState("");
+//     const [instagram, setInstagram] = useState("");
+//     const [discord, setDiscord] = useState("");
+//     const [twitter, setTwitter] = useState("");
+//     const [pfp, setPfp] = useState("");
+
+//     // console.log("LAST NAME FROM SIGN IN:" + item);
+//     // console.log("LAST NAME FROM SIGN IN:" + item);
+//     // console.log("BIO FROM SIGN IN:" + item);
+//     // console.log("MAJOR FROM SIGN IN:" + item);
+//     // console.log("INSTAGRAM FROM SIGN IN:" + item);
+
+//     useEffect(() => {
+//         AsyncStorage.getItem("@firstName", (err, item) => {
+//             // console.log("FIRST NAME FROM SIGN IN:" + item);
+//             setFirstName(item);
+//         });
+//         AsyncStorage.getItem("@lastName", (err, item) => {
+//             // console.log("LAST NAME FROM SIGN IN:" + item);
+//             setLastName(item);
+//         });
+
+
+
+//     }, [])};
 
 const Dummy = () => {
     const testListings = [
@@ -91,6 +124,7 @@ const ListingScreen = (props) => {
                         
                         <View style={styles.profileInfo}>
                             <Text style={styles.sellerName}>{props.sellerName}</Text>
+                            {/* <Text style={styles.sellerName}>{firstName + " " + lastName}</Text> */}
                             <Text style={styles.sellerCity}>{props.sellerCity}</Text>
                             <Text style={styles.sellerRating}>Rating: {props.sellerRating} stars</Text>
                         </View>
