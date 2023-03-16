@@ -13,6 +13,7 @@ import LandingScreen from "./src/screens/LandingScreen";
 // Import all stack screens here
 import { SignInStack } from "./src/navigation/SignInStack";
 import { NavBarStack } from "./src/navigation/NavBarStack";
+import {ListingScreen, Dummy} from "./src/screens/ListingScreen.js"
 //
 
 const Stack = createNativeStackNavigator();
@@ -45,7 +46,8 @@ const App = () => {
                         headerShown: false,
                     }}
                 >
-                    <Stack.Screen name="NavBar" component={NavBarStack} />
+                    <Stack.Screen name="NavBar" component={NavBarStack} /> 
+                    {/* TODO: Change Dummy back to NavBarStack */}
                 </Stack.Navigator>
             ) : (
                 <Stack.Navigator>
