@@ -3,6 +3,7 @@ import HomeScreen from "../screens/HomeScreen";
 import SavedScreen from "../screens/SavedScreen";
 import CategoryScreen from "../screens/CategoryScreen";
 import SearchScreen from "../screens/SearchScreen";
+import ListingScreen from "../screens/ListingScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,15 +25,17 @@ export const HomeScreenStack = (route) => {
                 component={CategoryScreen}
                 options={{ headerShown: false }}
             />
-<<<<<<< HEAD
-            
-=======
             <Stack.Screen
                 name="Search"
                 component={SearchScreen}
                 options={{ headerShown: false }}
             />
->>>>>>> main
+            <Stack.Screen
+                name="Listing"
+                component={ListingScreen}
+                options={{ headerShown: false }}
+            />
+
         </Stack.Navigator>
     );
 };
