@@ -14,7 +14,6 @@ const savedData = [
         listingDescription: "these are pants!",
         category: ["clothing", "menswear", "bottoms"],
         condition: 1,
-        sold: 1,
         saved: 1,
     },
     {
@@ -25,8 +24,7 @@ const savedData = [
         listingDescription: "these are from the 90s!",
         category: ["clothing", "menswear", "tops"],
         condition: 1,
-        sold: 0,
-        saved: 0,
+        saved: 1,
     },
     {
         listingPhoto:
@@ -37,7 +35,6 @@ const savedData = [
             "I got scared of lava lamps, so I don't use anymore!",
         category: ["homegoods", "bedroom", "lights"],
         condition: 1,
-        sold: 0,
         saved: 1,
     },
 ];
@@ -55,7 +52,7 @@ const SavedScreen = ({ navigation, props }) => {
                 />
                 <Text style={styles.saves}>My Saves</Text>
             </View>
-            <View style={{ width: Dim.width * 0.9, marginLeft: 20 }}>
+            <View style={{ width: Dim.width * 0.9, height: "95%", marginLeft: 20 }}>
                 <FlatList
                     data={savedData}
                     renderItem={({ item }) => {
@@ -64,7 +61,6 @@ const SavedScreen = ({ navigation, props }) => {
                                 listingPhoto={item.listingPhoto}
                                 listingPrice={item.listingPrice}
                                 listingName={item.listingName}
-                                sold={item.sold}
                                 saved={item.saved}
                                 onPress={() => {
                                     Alert.alert("Fix tomorrow");
