@@ -21,39 +21,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 */
 
 const profileProps = {
-    listingData: [
-        {
-            listingPhoto:
-                "https://www.etsy.com/img/13961967/r/il/a150c5/3045227226/il_570xN.3045227226_4gag.jpg",
-            listingPrice: 10,
-            listingName: "magic pants",
-            listingDescription: "these are pants!",
-            category: ["clothing", "menswear", "bottoms"],
-            condition: 1,
-            sold: 1,
-        },
-        {
-            listingPhoto:
-                "https://i.etsystatic.com/6071918/r/il/168482/1159433180/il_1588xN.1159433180_p347.jpg",
-            listingPrice: 7,
-            listingName: "vintage shirt",
-            listingDescription: "these are from the 90s!",
-            category: ["clothing", "menswear", "tops"],
-            condition: 1,
-            sold: 0,
-        },
-        {
-            listingPhoto:
-                "https://i.ebayimg.com/images/g/KyAAAOSwaaphBavz/s-l1600.jpg",
-            listingPrice: 20,
-            listingName: "lava lamp",
-            listingDescription:
-                "I got scared of lava lamps, so I don't use anymore!",
-            category: ["homegoods", "bedroom", "lights"],
-            condition: 1,
-            sold: 0,
-        },
-    ],
     savedData: [
         {
             listingPhoto:
@@ -77,12 +44,8 @@ const ProfileScreen = ({ navigation, props }) => {
     const [discord, setDiscord] = useState("");
     const [twitter, setTwitter] = useState("");
     const [pfp, setPfp] = useState("");
-
-    // console.log("LAST NAME FROM SIGN IN:" + item);
-    // console.log("LAST NAME FROM SIGN IN:" + item);
-    // console.log("BIO FROM SIGN IN:" + item);
-    // console.log("MAJOR FROM SIGN IN:" + item);
-    // console.log("INSTAGRAM FROM SIGN IN:" + item);
+    const [uID, setuID] = useState("");
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         AsyncStorage.getItem("@firstName", (err, item) => {
@@ -117,6 +80,21 @@ const ProfileScreen = ({ navigation, props }) => {
             // console.log("PFP FROM SIGN IN:" + item);
             setPfp(item);
         });
+        AsyncStorage.getItem("@userId", (err, item) => {
+            setuID(item);
+        });
+    }, []);
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/listings/get/${uID}`)
+            .then((res) => res.json())
+            .then((data) => { 
+                setData(data.listingData);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                return error;
+            });
     }, []);
 
     const handleClick = (type) => {
@@ -194,15 +172,14 @@ const ProfileScreen = ({ navigation, props }) => {
                     <View style={{ width: Dim.width * 0.9, paddingTop: 20 }}>
                         <Text style={styles.listings}>Listings</Text>
                         <FlatList
-                            data={profileProps.listingData}
+                            data={data}
                             horizontal={true}
                             renderItem={({ item }) => {
                                 return (
                                     <SmallListing
-                                        listingPhoto={item.listingPhoto}
-                                        listingPrice={item.listingPrice}
-                                        listingName={item.listingName}
-                                        sold={item.sold}
+                                        listingPhoto={item.photoPath}
+                                        listingPrice={item.price}
+                                        listingName={item.title}
                                         onPress={() => {
                                             Alert.alert("Fix tomorrow");
                                         }}

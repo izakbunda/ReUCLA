@@ -15,8 +15,12 @@ const {
     addDoc,
     getDoc,
     updateDoc,
+    collection,
+    query, 
+    getDocs,
+    where,
 } = require("firebase/firestore");
-// const { isErrored } = require("stream");
+const { list } = require("firebase/storage");
 
 const createUser = async (req, res) => {
     const email = req.body.email;
@@ -174,9 +178,41 @@ const getUser = async (req, res) => {
     // }
 };
 
+const getUserListings = async (req, res) => {
+    console.log("HERE")
+    const { uID } = req.params;
+    
+    const listingData = [];
+    const mensPath = '/listings/clothing/menswear';
+    const womensPath = '/listings/clothing/womenswear';
+    const productsPath = '/listings/products/other';
+
+    var q = query(collection(database, mensPath), where("uID", "==", uID));
+    var querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+        listingData.push(doc.data());
+    });
+
+    q = query(collection(database, womensPath), where("uID", "==", uID));
+    var querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+        listingData.push(doc.data());
+    });
+
+    q = query(collection(database, productsPath), where("uID", "==", uID));
+    var querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+        listingData.push(doc.data());
+    });
+    console.log(listingData)
+
+    res.send({ listingData })
+}
+
 module.exports = {
     createUser,
     getUser,
     updateUser,
     signIn,
+    getUserListings,
 };
