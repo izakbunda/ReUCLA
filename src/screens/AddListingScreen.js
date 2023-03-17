@@ -3,13 +3,15 @@ import {
     View,
     StyleSheet,
     Text,
+    ScrollView,
+    Alert,
     Keyboard,
     TouchableOpacity,
     TouchableWithoutFeedback,
     ActivityIndicator,
     Platform,
 } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TextInput from "../components/TextInput";
 import { Colors } from "../Constants";
@@ -24,20 +26,44 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { Dim } from "../Constants";
 import * as ImagePicker from "expo-image-picker";
 import { ref, uploadBytes } from "firebase/storage";
-import { storage } from './firebase';
-import { useFocusEffect } from "@react-navigation/native";
+import { storage } from "./firebase";
 
-const asyncCreateListing = async (title, description, photoPath, category, condition, price, gender,
-                            subcategory, uID) => {
+/*
+  -- DOCUMENTATION --
+*/
+
+const asyncCreateListing = async (
+    title,
+    description,
+    photoPath,
+    category,
+    condition,
+    price,
+    gender,
+    subcategory,
+    uID
+) => {
+    // console.log("HERE!!!")
+    // console.log(email)
     return await fetch("http://localhost:4000/listings/create", {
+        // If you are posting something, use POST
+        // If you are fetching something, use GET
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
 
-        body: JSON.stringify({ title, description, photoPath, category, condition, price, gender,
-            subcategory, uID }),
-
+        body: JSON.stringify({
+            title,
+            description,
+            photoPath,
+            category,
+            condition,
+            price,
+            gender,
+            subcategory,
+            uID,
+        }),
     })
         .then((res) => res.json())
         .then((data) => {
@@ -47,8 +73,6 @@ const asyncCreateListing = async (title, description, photoPath, category, condi
             return error;
         });
 };
-
-
 
 const AddListingScreen = ({ props, navigation }) => {
     const [title, setTitle] = useState("");
@@ -80,63 +104,71 @@ const AddListingScreen = ({ props, navigation }) => {
         { label: "Outerwear", value: "outerwear" },
     ]);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            setTitle("");
-            setDescription("");
-            setCategory(null);
-            setCondition(null);
-            setPrice("");
-            setImagePicked(false);
-            setImage("");
-            setSubcategory("null");
-            setGender(0);
-        }, []))
+    // console.log(category);
+    // console.log(condition);
 
     const [loading, setLoading] = useState(false);
     const [userID, setUID] = useState("");
 
-    const [errors, setErrors] = useState({
-        title: undefined,
-        description: undefined,
-        price: undefined,
-    });
-
     const onPressCreate = async () => {
-            AsyncStorage.getItem("@userId", (err, item) =>
-                setuid(item)
-            );
-            await asyncCreateListing(title, description, pfpPath, category, 
-                condition, price, gender, subcategory, uID);
-            setLoading(true);
-            setLoading(false);
+        AsyncStorage.getItem("@userId", (err, item) => setUID(item));
+        await asyncCreateListing(
+            title,
+            description,
+            pfpPath,
+            category,
+            condition,
+            price,
+            gender,
+            subcategory,
+            uID
+        );
+        setLoading(true);
+        setLoading(false);
+        // setTitle("");
+        // setDescription("");
+        // setCategory(null);
+        // setCondition(null);
+        // setPrice("");
+        // setImagePicked(false);
+        // setImage("");
+        // setSubcategory("null");
+        // setGender(0);
+
+        // navigation.navigate("Profile");
     };
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
+
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [1, 1],
-            quality: 0,
+            quality: 1,
         });
 
+        // console.log(result);
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             setImagePicked(true);
-            const path = result.assets[0].uri.substring(result.assets[0].uri.lastIndexOf('/')+1);
-            
+            const path = result.assets[0].uri.substring(
+                result.assets[0].uri.lastIndexOf("/") + 1
+            );
+            console.log(path);
+
             const reference = ref(storage, path);
 
             const img = await fetch(result.assets[0].uri);
             const bytes = await img.blob();
-            
-            const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+            // console.log(bytes);
+
+            const delay = (ms) =>
+                new Promise((resolve) => setTimeout(resolve, ms));
             await delay(1500);
-            await uploadBytes(reference, bytes)
-                .then(() => {
-                    console.log("File Uploaded");
-                });
+            await uploadBytes(reference, bytes).then(() => {
+                console.log("File Uploaded");
+            });
 
             setPath(path);
         }
@@ -370,7 +402,7 @@ const AddListingScreen = ({ props, navigation }) => {
                                     title="Create Listing"
                                     onPress={() => {
                                         onPressCreate();
-                                        navigation.navigate("Home Screen")
+                                        navigation.navigate("Home Screen");
                                     }}
                                     style={styles.button}
                                 />
