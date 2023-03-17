@@ -17,12 +17,7 @@ import { RegexEmail, RegexPassword } from "../Constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-/*
-  -- DOCUMENTATION --
-*/
-
 const asyncSignIn = async (email, password) => {
-    // console.log(email)
     return await fetch("http://localhost:4000/user/signIn", {
         method: "POST",
         headers: {
@@ -44,9 +39,6 @@ const SignIn = ({ props, navigation }) => {
     const [password, setPassword] = useState("");
     const [userID, setUID] = useState("");
     const [loading, setLoading] = useState(false);
-
-    // console.log(email);
-    // console.log(password);
 
     const [errors, setErrors] = useState({
         email: undefined,
@@ -72,26 +64,21 @@ const SignIn = ({ props, navigation }) => {
             const resp = await asyncSignIn(email, password);
 
             if (!resp.status){
-                // if (resp == null) console.log("empty");
-            console.log(resp);
-            setUID(resp.userID);
-            setLoading(false);
-            AsyncStorage.setItem("@userId", userID); // confirm this stores !!
-            AsyncStorage.setItem("@signedIn", "true");
+                setUID(resp.userID);
+                setLoading(false);
 
-            AsyncStorage.setItem("@firstName", resp.userData.firstName);
-            AsyncStorage.setItem("@lastName", resp.userData.lastName);
-            AsyncStorage.setItem("@bio", resp.userData.bio);
-            AsyncStorage.setItem("@instagram", resp.userData.contact[0]);
-            AsyncStorage.setItem("@discord", resp.userData.contact[1]);
-            AsyncStorage.setItem("@twitter", resp.userData.contact[2]);
-            AsyncStorage.setItem("@major", resp.userData.major);
-            AsyncStorage.setItem("@pfpURI", resp.userData.signInPath);
+                AsyncStorage.setItem("@userId", resp.userID); // confirm this stores !!
+                AsyncStorage.setItem("@signedIn", "true");
+                AsyncStorage.setItem("@firstName", resp.userData.firstName);
+                AsyncStorage.setItem("@lastName", resp.userData.lastName);
+                AsyncStorage.setItem("@bio", resp.userData.bio);
+                AsyncStorage.setItem("@instagram", resp.userData.contact[0]);
+                AsyncStorage.setItem("@discord", resp.userData.contact[1]);
+                AsyncStorage.setItem("@twitter", resp.userData.contact[2]);
+                AsyncStorage.setItem("@major", resp.userData.major);
+                AsyncStorage.setItem("@pfpURI", resp.userData.signInPath);
 
-            navigation.navigate("NavBarStack");
-            // AsyncStorage.getItem("@userId", (err, item) =>
-            //     console.log("USER ID FROM SIGN IN:" + item)
-            // );
+                navigation.navigate("NavBarStack");
             }
             else{
                 setErrors({

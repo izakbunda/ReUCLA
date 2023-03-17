@@ -2,9 +2,6 @@ import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Colors, Dim } from "../Constants";
 
-/*
-  -- DOCUMENTATION --
-*/
 const Button = (props) => {
     return props.small ? (
         <TouchableOpacity onPress={props.onPress}>

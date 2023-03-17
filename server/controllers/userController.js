@@ -11,20 +11,23 @@ const { firestore } = require("firebase-admin");
 const {
     doc,
     setDoc,
-    Timestamp,
-    addDoc,
     getDoc,
     updateDoc,
+    collection,
+    query, 
+    getDocs,
+    where,
 } = require("firebase/firestore");
-// const { isErrored } = require("stream");
+const { list } = require("firebase/storage");
 
 const createUser = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
+
     var user, userID, docRef;
-    // console.log(req.body)
+
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
             user = userCredentials.user;
@@ -32,7 +35,6 @@ const createUser = async (req, res) => {
 
             userID = uID.replace('"', "");
             userID = user.uid;
-            console.log(userID);
 
             docRef = doc(database, "userData", userID);
             const docData = {
@@ -42,7 +44,6 @@ const createUser = async (req, res) => {
             setDoc(docRef, docData);
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredentials) => {
-                    // console.log("User Exists");
                     user = userCredentials.user;
                     userID = user.uid;
                     userExists = true;
@@ -65,26 +66,20 @@ const createUser = async (req, res) => {
     onAuthStateChanged(auth, (user) => {
         userID = user.uid;
     });
-    console.log(userID);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-        console.log("Doc Data: ", docSnap.data());
         userData = docSnap.data();
         res.send({ userID, userData });
     } else {
-        console.log("Doc Data doesn't Exist");
         res.send({ errCode: 1, error: "Doesn't Exist" });
     }
 };
 
 const updateUser = async (req, res) => {
-    // const tempID = req.body.uID;
     const userID = req.body.uID;
-    console.log(req.body.uID);
     docRef = doc(database, "userData", req.body.uID);
 
     const tempPath = req.body.pfpPath;
-    console.log(tempPath);
     var path = "/";
     if (tempPath) {
         const lastIndex = tempPath.lastIndexOf("/");
@@ -100,24 +95,18 @@ const updateUser = async (req, res) => {
         userListings: [],
     };
 
-    // {major: , bio:, contact: {instagram: , discord: ,twitter:}}
-
     await updateDoc(docRef, docData);
 
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-        console.log("Doc Data: ", docSnap.data());
         const userData = docSnap.data();
         res.send({ userData, userID });
     } else {
-        console.log("Doc Data doesn't Exist");
         res.send({ errCode: 1, error: "Doesn't Exist" });
     }
 };
 
 const signIn = async (req, res) => {
-    // console.log("attempting to signin");
-
     // Variables used later
     const email = req.body.email;
 
@@ -128,7 +117,6 @@ const signIn = async (req, res) => {
     // Tries to Sign in with firebase authentification
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
-            console.log("User Exists");
             user = userCredentials.user;
             userID = user.uid;
             userExists = true;
@@ -136,47 +124,56 @@ const signIn = async (req, res) => {
             docRef = doc(database, "userData", userID);
         }) // Send's an error back if this log-in isn't complete
         .catch((err) => {
-            console.log(err);
             res.send({err, status : "Failed"});
         });
 
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await delay(1500);
 
-    // console.log(userExists);
-
     if (!userExists) 
         res.send({status: "Failed"});
     // Retrieves User Data
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-        console.log("Doc Data: ", docSnap.data());
         userData = docSnap.data();
         res.send({ userID, userData });
     } else {
-        console.log("Doc Data doesn't Exist");
         res.send({ errCode: 1, error: "Doesn't Exist" });
     }
 };
 
-const getUser = async (req, res) => {
-    // const userID = req.body.userID;
-    // const docRef = doc(database, 'userData', userID);
-    // const docSnap = await getDoc(docRef);
-    // if (docSnap.exists()){
-    //     console.log("existing data");
-    //     const docData = docSnap.data()
-    //     res.send({ userID, docData })
-    // }
-    // else{
-    //     console.log("No user data");
-    //     res.send({errCode: 1 , error: "Doesn't Exist"});
-    // }
-};
+const getUserListings = async (req, res) => {
+    const { uID } = req.params;
+    
+    const listingData = [];
+    const mensPath = '/listings/clothing/menswear';
+    const womensPath = '/listings/clothing/womenswear';
+    const productsPath = '/listings/products/other';
+
+    // search through each collection for the listings made by this user
+    var q = query(collection(database, mensPath), where("uID", "==", uID));
+    var querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+        listingData.push(doc.data());
+    });
+
+    q = query(collection(database, womensPath), where("uID", "==", uID));
+    var querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+        listingData.push(doc.data());
+    });
+
+    q = query(collection(database, productsPath), where("uID", "==", uID));
+    var querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+        listingData.push(doc.data());
+    });
+    res.send({ listingData })
+}
 
 module.exports = {
     createUser,
-    getUser,
     updateUser,
     signIn,
+    getUserListings,
 };
