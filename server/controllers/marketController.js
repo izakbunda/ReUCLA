@@ -117,6 +117,7 @@ const getCategory = async(req, res) => {
     }
 }
 
+
 const searchDB = async(req, res) => {
     const {category} = req.params;
     const {gender} = req.params;
