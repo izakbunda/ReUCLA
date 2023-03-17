@@ -3,7 +3,16 @@ const { FieldValue }=require('@google-cloud/firestore')
 const { auth } = require("../firebase")
 const { createUserWithEmailAndPassword, signInWithEmailAndPassword } = require('firebase/auth')
 const { firestore } = require('firebase-admin')
-const { doc, setDoc, Timestamp, addDoc, getDoc, collection, updateDoc } = require('firebase/firestore')
+const { 
+    doc, 
+    setDoc, 
+    Timestamp, 
+    addDoc, getDoc, 
+    collection, updateDoc, 
+    query,  
+    getDocs,
+    where,
+} = require('firebase/firestore')
 
 
 const createListing = async(req, res) => {
@@ -31,7 +40,7 @@ const createListing = async(req, res) => {
         condition: condition, 
         price: price,
         gender: gender, 
-        subcatgory: subcategory, 
+        subcategory: subcategory, 
         uID: userID
     }
 
@@ -70,6 +79,41 @@ const createListing = async(req, res) => {
     res.send({response: responseString});
 }
 
+const getCategory = async(req, res) => {
+    const {category} = req.params;
+    const {gender} = req.params;
+    const {subcategory} = req.params;
+
+    var collectionPath = '/listings';
+    const listingData = [];
+
+    if (category == 'clothes' && gender != null) {
+        if (gender == 1)
+            collectionPath = collectionPath + '/clothing/menswear';
+        else {
+            collectionPath = collectionPath + '/clothing/womenswear';
+        }
+        const q = query(collection(database, collectionPath), where("subcategory", "==", subcategory));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(doc => {
+            // console.log(doc.id, " => ", doc.data())
+            listingData.push(doc.data());
+        }); 
+        res.send({listingData})
+    } else {
+        collectionPath = collectionPath + '/products/other';
+        const q = query(collection(database, collectionPath), where("category", "==", category));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(doc => {
+            // console.log(doc.id, " => ", doc.data())
+            listingData.push(doc.data());
+        }); 
+        res.send({listingData})
+    }
+
+}
+
 module.exports = {
-    createListing
+    createListing, 
+    getCategory
 }
