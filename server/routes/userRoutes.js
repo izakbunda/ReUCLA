@@ -6,6 +6,7 @@ const {
     getUser,
     updateUser,
     signIn,
+    getUserListings,
 } = require("../controllers/userController");
 const { createListing, getCategory } = require("../controllers/marketController");
 
@@ -16,12 +17,10 @@ router.post("/create/User", createUser);
 router.post("/fetch/UserData", getUser);
 router.post("/user/signIn", signIn);
 router.post("/user/update", updateUser);
-
+// Market Routing
 router.post("/listings/create", createListing);
 router.get("/listings/:category/:gender/:subcategory", getCategory);
+router.get("/listings/get/:uID", getUserListings);
 
-// router.get('listing/fetch/one')
-// router.get('listing/fetch/page')
-// router.get()
 
 module.exports = router;
