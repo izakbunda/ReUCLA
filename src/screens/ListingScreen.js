@@ -130,8 +130,6 @@ const ListingScreen = (props) => {
                         </View>
 
             </View>
-        
-
             <SaveButton 
                 onPress={ () => {
                 Alert.alert("Item has been saved to bag.")
@@ -292,5 +290,5 @@ const styles = StyleSheet.create({
 
   });
   
-export {ListingScreen, Dummy};
+export {ListingScreen, Dummy, g};
 
