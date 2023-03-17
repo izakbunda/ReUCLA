@@ -23,6 +23,7 @@ export const HomeScreenStack = (route) => {
                 component={CategoryScreen}
                 options={{ headerShown: false }}
             />
+            
         </Stack.Navigator>
     );
 };

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { 
     View,
     StyleSheet, 
@@ -143,6 +144,21 @@ const listingData = [
 
 const CategoryScreen = ({navigation, route}) => {
     const { category } = route.params;
+    const {listings, setListings} = useEffect(null)
+    useEffect(()=> {
+
+    },[])
+    const getListings = () => {
+        const res = await fetch("http://localhost:4000/listings/fetch/categories", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ category }),
+        })
+        const json = await res.json();
+        setListings(json);
+    }
     return (
         <SafeAreaView style={{flex: 1}}>
             <View style={styles.container}>
@@ -156,6 +172,7 @@ const CategoryScreen = ({navigation, route}) => {
                 <Text style={styles.header}> {category} </Text>
             </View>
             <View>
+                {listings == null ? <View></View> : 
                 <FlatList
                     style={{width: "100%", height: "95%"}}
                     data={listingData}
@@ -164,16 +181,17 @@ const CategoryScreen = ({navigation, route}) => {
                     renderItem={({ item }) => {
                         return (
                             <BigListing
-                                listingPhoto={item.listingPhoto}
-                                listingPrice={item.listingPrice}
-                                listingName={item.listingName}
+                                listingPhoto={"https://picsum.photos/300/300"} // TODO - change to actual photo
+                                listingPrice={item.price}
+                                listingName={item.title}
                                 onPress={() => {
-                                    Alert.alert("go to listing screen");
+                                    navigation.navigate("")
                                 }}
                             />
                         )
                     }}
                 />
+}
             </View>
         </SafeAreaView>
     )
