@@ -113,7 +113,40 @@ const getCategory = async(req, res) => {
 
 }
 
+const searchDB = async(req, res) => {
+    const {category} = req.params;
+    const {gender} = req.params;
+    const {subcategory} = req.params;
+
+    const search = req.body.search;
+    const listingData = [];
+
+    var menPath = '/listings/clothing/menswear';
+    var womenPath = '/listings/clothing/womenswear';
+    var otherPath = '/listings/products/other';
+
+    var q = query(collection(database, menPath), where(subcategory, "array-contains", subcategory));
+    var querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+        listingData.push(doc.data());
+    });
+
+    q = query(collection(database, womenPath), where(subcategory, "array-contains", subcategory));
+    querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+        listingData.push(doc.data());
+    });
+
+    q = query(collection(database, otherPath), where(category, "array-contains", category));
+    querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+        listingData.push(doc.data());
+    });
+    res.send({listingData})
+}
+
 module.exports = {
     createListing, 
-    getCategory
+    getCategory,
+    searchDB
 }
