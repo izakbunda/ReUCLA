@@ -4,9 +4,6 @@ import { Colors, Dim } from "../Constants";
 import Icon from "react-native-vector-icons/Feather";
 import { ScrollView } from "react-native";
 
-/*
-  -- DOCUMENTATION --
-*/
 const ListingScreen = ({ navigation, route }) => {
     const { title, price, description, condition, category, photoPath } =
         route.params;
