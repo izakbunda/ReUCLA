@@ -3,9 +3,6 @@ import { View, StyleSheet, Text } from "react-native";
 import { TextInput as RN_TextInput } from "react-native";
 import { Dim, Colors } from "../Constants";
 
-/*
-  -- DOCUMENTATION --
-*/
 const TextInput = (props) => {
     return (
         <View>

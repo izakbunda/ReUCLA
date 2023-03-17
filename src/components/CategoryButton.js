@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Dim, Colors } from "../Constants";
 
 const CategoryButton = (props) => {

@@ -19,9 +19,9 @@ const router = express.Router();
 
 // User Routing
 router.post("/create/User", createUser);
-router.post("/fetch/UserData", getUser);
 router.post("/user/signIn", signIn);
 router.post("/user/update", updateUser);
+
 // Market Routing
 router.post("/listings/create", createListing);
 router.get("/listings/:category/:gender/:subcategory", getCategory);

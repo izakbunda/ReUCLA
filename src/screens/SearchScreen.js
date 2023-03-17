@@ -20,31 +20,11 @@ const SearchScreen = ({ navigation, route }) => {
             .then((res) => res.json())
             .then((data) => {
                 setData(data.listingData);
-                console.log(data.listingData);
             })
             .catch((error) => {
                 console.error("Error:", error);
             });
     }, []);
-
-    // useEffect(() => {
-    //     console.log("IN USE EFFECT: " + title);
-
-    //     const name = title;
-
-    //     fetch(`http://localhost:4000/listings/search/`, {
-    //         method: "POST",
-    //         body: JSON.stringify({ name }),
-    //     })
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //             setData(data.listingData);
-    //             console.log(data.listingData);
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error:", error);
-    //         });
-    // }, []);
 
     return (
         <SafeAreaView style={{ flex: 1 }}>

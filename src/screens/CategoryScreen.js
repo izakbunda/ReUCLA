@@ -11,30 +11,9 @@ import Icon from "react-native-vector-icons/Feather";
 import BigListing from "../components/BigListing";
 import { Dim } from "../Constants";
 
-// const onPressCategory = ( category, gender, subcategory ) => {
-//     console.log('@@ 0', category, gender, subcategory);
-
-//     const tmp1 = fetch(`http://localhost:4000/listings/${category}/${gender}/${subcategory}`);
-//     console.log('@@ 1', typeof tmp1, tmp1)
-//     // const tmp2 = tmp1.json();
-//     // console.log('@@ 2', tmp2)
-
-//     return tmp1;
-
-// .then((res) => res.json())
-// .then((data) => {
-//     console.log('@@ 1', data)
-//     res = data;
-// })
-// .catch((error) => {
-//     console.error('Error:', error);
-// })
-// return res;
-// };
-
-const CategoryScreen = ({ navigation, route }) => {
-    const { categoryName, category, gender, subcategory } = route.params;
-    const [data, setData] = useState([]);
+const CategoryScreen = ({navigation, route}) => {
+    const { categoryName , category, gender, subcategory} = route.params;
+    const [data, setData] = useState([])
 
     useEffect(() => {
         fetch(
@@ -43,12 +22,12 @@ const CategoryScreen = ({ navigation, route }) => {
             .then((res) => res.json())
             .then((data) => {
                 setData(data.listingData);
-                console.log(data.listingData);
             })
             .catch((error) => {
-                console.error("Error:", error);
-            });
-    }, []);
+                console.error('Error:', error);
+                return error;
+            })
+    }, [])
 
     return (
         <SafeAreaView style={{ flex: 1 }}>

@@ -21,7 +21,6 @@ const {
 const { getStorage, ref, getDownloadURL } = require("firebase/storage");
 
 const createListing = async (req, res) => {
-    // console.log("here");
     const title = req.body.title,
         description = req.body.description,
         category = req.body.category,
@@ -35,11 +34,10 @@ const createListing = async (req, res) => {
     const storage = getStorage();
     var photoURL = "";
 
-    if (photoPath) {
-        const lastIndex = photoPath.lastIndexOf("/");
-        photoPath = photoPath.substring(lastIndex + 1);
-        photoURL = await getDownloadURL(ref(storage, photoPath));
-        console.log("@1", photoURL);
+    if (photoPath){
+        const lastIndex = photoPath.lastIndexOf('/');
+        photoPath = photoPath.substring(lastIndex + 1); 
+        photoURL = await getDownloadURL(ref(storage, photoPath))
     } else {
         photoPath = "/";
     }
@@ -56,8 +54,7 @@ const createListing = async (req, res) => {
         uID: userID,
     };
 
-    console.log(docData);
-    var collectionPath = "/listings";
+    var collectionPath = '/listings';
 
     if (category == "clothes") {
         if (gender == 1) collectionPath = collectionPath + "/clothing/menswear";
@@ -79,10 +76,8 @@ const createListing = async (req, res) => {
     const userData = await getDoc(userRef);
     if (userData.exists()) {
         userListings = userData.data().userListings;
-        console.log(userListings);
         userListings.push(listID);
-        // console.log(userListings);
-        await updateDoc(userRef, { userListings: userListings });
+        await updateDoc(userRef, { userListings : userListings } );
     } else {
         console.log("Why doesn't the user exist?");
     }
@@ -98,8 +93,9 @@ const getCategory = async (req, res) => {
     var collectionPath = "/listings";
     const listingData = [];
 
-    if (category == "clothes" && gender != null) {
-        if (gender == 1) collectionPath = collectionPath + "/clothing/menswear";
+    if (category == 'clothes') {
+        if (gender == 1)
+            collectionPath = collectionPath + '/clothing/menswear';
         else {
             collectionPath = collectionPath + "/clothing/womenswear";
         }
@@ -108,8 +104,7 @@ const getCategory = async (req, res) => {
             where("subcategory", "==", subcategory)
         );
         const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            // console.log(doc.id, " => ", doc.data())
+        querySnapshot.forEach(doc => {
             listingData.push(doc.data());
         });
         res.send({ listingData });
@@ -120,8 +115,7 @@ const getCategory = async (req, res) => {
             where("category", "==", category)
         );
         const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            // console.log(doc.id, " => ", doc.data())
+        querySnapshot.forEach(doc => {
             listingData.push(doc.data());
         });
         res.send({ listingData });
@@ -129,7 +123,6 @@ const getCategory = async (req, res) => {
 };
 
 const searchDB = async (req, res) => {
-    console.log(req.params);
     const { title } = req.params;
     const listingData = [];
 
@@ -140,7 +133,6 @@ const searchDB = async (req, res) => {
     const a = query(collection(database, menPath), where("title", "==", title));
     const querySnapshot1 = await getDocs(a);
     querySnapshot1.forEach((doc) => {
-        console.log("HERE");
         listingData.push(doc.data());
     });
 

@@ -7,7 +7,6 @@ import {
     SafeAreaView,
     FlatList,
     TouchableOpacity,
-    Alert,
 } from "react-native";
 import { useState } from "react";
 import SearchBar from "../components/SearchBar";
@@ -15,10 +14,6 @@ import Category from "../components/Category";
 import CategoryButton from "../components/CategoryButton";
 import Icon from "react-native-vector-icons/Feather";
 import { Dim } from "../Constants";
-
-/*
-  -- DOCUMENTATION --
-*/
 
 const menProducts = [
     {
@@ -68,7 +63,6 @@ const womenProducts = [
 
 const HomeScreen = ({ navigation, props }) => {
     const [search, setSearch] = useState("");
-    console.log(search);
 
     const searchHandler = () => {
         // Alert.alert("HEY");

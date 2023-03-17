@@ -4,10 +4,6 @@ import { Colors } from "../Constants";
 import Icon from "react-native-vector-icons/Feather";
 import { Dim } from "../Constants";
 
-/*
-  -- DOCUMENTATION --
-*/
-
 const AddListingPhoto = (props) => {
     return (
         <View style={{ width: Dim.width * 0.8 }}>
@@ -17,7 +13,6 @@ const AddListingPhoto = (props) => {
                 style={{
                     flexDirection: "row",
                     marginTop: 15,
-                    // alignSelf: "center",
                 }}
             >
                 {props.imagePicked ? (
