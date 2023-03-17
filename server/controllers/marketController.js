@@ -13,6 +13,7 @@ const {
     getDocs,
     where,
 } = require('firebase/firestore')
+const { getStorage, ref, getDownloadURL } = require('firebase/storage')
 
 
 const createListing = async(req, res) => {
@@ -23,19 +24,22 @@ const createListing = async(req, res) => {
     subcategory = req.body.subcategory, userID = req.body.uID;
     var photoPath = req.body.photoPath;
 
+    const storage = getStorage();
+    var photoURL = ""
+
     if (photoPath){
         const lastIndex = photoPath.lastIndexOf('/');
         photoPath = photoPath.substring(lastIndex + 1); 
+        photoURL = await getDownloadURL(ref(storage, photoPath))
+        console.log("@1", photoURL)
     } else {
         photoPath = '/';
     }
-
-    console.log(req.body);
         
     const docData = {
         title: title, 
         description: description,
-        photoPath: photoPath, 
+        photoPath: photoURL, 
         category: category,
         condition: condition, 
         price: price,
@@ -44,6 +48,7 @@ const createListing = async(req, res) => {
         uID: userID
     }
 
+    console.log(docData)
     var collectionPath = '/listings';
 
     if (category == 'clothes'){
@@ -110,7 +115,6 @@ const getCategory = async(req, res) => {
         }); 
         res.send({listingData})
     }
-
 }
 
 const searchDB = async(req, res) => {
