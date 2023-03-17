@@ -26,28 +26,7 @@ const profileProps = {
             listingDescription: "these are pants!",
             category: ["clothing", "menswear", "bottoms"],
             condition: 1,
-            saved: 1,
-        },
-        {
-            listingPhoto:
-                "https://i.etsystatic.com/6071918/r/il/168482/1159433180/il_1588xN.1159433180_p347.jpg",
-            listingPrice: 7,
-            listingName: "vintage shirt",
-            listingDescription: "these are from the 90s!",
-            category: ["clothing", "menswear", "tops"],
-            condition: 1,
-            saved: 0,
-        },
-        {
-            listingPhoto:
-                "https://i.ebayimg.com/images/g/KyAAAOSwaaphBavz/s-l1600.jpg",
-            listingPrice: 20,
-            listingName: "lava lamp",
-            listingDescription:
-                "I got scared of lava lamps, so I don't use anymore!",
-            category: ["homegoods", "bedroom", "lights"],
-            condition: 1,
-            saved: 1,
+            sold: 1,
         },
     ],
 };
@@ -92,6 +71,18 @@ const ProfileScreen = ({ navigation, props }) => {
         AsyncStorage.getItem("@userId", (err, item) => {
             setuID(item);
         });
+    }, []);
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/listings/get/${uID}`)
+            .then((res) => res.json())
+            .then((data) => { 
+                setData(data.listingData);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                return error;
+            });
     }, []);
 
     const getMyListings = async () => {
