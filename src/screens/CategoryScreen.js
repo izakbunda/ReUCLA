@@ -87,8 +87,6 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         justifyContent: "center",
         flex: 1,
-        width: Dim.width * 0.9,
-        // height: Dim.height * 0.05,
     },
     header: {
         fontSize: 20,
