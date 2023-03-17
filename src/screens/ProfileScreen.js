@@ -100,15 +100,15 @@ const ProfileScreen = ({ navigation, props }) => {
         }
     };
 
+    const profilepicture = String(pfp);
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView>
                 <View style={styles.container}>
                     <View style={styles.photoContainer}>
                         <Image
-                            source={{
-                                uri: pfp,
-                            }}
+                            source={{ uri: profilepicture }}
                             style={styles.photoContainer}
                         />
                     </View>

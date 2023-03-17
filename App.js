@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, LogBox } from "react-native";
 import { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -16,6 +16,7 @@ import { NavBarStack } from "./src/navigation/NavBarStack";
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+    LogBox.ignoreAllLogs(); // enable to remove all deprecation warnings
     const [user, setUser] = useState(false);
     const [loading, setLoading] = useState(false);
 

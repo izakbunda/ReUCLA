@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-/*
-  -- DOCUMENTATION --
-*/
 
 const asyncSignUp = async (userid) => {
     return await fetch("http://localhost:4000", {

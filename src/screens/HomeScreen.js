@@ -8,6 +8,7 @@ import {
     FlatList,
     TouchableOpacity,
 } from "react-native";
+import { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import Category from "../components/Category";
 import CategoryButton from "../components/CategoryButton";
@@ -61,16 +62,28 @@ const womenProducts = [
 ];
 
 const HomeScreen = ({ navigation, props }) => {
+    const [search, setSearch] = useState("");
+
+    const searchHandler = () => {
+        // Alert.alert("HEY");
+        navigation.navigate("Search", {
+            title: search,
+        });
+    };
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <ScrollView>
                 <View style={styles.container}>
-                    <SearchBar />
+                    <SearchBar
+                        value={search}
+                        onChangeText={setSearch}
+                        onPressSearch={searchHandler}
+                    />
                     <TouchableOpacity
                         onPress={() => navigation.navigate("Saved")}
                     >
                         <Icon
-                            name={"shopping-bag"}
+                            name={"bookmark"}
                             size={35}
                             color={"#2F6B25"}
                             style={styles.icon}
@@ -94,7 +107,7 @@ const HomeScreen = ({ navigation, props }) => {
                                             gender: 1,
                                             subcategory: item.subcategory,
                                         });
-                                    }}  
+                                    }}
                                 />
                             );
                         }}
@@ -123,46 +136,48 @@ const HomeScreen = ({ navigation, props }) => {
                         }}
                     />
                 </View>
-                <Text style={styles.sectionHeader}>PRODUCTS</Text>
-                <View style={styles.button}>
-                    <CategoryButton
-                        onPress={() => {
-                            navigation.navigate("Category", {
-                                categoryName: "BOOKS",
-                                category: "books",
-                            });
-                        }}
-                        product="BOOKS"
-                    />
-                    <CategoryButton
-                        onPress={() => {
-                            navigation.navigate("Category", {
-                                categoryName: "FURNITURE",
-                                category: "furniture",
-                            });
-                        }}
-                        product="FURNITURE"
-                    />
-                </View>
-                <View style={styles.button}>
-                    <CategoryButton
-                        onPress={() => {
-                            navigation.navigate("Category", {
-                                categoryName: "TECHNOLOGY",
-                                category: "technology",
-                            });
-                        }}
-                        product="TECHNOLOGY"
-                    />
-                    <CategoryButton
-                        onPress={() => {
-                            navigation.navigate("Category", {
-                                categoryName: "PLANTS",
-                                category: "plants",
-                            });
-                        }}
-                        product="PLANTS"
-                    />
+                <View style={{ paddingBottom: 10 }}>
+                    <Text style={styles.sectionHeader}>PRODUCTS</Text>
+                    <View style={styles.button}>
+                        <CategoryButton
+                            onPress={() => {
+                                navigation.navigate("Category", {
+                                    categoryName: "BOOKS",
+                                    category: "books",
+                                });
+                            }}
+                            product="BOOKS"
+                        />
+                        <CategoryButton
+                            onPress={() => {
+                                navigation.navigate("Category", {
+                                    categoryName: "FURNITURE",
+                                    category: "furniture",
+                                });
+                            }}
+                            product="FURNITURE"
+                        />
+                    </View>
+                    <View style={styles.button}>
+                        <CategoryButton
+                            onPress={() => {
+                                navigation.navigate("Category", {
+                                    categoryName: "TECHNOLOGY",
+                                    category: "technology",
+                                });
+                            }}
+                            product="TECHNOLOGY"
+                        />
+                        <CategoryButton
+                            onPress={() => {
+                                navigation.navigate("Category", {
+                                    categoryName: "PLANTS",
+                                    category: "plants",
+                                });
+                            }}
+                            product="PLANTS"
+                        />
+                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView>

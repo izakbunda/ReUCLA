@@ -11,7 +11,6 @@ const signIn = async => {
     signInWithEmailAndPassword(auth, 'izakbunda@ucla.edu', 'password')
         .then(userCredentials => {
             const user = userCredentials.user;
-            console.log(user.uid);
         })
 };
 
