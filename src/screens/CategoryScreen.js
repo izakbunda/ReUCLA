@@ -54,7 +54,16 @@ const CategoryScreen = ({navigation, route}) => {
                                 price={item.price}
                                 title={item.title}
                                 onPress={() => {
-                                    Alert.alert("go to listing screen");
+                                    navigation.navigate("Listing", {
+                                        title: item.title,
+                                        price: item.price,
+                                        description: item.description,
+                                        category: item.category,
+                                        condition: item.condition,
+                                        photoPath: item.photoPath,
+                                        // gender: 2,
+                                        // subcategory: item.subcategory,
+                                    });
                                 }}
                             />
                         );
