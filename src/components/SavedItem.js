@@ -10,9 +10,6 @@ import {
 import { Dim, Colors } from "../Constants";
 import Icon from "react-native-vector-icons/Feather";
 
-/*
-  -- DOCUMENTATION --
-*/
 const SavedItem = (props) => {
     return props.saved ? (
         <TouchableOpacity onPress={props.onPress}>

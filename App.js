@@ -7,8 +7,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Import all screens here
 import LandingScreen from "./src/screens/LandingScreen";
-// import TestScreen from "./src/screens/TestScreen";
-//
 
 // Import all stack screens here
 import { SignInStack } from "./src/navigation/SignInStack";
@@ -23,8 +21,6 @@ const App = () => {
 
     useEffect(() => {
         AsyncStorage.getItem("@signedIn").then((signedIn) => {
-            console.log(signedIn);
-            // console.log(signedIn);
             if (signedIn == "true") {
                 setUser(true);
                 setLoading(false);
@@ -58,34 +54,5 @@ const App = () => {
             )}
         </NavigationContainer>
     );
-
-    // if (user) {
-    //     return (
-    //         <NavigationContainer>
-    //             <Stack.Navigator
-    //                 screenOptions={{
-    //                     headerShown: false,
-    //                 }}
-    //             >
-    //                 <Stack.Screen name="NavBar" component={NavBarStack} />
-    //             </Stack.Navigator>
-    //         </NavigationContainer>
-    //     );
-    // } else {
-    //     return (
-    //         <NavigationContainer>
-    //             <Stack.Navigator>
-    //                 <Stack.Screen
-    //                     name="Sign In Stack"
-    //                     component={SignInStack}
-    //                     options={{ headerShown: false }}
-    //                 />
-    //             </Stack.Navigator>
-    //         </NavigationContainer>
-    //     );
-    // }
-};
-
+ }
 export default App;
-
-const styles = StyleSheet.create({});

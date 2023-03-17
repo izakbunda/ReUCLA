@@ -1,7 +1,6 @@
 import React from "react";
-import { View, TextInput, Text, StyleSheet } from "react-native";
+import { View, TextInput, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
-
 
 const SearchBar = () => {
     return (
@@ -14,7 +13,6 @@ const SearchBar = () => {
             />
             <TextInput 
                 placeholder="Search for..."
-                // style={styles.input}
                 style={{ flex: 1 }}
             />
         </View>

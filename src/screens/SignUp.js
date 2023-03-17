@@ -3,8 +3,6 @@ import {
     View,
     StyleSheet,
     Text,
-    ScrollView,
-    Alert,
     Keyboard,
     TouchableOpacity,
     TouchableWithoutFeedback,
@@ -21,15 +19,10 @@ import { Underline } from "react-native-feather";
 import Icon from "react-native-vector-icons/Feather";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-/*
-  -- DOCUMENTATION --
-*/
+
 const asyncSignUp = async (email, password, first_name, last_name) => {
-    // console.log("HERE!!!")
-    // console.log(email)
+
     return await fetch("http://localhost:4000/create/User", {
-        // If you are posting something, use POST
-        // If you are fetching something, use GET
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -61,9 +54,6 @@ const SignUp = ({ props, navigation }) => {
         confirm: undefined,
         email: undefined,
     });
-
-    // console.log(errors);
-    // console.log(lastName);
 
     const onPressRegister = async () => {
         const firstNameError =
@@ -105,26 +95,17 @@ const SignUp = ({ props, navigation }) => {
                 firstName,
                 lastName
             );
-            console.log(resp);
+
             setUID(resp.userID);
-            // console.log("HELLO " + userID);
             AsyncStorage.setItem("@userId", resp.userID); // confirm this stores !!
             AsyncStorage.setItem("@firstName", resp.userData.firstName); // confirm this stores !!
             AsyncStorage.setItem("@lastName", resp.userData.lastName);
             AsyncStorage.setItem("@firstName", resp.userData.firstName);
             AsyncStorage.setItem("@signedIn", "false");
-            // AsyncStorage.getItem("@firstName", (err, item) =>
-            //     console.log("FIRST NAME FROM SIGN UP:" + item)
-            // );
-            // AsyncStorage.getItem("@userId", (err, item) =>
-            //     console.log("USERID FROM SIGN IN:" + item)
-            // );
             setLoading(false);
             navigation.navigate("Create Profile");
         }
     };
-
-    // console.log(userID);
 
     return (
         <KeyboardAwareScrollView

@@ -6,11 +6,7 @@ import {
     Image,
     TouchableOpacity,
 } from "react-native";
-import { Dim, Colors } from "../Constants";
-
-/*
-  -- DOCUMENTATION --
-*/
+import { Dim } from "../Constants";
 
 const Category = (props) => {
   return (

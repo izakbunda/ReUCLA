@@ -7,17 +7,12 @@ import {
     SafeAreaView,
     FlatList,
     TouchableOpacity,
-    Alert,
 } from "react-native";
 import SearchBar from "../components/SearchBar";
 import Category from "../components/Category";
 import CategoryButton from "../components/CategoryButton";
 import Icon from "react-native-vector-icons/Feather";
 import { Dim } from "../Constants";
-
-/*
-  -- DOCUMENTATION --
-*/
 
 const menProducts = [
     {
@@ -64,18 +59,6 @@ const womenProducts = [
         subcategory: "outerwear",
     },
 ];
-
-// const onPressCategory = async ( category, gender, subcategory ) => {
-//     return await fetch(`http://localhost:4000/listings/${category}/${gender}/${subcategory}`)
-//     .then((res) => res.json())
-//     .then((data) => { 
-//         console.log(data)
-//         return data;
-//     })
-//     .catch((error) => {
-//         console.error('Error:', error);
-//     })
-// };
 
 const HomeScreen = ({ navigation, props }) => {
     return (

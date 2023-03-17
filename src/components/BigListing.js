@@ -4,14 +4,10 @@ import {
     StyleSheet,
     Text,
     Image,
-    Touchable,
     TouchableOpacity,
 } from "react-native";
 import { Dim, Colors } from "../Constants";
 
-/*
-  -- DOCUMENTATION --
-*/
 const BigListing = (props) => {
     return (
         <TouchableOpacity onPress={props.onPress}>
