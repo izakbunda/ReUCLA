@@ -30,9 +30,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { deleteApp } from "firebase/app";
 import { ref, uploadBytes } from "firebase/storage";
 import { storage } from "./firebase";
-/*
-  -- DOCUMENTATION --
-*/
 
 const asyncCreateProfile = async (
     major,
@@ -43,10 +40,8 @@ const asyncCreateProfile = async (
     uID,
     pfpPath
 ) => {
-    // console.log("HERE!!!")
     return await fetch("http://localhost:4000/user/update", {
-        // If you are posting something, use POST
-        // If you are fetching something, use GET
+
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -93,33 +88,26 @@ const CreateProfileScreen = ({ props, navigation }) => {
     const [imagePicked, setImagePicked] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // console.log(imagePicked);
-    // console.log(pfp);
-
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            // aspect: [4, 3],
-            quality: 1,
+            aspect: [1, 1],
+            quality: 0,
         });
 
-        // console.log(result);
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             setImagePicked(true);
             const path = result.assets[0].uri.substring(
                 result.assets[0].uri.lastIndexOf("/") + 1
             );
-            console.log(path);
 
             const reference = ref(storage, path);
 
             const img = await fetch(result.assets[0].uri);
-            // AsyncStorage.setItem("@pfpURI", image);
             const bytes = await img.blob();
-            // console.log(bytes);
 
             const delay = (ms) =>
                 new Promise((resolve) => setTimeout(resolve, ms));
@@ -142,36 +130,6 @@ const CreateProfileScreen = ({ props, navigation }) => {
         AsyncStorage.getItem("@userId").then((userId) => {
             setUserId(userId);
         });
-        // const majorError =
-        //     major.length > 0 ? undefined : "You must enter a major";
-        // const bioError =
-        //     bio.length > 0 ? undefined : "Please enter a valid password.";
-        // const instagramError =
-        //     instagram.length > 0 ? undefined : "Enter a valid Instagram handle";
-        // const discordError =
-        //     discord.length > 0
-        //         ? undefined
-        //         : "You must enter valid Discord tag.";
-        // const twitterError =
-        //     twitter.length > 0
-        //         ? undefined
-        //         : "You must enter valid Twitter handle.";
-
-        // if (
-        //     majorError ||
-        //     bioError ||
-        //     instagramError ||
-        //     discordError ||
-        //     twitterError
-        // ) {
-        //     setErrors({
-        //         major: majorError,
-        //         bio: bioError,
-        //         instagram: instagramError,
-        //         discord: discordError,
-        //         twitter: twitterError,
-        //     });
-        // } else {
             setLoading(true);
             const resp = await asyncCreateProfile(
                 major,
@@ -183,24 +141,19 @@ const CreateProfileScreen = ({ props, navigation }) => {
                 image,
                 pfpPath
             );
-            console.log(resp);
             setLoading(false);
-            console.log(resp.userID);
-            // console.log(userID);
+
             AsyncStorage.setItem("@bio", resp.userData.bio);
             AsyncStorage.setItem("@instagram", resp.userData.contact[0]);
             AsyncStorage.setItem("@discord", resp.userData.contact[1]);
             AsyncStorage.setItem("@twitter", resp.userData.contact[2]);
             AsyncStorage.setItem("@major", resp.userData.major);
-            // AsyncStorage.setItem("@pfpURI", image);
             AsyncStorage.setItem("@signedIn", "true");
             AsyncStorage.multiGet(["@userId", "@signedIn"]).then((userId) => {
                 console.log(userId);
             });
             navigation.navigate("NavBarStack");
             setLoading(false);
-        // }
-
     };
 
     return (

@@ -16,10 +16,6 @@ import SmallListing from "../components/SmallListing";
 import Icon from "react-native-vector-icons/Feather";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-/*
-  -- DOCUMENTATION --
-*/
-
 const profileProps = {
     savedData: [
         {
@@ -49,35 +45,27 @@ const ProfileScreen = ({ navigation, props }) => {
 
     useEffect(() => {
         AsyncStorage.getItem("@firstName", (err, item) => {
-            // console.log("FIRST NAME FROM SIGN IN:" + item);
             setFirstName(item);
         });
         AsyncStorage.getItem("@lastName", (err, item) => {
-            // console.log("LAST NAME FROM SIGN IN:" + item);
             setLastName(item);
         });
         AsyncStorage.getItem("@bio", (err, item) => {
-            // console.log("BIO FROM SIGN IN:" + item);
             setBio(item);
         });
         AsyncStorage.getItem("@major", (err, item) => {
-            // console.log("MAJOR FROM SIGN IN:" + item);
             setMajor(item);
         });
         AsyncStorage.getItem("@instagram", (err, item) => {
-            // console.log("INSTA FROM SIGN IN:" + item);
             setInstagram(item);
         });
         AsyncStorage.getItem("@discord", (err, item) => {
-            // console.log("DISCORD FROM SIGN IN:" + item);
             setDiscord(item);
         });
         AsyncStorage.getItem("@twitter", (err, item) => {
-            // console.log("TWITTER FROM SIGN IN:" + item);
             setTwitter(item);
         });
         AsyncStorage.getItem("@pfpURI", (err, item) => {
-            // console.log("PFP FROM SIGN IN:" + item);
             setPfp(item);
         });
         AsyncStorage.getItem("@userId", (err, item) => {
@@ -85,17 +73,16 @@ const ProfileScreen = ({ navigation, props }) => {
         });
     }, []);
 
+    const getMyListings = async () => {
+        if(uID == "") return;
+        const res = await fetch(`http://localhost:4000/listings/get/${uID}`)
+        const json = await res.json()
+        setData(json.listingData)
+    }
+
     useEffect(() => {
-        fetch(`http://localhost:4000/listings/get/${uID}`)
-            .then((res) => res.json())
-            .then((data) => { 
-                setData(data.listingData);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                return error;
-            });
-    }, []);
+        getMyListings();
+    }, [uID]);
 
     const handleClick = (type) => {
         {
@@ -231,7 +218,6 @@ const styles = StyleSheet.create({
     },
     photoContainer: {
         alignItems: "center",
-        // paddingTop: 60,
         height: 110,
         width: 110,
         borderRadius: 1000,
@@ -251,7 +237,6 @@ const styles = StyleSheet.create({
     listings: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
     contactContainer: {
         marginTop: 20,
-        // width: Dim.width * 0.9,
         borderColor: Colors.primary,
         borderWidth: 1,
         borderRadius: 10,

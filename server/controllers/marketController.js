@@ -79,7 +79,6 @@ const createListing = async (req, res) => {
     const userData = await getDoc(userRef);
     if (userData.exists()) {
         userListings = userData.data().userListings;
-        console.log(userListings);
         userListings.push(listID);
         // console.log(userListings);
         await updateDoc(userRef, { userListings: userListings });

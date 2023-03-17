@@ -3,15 +3,13 @@ import {
     View,
     StyleSheet,
     Text,
-    ScrollView,
-    Alert,
     Keyboard,
     TouchableOpacity,
     TouchableWithoutFeedback,
     ActivityIndicator,
     Platform,
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TextInput from "../components/TextInput";
 import { Colors } from "../Constants";
@@ -27,18 +25,11 @@ import { Dim } from "../Constants";
 import * as ImagePicker from "expo-image-picker";
 import { ref, uploadBytes } from "firebase/storage";
 import { storage } from './firebase';
-
-/*
-  -- DOCUMENTATION --
-*/
+import { useFocusEffect } from "@react-navigation/native";
 
 const asyncCreateListing = async (title, description, photoPath, category, condition, price, gender,
                             subcategory, uID) => {
-    // console.log("HERE!!!")
-    // console.log(email)
     return await fetch("http://localhost:4000/listings/create", {
-        // If you are posting something, use POST
-        // If you are fetching something, use GET
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -56,6 +47,8 @@ const asyncCreateListing = async (title, description, photoPath, category, condi
             return error;
         });
 };
+
+
 
 const AddListingScreen = ({ props, navigation }) => {
     const [title, setTitle] = useState("");
@@ -87,9 +80,18 @@ const AddListingScreen = ({ props, navigation }) => {
         { label: "Outerwear", value: "outerwear" },
     ]);
 
-
-    // console.log(category);
-    // console.log(condition);
+    useFocusEffect(
+        React.useCallback(() => {
+            setTitle("");
+            setDescription("");
+            setCategory(null);
+            setCondition(null);
+            setPrice("");
+            setImagePicked(false);
+            setImage("");
+            setSubcategory("null");
+            setGender(0);
+        }, []))
 
     const [loading, setLoading] = useState(false);
     const [userID, setUID] = useState("");
@@ -108,41 +110,26 @@ const AddListingScreen = ({ props, navigation }) => {
                 condition, price, gender, subcategory, uID);
             setLoading(true);
             setLoading(false);
-            // setTitle("");
-            // setDescription("");
-            // setCategory(null);
-            // setCondition(null);
-            // setPrice("");
-            // setImagePicked(false);
-            // setImage("");
-            // setSubcategory("null");
-            // setGender(0);
-            
-            // navigation.navigate("Profile");
     };
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
-
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [1, 1],
-            quality: 1,
+            quality: 0,
         });
 
-        // console.log(result);
         if (!result.canceled) {
             setImage(result.assets[0].uri);
             setImagePicked(true);
             const path = result.assets[0].uri.substring(result.assets[0].uri.lastIndexOf('/')+1);
-            console.log(path);
             
             const reference = ref(storage, path);
 
             const img = await fetch(result.assets[0].uri);
             const bytes = await img.blob();
-            // console.log(bytes);
             
             const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
             await delay(1500);

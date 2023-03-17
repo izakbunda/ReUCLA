@@ -3,9 +3,6 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Colors } from "../Constants";
 import Icon from "react-native-vector-icons/Feather";
 
-/*
-  -- DOCUMENTATION --
-*/
 const AddProfilePhoto = (props) => {
     return (
         <TouchableOpacity onPress={props.onPress}>

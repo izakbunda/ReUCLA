@@ -4,10 +4,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Dim } from "../Constants";
 import SavedItem from "../components/SavedItem";
 import Icon from "react-native-vector-icons/Feather";
-// import { Alert } from "react-native";
-/*
-  -- DOCUMENTATION --
-*/
 
 const savedData = [
     {
