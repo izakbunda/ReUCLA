@@ -9,8 +9,11 @@ const {
     getUserListings,
 } = require("../controllers/userController");
 
-const { createListing, getCategory, searchDB } = require("../controllers/marketController");
-
+const {
+    createListing,
+    getCategory,
+    searchDB,
+} = require("../controllers/marketController");
 
 const router = express.Router();
 
@@ -22,7 +25,7 @@ router.post("/user/update", updateUser);
 // Market Routing
 router.post("/listings/create", createListing);
 router.get("/listings/:category/:gender/:subcategory", getCategory);
-router.get("/listings/get/:uID", getUserListings);
+router.get("/listings/:title/", searchDB);
 
 
 module.exports = router;
