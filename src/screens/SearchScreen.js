@@ -10,6 +10,7 @@ import {
 import Icon from "react-native-vector-icons/Feather";
 import BigListing from "../components/BigListing";
 import { Dim } from "../Constants";
+<<<<<<< HEAD
 
 const SearchScreen = ({ navigation, route }) => {
     const title = route.params.title;
@@ -27,6 +28,44 @@ const SearchScreen = ({ navigation, route }) => {
             });
     }, []);
     
+=======
+
+const SearchScreen = ({ navigation, route }) => {
+    const title = route.params.title;
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/listings/${title}`)
+            .then((res) => res.json())
+            .then((data) => {
+                setData(data.listingData);
+                console.log(data.listingData);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }, []);
+
+    // useEffect(() => {
+    //     console.log("IN USE EFFECT: " + title);
+
+    //     const name = title;
+
+    //     fetch(`http://localhost:4000/listings/search/`, {
+    //         method: "POST",
+    //         body: JSON.stringify({ name }),
+    //     })
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             setData(data.listingData);
+    //             console.log(data.listingData);
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error:", error);
+    //         });
+    // }, []);
+
+>>>>>>> 7d8390f (Implemented Search on the frontend)
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
