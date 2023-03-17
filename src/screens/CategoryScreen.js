@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { 
+import { useEffect, useState } from "react";
+import {
     View,
     StyleSheet,
     Text,
@@ -143,22 +143,23 @@ const listingData = [
 ];
 
 const CategoryScreen = ({navigation, route}) => {
-    const { category } = route.params;
-    const {listings, setListings} = useEffect(null)
-    useEffect(()=> {
+    const { categoryName , category, gender, subcategory} = route.params;
+    const [data, setData] = useState([])
 
-    },[])
-    const getListings = () => {
-        const res = await fetch("http://localhost:4000/listings/fetch/categories", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ category }),
-        })
-        const json = await res.json();
-        setListings(json);
-    }
+    useEffect(() => {
+        fetch(
+            `http://localhost:4000/listings/${category}/${gender}/${subcategory}`
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                setData(data.listingData);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                return error;
+            })
+    }, [])
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
@@ -171,8 +172,7 @@ const CategoryScreen = ({navigation, route}) => {
                 />
                 <Text style={styles.header}> {categoryName} </Text>
             </View>
-            <View>
-                {listings == null ? <View></View> : 
+            <View style={styles.flatListcontainer}>
                 <FlatList
                     style={{ width: "100%", height: "95%" }}
                     data={data}
@@ -181,17 +181,25 @@ const CategoryScreen = ({navigation, route}) => {
                     renderItem={({ item }) => {
                         return (
                             <BigListing
-                                listingPhoto={"https://picsum.photos/300/300"} // TODO - change to actual photo
-                                listingPrice={item.price}
-                                listingName={item.title}
+                                listingPhoto={item.photoPath}
+                                price={item.price}
+                                title={item.title}
                                 onPress={() => {
-                                    navigation.navigate("")
+                                    navigation.navigate("Listing", {
+                                        title: item.title,
+                                        price: item.price,
+                                        description: item.description,
+                                        category: item.category,
+                                        condition: item.condition,
+                                        photoPath: item.photoPath,
+                                        // gender: 2,
+                                        // subcategory: item.subcategory,
+                                    });
                                 }}
                             />
                         );
                     }}
                 />
-}
             </View>
         </SafeAreaView>
     );
