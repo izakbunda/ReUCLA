@@ -189,9 +189,15 @@ const ProfileScreen = ({ navigation, props }) => {
                                         listingPrice={item.price}
                                         listingName={item.title}
                                         onPress={() => {
-                                            Alert.alert("Fix tomorrow");
+                                            navigation.navigate("Listing", {
+                                                title: item.title,
+                                                price: item.price,
+                                                description: item.description,
+                                                category: item.category,
+                                                condition: item.condition,
+                                                photoPath: item.photoPath,
+                                            })
                                         }}
-                                        // useNavigation to navigate // figure out tmr
                                     />
                                 );
                             }}
@@ -217,7 +223,14 @@ const ProfileScreen = ({ navigation, props }) => {
                                         listingName={item.listingName}
                                         sold={item.sold}
                                         onPress={() => {
-                                            Alert.alert("Fix tomorrow");
+                                            navigation.navigate("Listing", {
+                                                title: item.listingName,
+                                                price: item.listingPrice,
+                                                description: item.listingDescription,
+                                                category: item.category,
+                                                condition: item.condition,
+                                                photoPath: item.photoPath,
+                                            })
                                         }}
                                         // useNavigation to navigate // figure out tmr
                                     />
