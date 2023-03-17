@@ -24,3 +24,15 @@ Xcode will display an IOS simulator of our app.\
 This can also be done by selecting the `Run on IOS simulator` option on the Metro Bundler.
 
 #### To read more: https://reactnative.dev/docs/environment-setup
+
+### ###
+
+| Screen | Screenshot |
+| --- | --- |
+| SignInScreen | <img src="https://user-images.githubusercontent.com/98503066/225852261-76bdab24-fa84-4ac0-b397-792e0a6fd9fb.PNG"  width="137" height="303" > |
+| SignUpScreen | <img src="https://user-images.githubusercontent.com/98503066/225853200-bea242d5-aa8e-4af7-8c57-01cad5bee11f.PNG"  width="137" height="303" >
+| CreateProfileScreen | <img src="https://user-images.githubusercontent.com/98503066/225853865-c1f89739-17d1-44fd-8d5e-fbd72ba57938.PNG"  width="137" height="303" >
+| HomeScreen | <img src="https://user-images.githubusercontent.com/98503066/225854382-37ff57a1-3e36-4dab-a3d8-8f37c0dddd02.png"  width="137" height="303" > |
+| CategoryScreen | <img src="https://user-images.githubusercontent.com/98503066/225854503-5cdeaf07-1f79-415e-a6ac-8255c719397f.png"  width="137" height="303" > |
+| AddListingScreen | <img src="https://user-images.githubusercontent.com/98503066/225854565-7dffaf6d-4575-4d45-b448-2b2cda76e1c9.png"  width="137" height="303" > |
+| ProfileScreen | <img src="https://user-images.githubusercontent.com/98503066/225854633-5a5ba3da-5d76-4f24-b0b3-f784862646e6.png"  width="137" height="303" > |
