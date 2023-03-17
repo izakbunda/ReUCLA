@@ -23,8 +23,8 @@ const BigListing = (props) => {
                     style={styles.listingPhoto}
                 />
                 <View style={styles.textContainer}>
-                    <Text style={styles.text}>{props.listingName}</Text>
-                    <Text style={styles.price}>${props.listingPrice}</Text>
+                    <Text style={styles.text}>{props.title}</Text>
+                    <Text style={styles.price}>${props.price}</Text>
                 </View>
             </View>
         </TouchableOpacity>

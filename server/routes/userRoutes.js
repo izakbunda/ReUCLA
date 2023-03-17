@@ -7,7 +7,9 @@ const {
     updateUser,
     signIn,
 } = require("../controllers/userController");
-const { createListing } = require("../controllers/marketController");
+
+const { createListing, getCategory, searchDB } = require("../controllers/marketController");
+
 
 const router = express.Router();
 
@@ -18,6 +20,9 @@ router.post("/user/signIn", signIn);
 router.post("/user/update", updateUser);
 
 router.post("/listings/create", createListing);
+router.get("/listings/:category/:gender/:subcategory", getCategory);
+router.get("/listings/search", searchDB);
+
 // router.get('listing/fetch/one')
 // router.get('listing/fetch/page')
 // router.get()
