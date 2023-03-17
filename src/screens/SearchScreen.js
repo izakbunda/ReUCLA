@@ -51,7 +51,14 @@ const SearchScreen = ({ navigation, route }) => {
                                 price={item.price}
                                 title={item.title}
                                 onPress={() => {
-                                    Alert.alert("go to listing screen");
+                                    navigation.navigate("Listing", {
+                                        title: item.title,
+                                        price: item.price,
+                                        description: item.description,
+                                        category: item.category,
+                                        condition: item.condition,
+                                        photoPath: item.photoPath,
+                                    })
                                 }}
                             />
                         );
@@ -75,8 +82,6 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         justifyContent: "center",
         flex: 1,
-        width: Dim.width * 0.9,
-        // height: Dim.height * 0.05,
     },
     header: {
         fontSize: 20,

@@ -18,7 +18,7 @@ const {
     getDocs,
     where,
 } = require("firebase/firestore");
-const { getStorage, ref, getDownloadURL } = require("firebase/storage");
+const { getStorage, ref, getDownloadURL, list } = require("firebase/storage");
 
 const createListing = async (req, res) => {
     const title = req.body.title,
@@ -153,6 +153,7 @@ const searchDB = async (req, res) => {
     querySnapshot3.forEach((doc) => {
         listingData.push(doc.data());
     });
+    console.log(listingData)
     res.send({ listingData });
 };
 

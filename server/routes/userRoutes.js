@@ -26,6 +26,6 @@ router.post("/user/update", updateUser);
 router.post("/listings/create", createListing);
 router.get("/listings/:category/:gender/:subcategory", getCategory);
 router.get("/listings/get/:uID", getUserListings);
-router.get("/listings/:title/", searchDB);
+router.get("/listings/:title", searchDB);
 
 module.exports = router;

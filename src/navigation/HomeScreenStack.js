@@ -4,6 +4,7 @@ import SavedScreen from "../screens/SavedScreen";
 import CategoryScreen from "../screens/CategoryScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ListingScreen from "../screens/ListingScreen";
+import { Search } from "react-native-feather";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,7 +36,6 @@ export const HomeScreenStack = (route) => {
                 component={ListingScreen}
                 options={{ headerShown: false }}
             />
-
         </Stack.Navigator>
     );
 };
