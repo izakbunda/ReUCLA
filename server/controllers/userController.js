@@ -143,35 +143,6 @@ const signIn = async (req, res) => {
 };
 
 const getUserListings = async (req, res) => {
-    const { uID } = req.params;
-    
-    const listingData = [];
-    const mensPath = '/listings/clothing/menswear';
-    const womensPath = '/listings/clothing/womenswear';
-    const productsPath = '/listings/products/other';
-
-    // search through each collection for the listings made by this user
-    var q = query(collection(database, mensPath), where("uID", "==", uID));
-    var querySnapshot = await getDocs(q);
-    querySnapshot.forEach(doc => {
-        listingData.push(doc.data());
-    });
-
-    q = query(collection(database, womensPath), where("uID", "==", uID));
-    var querySnapshot = await getDocs(q);
-    querySnapshot.forEach(doc => {
-        listingData.push(doc.data());
-    });
-
-    q = query(collection(database, productsPath), where("uID", "==", uID));
-    var querySnapshot = await getDocs(q);
-    querySnapshot.forEach(doc => {
-        listingData.push(doc.data());
-    });
-    res.send({ listingData })
-}
-
-const getUserListings = async (req, res) => {
     console.log("HERE")
     const { uID } = req.params;
     
